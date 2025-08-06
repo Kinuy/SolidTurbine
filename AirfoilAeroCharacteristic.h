@@ -7,6 +7,6 @@ struct AirfoilAeroCharacteristic{
 	double momentCoefficient; // Coefficient of moment
 	double angleOfAttack;     // Angle of attack in degrees
 
-	AirfoilAeroCharacteristic(double lift, double drag, double moment, double aoa)
-		: liftCoefficient(lift), dragCoefficient(drag), momentCoefficient(moment), angleOfAttack(aoa) {}
-};;
+	AirfoilAeroCharacteristic(const double liftCoefficient, const double dragCoefficient, const double momentCoefficient, const double angleOfAttack)
+		: liftCoefficient(liftCoefficient), dragCoefficient(dragCoefficient), momentCoefficient(momentCoefficient), angleOfAttack(angleOfAttack) {}
+};
