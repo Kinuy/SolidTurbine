@@ -125,6 +125,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AeroCharacteristicPoint.h" />
+    <ClInclude Include="AirfoilGeometryPoint.h" />
+    <ClInclude Include="EnvironmentalConditions.h" />
+    <ClInclude Include="OperationConditions.h" />
+    <ClInclude Include="ProjectData.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
