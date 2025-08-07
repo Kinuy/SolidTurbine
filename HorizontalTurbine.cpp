@@ -1,8 +1,8 @@
 #include "HorizontalTurbine.h"
 
-HorizontalTurbine::HorizontalTurbine(const int blades = 3) 
+HorizontalTurbine::HorizontalTurbine(const int numberOfBlades = 3)
 	: 
-	numberOfBlades(blades) {
+	numberOfBlades(numberOfBlades) {
 }
 
 // Override the getNumberOfBlades method from ITurbine interface

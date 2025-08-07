@@ -11,7 +11,7 @@ private:
 
 public:
 
-	HorizontalTurbine(const int blades);
+	HorizontalTurbine(const int numberOfBlades);
 
 	// Override the getNumberOfBlades method from ITurbine interface
 	int getNumberOfBlades() const override;
