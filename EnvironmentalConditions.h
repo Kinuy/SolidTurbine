@@ -14,12 +14,12 @@ struct EnvironmentalConditions {
 	double kinematicViscosity; // Kinematic viscosity in m^2/s
 
 	EnvironmentalConditions(
-		const double airDensity = 1.224978, 
-		const double temperature = 288.15, 
-		const double atmosphericPressure = 101325,
-		const double speedOfSound = 340.29, 
-		const double gravity = 9.81, 
-		const double specificGasConstant = 287.058, 
+		const double airDensity = 1.224978, // Default value at sea level and 15 degrees Celsius 
+		const double temperature = 288.15, // Default value at sea level and 15 degrees Celsius 
+		const double atmosphericPressure = 101325, // Default value at sea level in Pascals
+		const double speedOfSound = 340.29, // Default value at sea level and 15 degrees Celsius in m/s 
+		const double gravity = 9.81, // Default value for gravitational acceleration in m/s^2 
+		const double specificGasConstant = 287.058,   
 		const double dynamicViscosity = 0, 
 		const double kinematicViscosity = 0)
 		: 
