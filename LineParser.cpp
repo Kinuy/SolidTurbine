@@ -12,10 +12,16 @@ LineParser::ParsedLine LineParser::parseLine(const std::string& line) {
         result.isEmpty = true;
         return result;
     }
+    else {
+        result.isEmpty = false;
+    }
 
     if (trimmed[0] == '#' || trimmed[0] == ';') {
         result.isComment = true;
         return result;
+    }
+    else {
+        result.isComment = false;
     }
 
     // Parse key and all values
@@ -42,9 +48,15 @@ LineParser::ParsedLine LineParser::parseLine(const std::string& line) {
 }
 
 std::string LineParser::trim(const std::string& str) {
-    size_t start = str.find_first_not_of(" \t\r\n");
+    // First remove inline comments
+    size_t comment_pos = str.find('#');
+    std::string without_comment = (comment_pos != std::string::npos)
+        ? str.substr(0, comment_pos)
+        : str;
+    // Then trim whitespace from both ends
+    size_t start = without_comment.find_first_not_of(" \t\r\n");
     if (start == std::string::npos) return "";
 
-    size_t end = str.find_last_not_of(" \t\r\n");
-    return str.substr(start, end - start + 1);
+    size_t end = without_comment.find_last_not_of(" \t\r\n");
+    return without_comment.substr(start, end - start + 1);
 }
