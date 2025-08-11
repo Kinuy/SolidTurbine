@@ -13,19 +13,29 @@ int main(int argc , char** argv){
 	try {
 		// Define simulation schema
 		ConfigurationSchema schema;
-		schema.addDouble("rated_rotorspeed", true, "rotor speed at rated conditions in rpm");
-		schema.addDouble("number_of_blades", true, "blade number of turbine");
+		// Project data
+		schema.addString("project_name", true, "Name of project");
+		schema.addString("project_id", true, "Project number for identification");
+		schema.addString("project_revision", true, "Project revision");
+		schema.addString("project_date", true, "Date of simulation run");
+		schema.addString("project_engineer", true, "Engineer responsible for simulation");
+		// Data tables -> airfoil performance, airfoil geometry , blade geometry
+		schema.addDataFile("airfoil_geometry_file", true, "Path to airfoil geometry data file");
+		schema.addDataFile("airfoil_performance_file", true, "Path to airfoil performance data file");
+		schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
+		// Turbine data
 		schema.addBool("turbine_is_horizontal", true, "flag for horizontal or vertical turbine");
-		schema.addBool("hub_radius", true, "turbine hub radius in m");
-		
+		schema.addInt("number_of_blades", true, "blade number of turbine");	
+		schema.addDouble("hub_radius", true, "turbine hub radius [m]");
+		// Operation data
+		schema.addDouble("rated_rotorspeed", true, "rotor speed at rated conditions [rpm]");
+		schema.addDouble("min_rotorspeed", true, "cut in min rotor speed [rpm]");
+		schema.addDouble("rated_electrical_power", true, "rated electrical power of turbine [W]");
+		// Simulation data
 		schema.addBool("simulation_is_time_based",true, "flag for static or time based simulation");
-
-		//schema.addString("airfoil_performance_file", true, "path to file that stores paths to airfoil perfo files");
-		//schema.addString("airfoil_geometry_file", true, "path to file that stores paths to airfoil geo files");
-		//schema.addString("blade_geometry_file", true, "path to file that stores blade geometry data");
-
-		schema.addDouble("rated_electrical_power", true, "rated power in W of turbine");
-
+		schema.addRange("wind_speed_range","windspeed_start","windspeed_end","windspeed_step", true, "wind speed range for static simulation [m/s]");
+		schema.addRange("tip_speed_ratio_range","tsr_start","tsr_end","tsr_step", true, "tip speed ratio range for static simulation [-]");
+		schema.addRange("pitch_angle_range","pitch_start","pitch_emd","pitch_step", true, "pitch angle range for static simulation [deg]");
 
 		// Create parser
 		auto fileReader = std::make_unique<FileReader>("ProjectData.dat");
@@ -34,11 +44,16 @@ int main(int argc , char** argv){
 		// Parse configuration
 		Configuration config = parser.parse();
 
+		const BladeGeometryData* bladeGeometry = config.getBladeGeometry("blade_geometry");
+
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
 		int numberOfBlades = config.getInt("number_of_blades");
 		bool isHorizontal = config.getBool("turbine_is_horizontal");
 		bool isTimeBased = config.getBool("simulation_is_time_based");
+
+		
+
 		//std::string airfoilPerformanceFile = config.getString("airfoil_performance_file");
 		//std::string airfoilGeometryFile = config.getString("airfoil_geometry_file");
 		//std::string bladeGeometryFile = config.getString("blade_geometry_file");
