@@ -898,7 +898,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="218.38419796981907" width="328.4272919332516" x="11512.829108424608" y="-156.38972783406098"/>
+          <y:Geometry height="240.05817314853255" width="328.4272919332516" x="11512.829108424608" y="-156.38972783406098"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="89.20458984375" x="119.61135104475079" xml:space="preserve" y="3.0">Configuration<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -906,6 +906,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
             <y:AttributeLabel xml:space="preserve">- values: map&lt;string , any&gt;
 </y:AttributeLabel>
             <y:MethodLabel xml:space="preserve">+ setValue(key: string&amp; , value: any): void
++ setStructuredData(key: string&amp; , data: ISTructuredData*)
 + &lt;template t&gt; getValue(key: string&amp;): T
 + &lt;template t&gt; getStructuredData(key: string&amp;): T*
 + hasValue(key: string): bool
@@ -914,7 +915,9 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
 + getString(key: string&amp;): string
 + getBool(key: string&amp;): bool
 
-+ getBladeGeometry(key: string&amp;): BladeGeometryData*</y:MethodLabel>
++ getBladeGeometry(key: string&amp;): BladeGeometryData*
++ getFilePath(key: &amp;string): string
+</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -970,7 +973,7 @@ IFileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="157.632854307225" width="459.9121684867396" x="10652.633880500609" y="47.75502519042561"/>
+          <y:Geometry height="176.59758258859927" width="459.9121684867396" x="10652.633880500609" y="47.75502519042561"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="129.68359375" x="165.1142873683698" xml:space="preserve" y="3.0">ConfigurationParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -980,7 +983,9 @@ IFileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
             <y:MethodLabel xml:space="preserve">- createParserMaps(): ParserMaps
 - validateRequiredParameters(config: Configuration&amp; , parserMaps: ParserMaps&amp;)
 + ConfigurationParser(schema: ConfigurationSchema , reader: IFileReader* )
-+ parser(): Configuration</y:MethodLabel>
++ parser(): Configuration
+- loadDataFiles(config: Configuration&amp; , parserMaps: ParserMaps&amp;)
+- extractDataKey(paramName: string&amp;): string</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -997,7 +1002,8 @@ ParserMaps<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve">+ singleValueParsers: map&lt;string , IValueParsers*&gt;
 + multiValueParsers: map&lt;string , IMultiValueParsers*&gt;
-+ requiredKeys: map&lt;sstring , bool&gt;</y:AttributeLabel>
++ requiredKeys: map&lt;sstring , bool&gt;
++ dataFileParams: vector&lt;string&gt;</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve"/>
           </y:UML>
         </y:UMLClassNode>
@@ -1069,8 +1075,8 @@ IDataFileParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMod
           <y:Geometry height="243.72378420063342" width="262.0172992559201" x="9357.04372609083" y="-1014.7531474417887"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="127.53173828125" x="67.24278048733504" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
-BladeGeometryRow<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="147.04443359375" x="57.48643283108504" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+BladeGeometrySection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve">+ type: string
 + bladeRadius: double
@@ -1082,8 +1088,8 @@ BladeGeometryRow<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMo
 + pcbax: double
 + pcbay: double
 + relativeTwistAxis: double</y:AttributeLabel>
-            <y:MethodLabel xml:space="preserve">+ BladeGeometryRow()
-+ BladeGeometryRow(tokens: vector&lt;string&gt;)</y:MethodLabel>
+            <y:MethodLabel xml:space="preserve">+ BladeGeometrySection()
++ BladeGeometrySection(tokens: vector&lt;string&gt;)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -1093,20 +1099,20 @@ BladeGeometryRow<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMo
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="210.06139150119316" width="421.1360655646058" x="9277.484342936486" y="-715.3813652858088"/>
+          <y:Geometry height="210.06139150119316" width="447.1448357790614" x="9251.47557272203" y="-715.3813652858088"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.26806640625" x="146.4339995791779" xml:space="preserve" y="3.0">BladeGeometryData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.26806640625" x="159.4383846864057" xml:space="preserve" y="3.0">BladeGeometryData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve">- rows: vector&lt;BladeGeometryRow&gt;
+            <y:AttributeLabel xml:space="preserve">- rows: vector&lt;BladeGeometrySection&gt;
 - headers: vector&lt;string&gt;</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve">+ addHeader(header: string&amp;): void
-+ addRow(row: BladeGeometryRow&amp;): void
-+ getRows(): vector&lt;BladeGeometryRow&gt;&amp;
++ addRow(row: BladeGeometrySection&amp;): void
++ getRows(): vector&lt;BladeGeometrySection&gt;&amp;
 + getHeaders(): vector&lt;string&gt;&amp;
 +getTypeName(): string
 + getRowCount(): size_t
-+ getRowByRadius(radius: double , tolerance: double): BladeGeometryRow
++ getRowByRadius(radius: double , tolerance: double): BladeGeometrySection
 + getRadiusValues(): vector&lt;double&gt;
 </y:MethodLabel>
           </y:UML>

@@ -84,6 +84,15 @@
     <ClCompile Include="CustomMultiValueParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BladeGeometryData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BladeGeometryParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilePathParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AeroCharacteristicPoint.h">
@@ -189,6 +198,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomMultiValueParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IDataFileParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IStructuredData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BladeGeometrySection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BladeGeometryData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BladeGeometryParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilePathParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -137,6 +137,8 @@
     <ClCompile Include="AirfoilAeroCharacteristic.cpp" />
     <ClCompile Include="AirfoilGeometry.cpp" />
     <ClCompile Include="Blade.cpp" />
+    <ClCompile Include="BladeGeometryData.cpp" />
+    <ClCompile Include="BladeGeometryParser.cpp" />
     <ClCompile Include="BladeSection.cpp" />
     <ClCompile Include="BoolParser.cpp" />
     <ClCompile Include="Configuration.cpp" />
@@ -144,6 +146,7 @@
     <ClCompile Include="ConfigurationSchema.cpp" />
     <ClCompile Include="CustomMultiValueParser.cpp" />
     <ClCompile Include="DoubleParser.cpp" />
+    <ClCompile Include="FilePathParser.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="HorizontalTurbine.cpp" />
     <ClCompile Include="IntParser.cpp" />
@@ -165,6 +168,9 @@
     <ClInclude Include="AirfoilGeometry.h" />
     <ClInclude Include="AirfoilGeometryPoint.h" />
     <ClInclude Include="Blade.h" />
+    <ClInclude Include="BladeGeometryData.h" />
+    <ClInclude Include="BladeGeometryParser.h" />
+    <ClInclude Include="BladeGeometrySection.h" />
     <ClInclude Include="BladeSection.h" />
     <ClInclude Include="BoolParser.h" />
     <ClInclude Include="Configuration.h" />
@@ -174,12 +180,15 @@
     <ClInclude Include="CustomMultiValueParser.h" />
     <ClInclude Include="DoubleParser.h" />
     <ClInclude Include="EnvironmentalConditions.h" />
+    <ClInclude Include="FilePathParser.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="HorizontalTurbine.h" />
     <ClInclude Include="IAerodynamicAnalyzer.h" />
+    <ClInclude Include="IDataFileParser.h" />
     <ClInclude Include="IFileReader.h" />
     <ClInclude Include="IMultiValueParser.h" />
     <ClInclude Include="IntParser.h" />
+    <ClInclude Include="IStructuredData.h" />
     <ClInclude Include="ITurbine.h" />
     <ClInclude Include="IValueParser.h" />
     <ClInclude Include="LineParser.h" />
