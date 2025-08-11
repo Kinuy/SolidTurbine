@@ -5,6 +5,7 @@
 #include "StringParser.h"
 #include "BoolParser.h"
 #include "RangeParser.h"
+#include "FilePathParser.h"
 
 // Defines expected parameters
 class ConfigurationSchema {
@@ -49,6 +50,12 @@ public:
         bool required, 
         const std::string& desc);
 
+    // File path parameter that loads external structured data
+    ConfigurationSchema& addDataFile(
+        const std::string& name,
+        bool required,
+        const std::string& desc);
+
     // Helper methods for multi-value patterns
     ConfigurationSchema& addRange(
         const std::string& triggerKey, 
@@ -65,5 +72,8 @@ public:
         const std::string& stepKey,
         bool required, 
         const std::string& desc);
+
+    // Check if a parameter is a data file parameter
+    bool isDataFileParameter(const std::string& name) const;
 };
 

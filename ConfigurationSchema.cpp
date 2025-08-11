@@ -86,3 +86,19 @@ ConfigurationSchema& ConfigurationSchema::addIntRange(
         std::make_unique<IntParser>());
     return addMultiValue(triggerKey, std::move(rangeParser), required, desc);
 }
+
+ConfigurationSchema& ConfigurationSchema::addDataFile(
+    const std::string& name,
+    bool required=true,
+    const std::string& desc = "") {
+    return add(name, std::make_unique<FilePathParser>(), required, desc);
+}
+
+bool ConfigurationSchema::isDataFileParameter(const std::string& name) const {
+    for (const auto& param : parameters) {
+        if (param.name == name && !param.isMultiValue) {
+            return dynamic_cast<const FilePathParser*>(param.parser.get()) != nullptr;
+        }
+    }
+    return false;
+}
