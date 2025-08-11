@@ -1158,6 +1158,55 @@ BladeGeometrySection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
         </y:UMLClassNode>
       </data>
     </node>
+    <node id="n62">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="135.64163032756255" width="241.4877099666428" x="9117.755815459437" y="-152.1335638228503"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="167.2490234375" x="37.1193432645714" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+AirfoilPerformanceFileInfo
+<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">+ filePath: string
++ fileName: string
++ exists: bool</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">+ AirfoilPerformanceFileInfo(path: string&amp;)</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n63">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="274.7961368662156" width="261.6264301290812" x="9436.993978372011" y="-152.1335638228503"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="194.71533203125" x="33.4555490489156" xml:space="preserve" y="3.0">AirfoilPerformanceFileListData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">- fileInfos: vector&lt;AirfoilPerformanceFileInfo&gt;
+- headers: vector&lt;string&gt;
+- revision: string
+- date: string</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">+ addHeader
++ addFilePath
++ getFileInfos
++ getHeaders
++ getValidFilePaths
++ getDate
++ getTypeName
++ getRevision
++ getRowCount
++ getMissingFiles
++ getValidFileCount</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
     <edge id="e0" source="n12" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
