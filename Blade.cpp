@@ -1,6 +1,6 @@
 #include "Blade.h"
 
-Blade::Blade(const int numsec = 0, std::vector<double> absRadii, std::vector<double> relRadii)
+Blade::Blade(const int numsec = 0, std::vector<double> absRadii = {}, std::vector<double> relRadii={})
 	: 
 	numberOfSections(numsec),
 	absRadii(absRadii),

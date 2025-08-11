@@ -18,6 +18,6 @@ public:
 
     explicit FileReader(const std::string& filename);
 
-    std::vector<std::string> readLines();
+    std::vector<std::string> readLines() override;
 };
 

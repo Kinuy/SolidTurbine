@@ -70,6 +70,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\build\Release\bin\</OutDir>
+    <IntDir>..\build\Release\obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\build\Debug\bin\</OutDir>
+    <IntDir>..\build\Debug\obj\</IntDir>
+    <TargetName>SolidTurbine</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -102,6 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,14 +133,66 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Airfoil.cpp" />
+    <ClCompile Include="AirfoilAeroCharacteristic.cpp" />
+    <ClCompile Include="AirfoilGeometry.cpp" />
+    <ClCompile Include="Blade.cpp" />
+    <ClCompile Include="BladeSection.cpp" />
+    <ClCompile Include="BoolParser.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="ConfigurationParser.cpp" />
+    <ClCompile Include="ConfigurationSchema.cpp" />
+    <ClCompile Include="CustomMultiValueParser.cpp" />
+    <ClCompile Include="DoubleParser.cpp" />
+    <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="HorizontalTurbine.cpp" />
+    <ClCompile Include="IntParser.cpp" />
+    <ClCompile Include="IValueParser.cpp" />
+    <ClCompile Include="LineParser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MathUtility.cpp" />
+    <ClCompile Include="OperationAnalyzer.cpp" />
+    <ClCompile Include="OperationDataLogger.cpp" />
+    <ClCompile Include="OperationSimulationService.cpp" />
+    <ClCompile Include="RangeParser.cpp" />
+    <ClCompile Include="StringParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AeroCharacteristicPoint.h" />
+    <ClInclude Include="AerodynamicForces.h" />
+    <ClInclude Include="Airfoil.h" />
+    <ClInclude Include="AirfoilAeroCharacteristic.h" />
+    <ClInclude Include="AirfoilGeometry.h" />
     <ClInclude Include="AirfoilGeometryPoint.h" />
+    <ClInclude Include="Blade.h" />
+    <ClInclude Include="BladeSection.h" />
+    <ClInclude Include="BoolParser.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="ConfigurationParameter.h" />
+    <ClInclude Include="ConfigurationParser.h" />
+    <ClInclude Include="ConfigurationSchema.h" />
+    <ClInclude Include="CustomMultiValueParser.h" />
+    <ClInclude Include="DoubleParser.h" />
     <ClInclude Include="EnvironmentalConditions.h" />
+    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="HorizontalTurbine.h" />
+    <ClInclude Include="IAerodynamicAnalyzer.h" />
+    <ClInclude Include="IFileReader.h" />
+    <ClInclude Include="IMultiValueParser.h" />
+    <ClInclude Include="IntParser.h" />
+    <ClInclude Include="ITurbine.h" />
+    <ClInclude Include="IValueParser.h" />
+    <ClInclude Include="LineParser.h" />
+    <ClInclude Include="MathUtility.h" />
+    <ClInclude Include="OperationAnalyzer.h" />
     <ClInclude Include="OperationConditions.h" />
+    <ClInclude Include="OperationDataLogger.h" />
+    <ClInclude Include="OperationSimulationService.h" />
     <ClInclude Include="ProjectData.h" />
+    <ClInclude Include="RangeParser.h" />
+    <ClInclude Include="SquareMatrix.h" />
+    <ClInclude Include="StringParser.h" />
+    <ClInclude Include="Vector3d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

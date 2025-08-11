@@ -16,16 +16,9 @@ int main(int argc , char** argv){
 		schema.addDouble("rated_rotorspeed", true, "rotor speed at rated conditions in rpm");
 		schema.addDouble("number_of_blades", true, "blade number of turbine");
 		schema.addBool("turbine_is_horizontal", true, "flag for horizontal or vertical turbine");
-		schema.addBool("hub_radius", true, "turbine hub radius in m");
-		
 		schema.addBool("simulation_is_time_based",true, "flag for static or time based simulation");
-
-		//schema.addString("airfoil_performance_file", true, "path to file that stores paths to airfoil perfo files");
-		//schema.addString("airfoil_geometry_file", true, "path to file that stores paths to airfoil geo files");
-		//schema.addString("blade_geometry_file", true, "path to file that stores blade geometry data");
-
-		schema.addDouble("rated_electrical_power", true, "rated power in W of turbine");
-
+		schema.addString("airfoil_performance_file", true, "path to file that stores paths to airfoil perfo files)");
+		schema.addString("airfoil_geometry_file", true, "path to file that stores paths to airfoil geo files)");
 
 		// Create parser
 		auto fileReader = std::make_unique<FileReader>("ProjectData.dat");
@@ -34,18 +27,14 @@ int main(int argc , char** argv){
 		// Parse configuration
 		Configuration config = parser.parse();
 
-		// Use configuration and pas to objects with type safety
-		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
+		// Use configuration with type safety
+		double ratedSpeed = config.getDouble("rated_rotorspeed");
 		int numberOfBlades = config.getInt("number_of_blades");
 		bool isHorizontal = config.getBool("turbine_is_horizontal");
 		bool isTimeBased = config.getBool("simulation_is_time_based");
-		//std::string airfoilPerformanceFile = config.getString("airfoil_performance_file");
-		//std::string airfoilGeometryFile = config.getString("airfoil_geometry_file");
-		//std::string bladeGeometryFile = config.getString("blade_geometry_file");
+		std::string airfoilPerfoFile = config.getString("airfoil_perfo_file");
+		std::string airfoilGeoFile = config.getString("airfoil_geo_file");
 		std::cout << "Configuration loaded successfully:" << std::endl;
-
-		// Create simulation setup
-
 
 	}
 	catch(const std::exception& e){
