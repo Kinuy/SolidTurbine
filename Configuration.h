@@ -8,6 +8,7 @@
 #include "IStructuredData.h"
 #include "BladeGeometryData.h"
 #include "AirfoilPerformanceFileListData.h"
+#include "AirfoilGeometryFileListData.h"
 
 // Configuration stores parsed values
 class Configuration {
@@ -69,5 +70,7 @@ public:
     const BladeGeometryData* getBladeGeometry(const std::string& key) const;
 
     const AirfoilPerformanceFileListData* getAirfoilPerformanceFileList(const std::string& key) const;
+
+    const AirfoilGeometryFileListData* getAirfoilGeometryFileList(const std::string& key) const;
 };
 
