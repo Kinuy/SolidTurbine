@@ -45,11 +45,12 @@ int main(int argc , char** argv){
 		Configuration config = parser.parse();
 
 		// Get Blade data
-		const BladeGeometryData* bladeGeometry = config.getBladeGeometry("blade_geometry");
+		const BladeGeometryData* bladeGeometry = config.getBladeGeometry();
 		
-		// Get airfoil perfo and geo file list
-		const AirfoilPerformanceFileListData* airfoilPerformanceFileList = config.getAirfoilPerformanceFileList("airfoil_performance_files");
-		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList("airfoil_geometry_files");
+		// Get airfoil perfo and geo file list -> processes internally each file in list
+		const AirfoilPerformanceFileListData* airfoilPerformanceFileList = config.getAirfoilPerformanceFileList();
+		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList();
+
 
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
