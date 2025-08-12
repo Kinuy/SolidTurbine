@@ -140,8 +140,10 @@
     <ClCompile Include="AirfoilGeometryFileListData.cpp" />
     <ClCompile Include="AirfoilGeometryFileListParser.cpp" />
     <ClCompile Include="AirfoilGeometryParser.cpp" />
+    <ClCompile Include="AirfoilPerformanceData.cpp" />
     <ClCompile Include="AirfoilPerformanceFileListData.cpp" />
     <ClCompile Include="AirfoilPerformanceFileListParser.cpp" />
+    <ClCompile Include="AirfoilPerformanceParser.cpp" />
     <ClCompile Include="Blade.cpp" />
     <ClCompile Include="BladeGeometryData.cpp" />
     <ClCompile Include="BladeGeometryParser.cpp" />
@@ -180,9 +182,12 @@
     <ClInclude Include="AirfoilGeometryParser.h" />
     <ClInclude Include="AirfoilGeometryPoint.h" />
     <ClInclude Include="AirfoilMarker.h" />
+    <ClInclude Include="AirfoilPerformanceData.h" />
     <ClInclude Include="AirfoilPerformanceFileInfo.h" />
     <ClInclude Include="AirfoilPerformanceFileListData.h" />
     <ClInclude Include="AirfoilPerformanceFileListParser.h" />
+    <ClInclude Include="AirfoilPerformanceParser.h" />
+    <ClInclude Include="AirfoilPerformancePoint.h" />
     <ClInclude Include="Blade.h" />
     <ClInclude Include="BladeGeometryData.h" />
     <ClInclude Include="BladeGeometryParser.h" />
