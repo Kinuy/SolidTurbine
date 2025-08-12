@@ -10,6 +10,7 @@
 #include "AirfoilPerformanceFileListData.h"
 #include "AirfoilGeometryFileListData.h"
 #include "AirfoilGeometryData.h"
+#include "AirfoilPerformanceData.h"
 
 
 // Configuration stores parsed values
@@ -105,6 +106,18 @@ public:
 
     // Find specific airfoil geometry by name
     const AirfoilGeometryData* getAirfoilGeometryByName(const std::string& airfoilName, const std::string& collectionKey = "loaded_airfoil_geometries") const;
+
+    // Individual airfoil performance collection convenience method
+    std::vector<const AirfoilPerformanceData*> getAirfoilPerformances(const std::string& collectionKey = "loaded_airfoil_performances") const;
+
+    // Find specific airfoil performance by reference number
+    const AirfoilPerformanceData* getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey = "loaded_airfoil_performances") const;
+
+    // Find airfoil performance by thickness and Reynolds number
+    const AirfoilPerformanceData* getAirfoilPerformanceByConditions(double thickness, double reynolds,
+        double toleranceThickness = 5.0,
+        double toleranceReynolds = 500000.0,
+        const std::string& collectionKey = "loaded_airfoil_performances") const;
 
 };
 

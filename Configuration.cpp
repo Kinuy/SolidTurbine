@@ -71,3 +71,39 @@ const AirfoilGeometryData* Configuration::getAirfoilGeometryByName(const std::st
 
     throw std::runtime_error("Airfoil geometry not found for: " + airfoilName);
 }
+
+std::vector<const AirfoilPerformanceData*> Configuration::getAirfoilPerformances(const std::string& collectionKey) const {
+    return getCollection<AirfoilPerformanceData>(collectionKey);
+}
+
+// NEW: Find specific airfoil performance by reference number
+const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey) const {
+    auto performances = getAirfoilPerformances(collectionKey);
+
+    for (const auto* perf : performances) {
+        if (perf->getName().find(refNum) != std::string::npos) {
+            return perf;
+        }
+    }
+
+    throw std::runtime_error("Airfoil performance not found for: " + refNum);
+}
+
+// NEW: Find airfoil performance by thickness and Reynolds number
+const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByConditions(double thickness, double reynolds,
+    double toleranceThickness,
+    double toleranceReynolds,
+    const std::string& collectionKey) const {
+    auto performances = getAirfoilPerformances(collectionKey);
+
+    for (const auto* perf : performances) {
+        if (std::abs(perf->getRelativeThickness() - thickness) <= toleranceThickness &&
+            std::abs(perf->getReynoldsNumber() - reynolds) <= toleranceReynolds) {
+            return perf;
+        }
+    }
+
+    throw std::runtime_error("No airfoil performance found for thickness=" +
+        std::to_string(thickness) + "%, Re=" + std::to_string(reynolds));
+}
+
