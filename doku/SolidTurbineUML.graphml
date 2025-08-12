@@ -716,7 +716,7 @@ ISolver<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:Mo
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="110.00658471138843" width="323.1425937784161" x="11096.310849936885" y="-705.4976649591716"/>
+          <y:Geometry height="110.00658471138843" width="323.1425937784161" x="11900.452866157671" y="-679.2756426911025"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="113.09716796875" x="105.02271290483304" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -734,7 +734,7 @@ IMultiValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="168.15688503834429" width="552.7151565453769" x="11543.962965637038" y="-539.4618727724666"/>
+          <y:Geometry height="168.15688503834429" width="552.7151565453769" x="12348.104981857825" y="-513.2398505043974"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="84.208984375" x="234.25308608518844" xml:space="preserve" y="3.0">RangeParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -755,7 +755,7 @@ IMultiValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="86.08625347895213" width="167.73117243348042" x="11582.061750130868" y="-895.2631313865096"/>
+          <y:Geometry height="86.08625347895213" width="167.73117243348042" x="12386.203766351655" y="-869.0411091184404"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.53173828125" x="39.59971707611521" xml:space="preserve" y="3.0">DoubleParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -771,7 +771,7 @@ IMultiValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="96.61814923884123" width="160.37104018627815" x="10955.858142014815" y="-1016.5512592931392"/>
+          <y:Geometry height="96.61814923884123" width="160.37104018627815" x="11760.000158235602" y="-990.32923702507"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.55712890625" x="35.906955640014075" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -788,7 +788,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="11585.74181625447" y="-999.3031883163661"/>
+          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="12389.883832475258" y="-973.081166048297"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="60.36083984375" x="50.005100171264075" xml:space="preserve" y="3.0">IntParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -804,7 +804,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="11585.741816254469" y="-1103.3432452462225"/>
+          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="12389.883832475256" y="-1077.1212229781534"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="82.03173828125" x="39.169650952514075" xml:space="preserve" y="3.0">StringParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -820,7 +820,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="11585.741816254469" y="-1207.3833021760793"/>
+          <y:Geometry height="86.08625347895213" width="160.37104018627815" x="12389.883832475256" y="-1181.16127990801"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="73.36083984375" x="43.505100171264075" xml:space="preserve" y="3.0">BoolParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -836,7 +836,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.89765475774516" width="379.18673070719706" x="11543.962965637038" y="-734.2682027188846"/>
+          <y:Geometry height="119.89765475774516" width="379.18673070719706" x="12348.104981857825" y="-708.0461804508154"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="157.87353515625" x="110.65659777547353" xml:space="preserve" y="3.0">CustomMultiValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -854,7 +854,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="190.74492979719184" width="610.9488299531995" x="10730.569247131354" y="-539.4618727724666"/>
+          <y:Geometry height="190.74492979719184" width="610.9488299531995" x="11534.711263352141" y="-513.2398505043974"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="152.8017578125" x="229.07353607034975" xml:space="preserve" y="3.0">ConfigurationParameter<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -875,7 +875,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="194.4561293725194" width="766.8195632146917" x="10652.633880500609" y="-272.65123231309644"/>
+          <y:Geometry height="194.4561293725194" width="766.8195632146917" x="11456.775896721396" y="-246.42921004502728"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="139.0654296875" x="313.87706676359585" xml:space="preserve" y="3.0">ConfigurationSchema<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -898,7 +898,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="381.0575996958974" width="547.2658009736488" x="10668.253797279347" y="315.72414765094504"/>
+          <y:Geometry height="381.0575996958974" width="547.2658009736488" x="11472.395813500134" y="341.9461699190142"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="89.20458984375" x="229.03060556494938" xml:space="preserve" y="3.0">Configuration<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -933,7 +933,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="81.10123918784802" width="219.20686348292384" x="10267.229185394091" y="68.4107279174093"/>
+          <y:Geometry height="81.10123918784802" width="219.20686348292384" x="11057.386123071909" y="109.5526067950691"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="71.20263671875" x="74.00211338208692" xml:space="preserve" y="3.0">LineParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -948,7 +948,7 @@ IValueParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="80.79614735838038" width="185.44875014321315" x="11581.94274280559" y="112.42761409368859"/>
+          <y:Geometry height="80.79614735838038" width="185.44875014321315" x="12386.084759026377" y="138.64963636175776"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.55712890625" x="48.44581061848157" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -964,7 +964,7 @@ IFileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.88378341363068" width="262.01729925591917" x="11543.658468249236" y="259.33771917054037"/>
+          <y:Geometry height="119.88378341363068" width="262.01729925591917" x="12347.800484470023" y="285.55974143860954"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="70.47265625" x="95.77232150295958" xml:space="preserve" y="3.0">FileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -980,7 +980,7 @@ IFileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="200.94280731620182" width="627.4645974943587" x="10652.633880500609" y="23.409800462823043"/>
+          <y:Geometry height="200.94280731620182" width="627.4645974943587" x="11456.775896721396" y="49.63182273089221"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="129.68359375" x="248.89050187217936" xml:space="preserve" y="3.0">ConfigurationParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1002,7 +1002,7 @@ IFileReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="110.00658471138843" width="315.1394305772228" x="10121.380298010183" y="-376.17616128336"/>
+          <y:Geometry height="110.00658471138843" width="315.1394305772228" x="10790.915933254882" y="-405.89445318717173"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="77.708984375" x="118.7152231011114" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1021,7 +1021,7 @@ ParserMaps<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="159.12754983121658" width="160.68713050039787" x="10296.489051885354" y="-127.93412200458783"/>
+          <y:Geometry height="159.12754983121658" width="160.68713050039787" x="11086.64598956317" y="-86.79224312692804"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="74.08447265625" x="43.301328922073935" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1042,7 +1042,7 @@ ParsedLine<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="93.02192553614032" width="174.50428967682637" x="9797.296346908446" y="-1014.7531474417887"/>
+          <y:Geometry height="93.02192553614032" width="174.50428967682637" x="9747.74083091099" y="-858.8632700770793"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.51904296875" x="36.49262335403819" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -1059,7 +1059,7 @@ IStructuredData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMod
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="93.02192553614032" width="272.0371779810357" x="10381.308083393798" y="-1216.8812357581553"/>
+          <y:Geometry height="93.02192553614032" width="272.0371779810357" x="10800.860439682907" y="-1693.6850073325465"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="98.66259765625" x="86.68729016239286" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -1076,7 +1076,7 @@ IDataFileParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMod
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="243.72378420063342" width="262.0172992559201" x="10280.277426779097" y="-857.8597516700269"/>
+          <y:Geometry height="243.72378420063342" width="262.0172992559201" x="10567.145703320313" y="-679.6182373878052"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="147.04443359375" x="57.48643283108504" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1102,7 +1102,7 @@ BladeGeometrySection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="210.06139150119316" width="447.1448357790614" x="9660.97607385733" y="-841.0285553203067"/>
+          <y:Geometry height="210.06139150119316" width="447.1448357790614" x="10474.581935058743" y="-917.3830030596057"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.26806640625" x="159.4383846864057" xml:space="preserve" y="3.0">BladeGeometryData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1126,7 +1126,7 @@ BladeGeometrySection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="93.02192553614032" width="331.6406097225008" x="10366.261240389249" y="-1023.5582129459538"/>
+          <y:Geometry height="93.02192553614032" width="331.6406097225008" x="10700.592024307132" y="-1069.0502784716482"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="140.56982421875" x="95.5353927518754" xml:space="preserve" y="3.0">BladeGeometryParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1143,7 +1143,7 @@ BladeGeometrySection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="210.06139150119316" width="722.3123491725655" x="10156.170497798033" y="-1527.2437245354097"/>
+          <y:Geometry height="210.06139150119316" width="722.3123491725655" x="10243.577238691598" y="-2229.1198539107277"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.04443359375" x="313.63395778940776" xml:space="preserve" y="3.0">FilePathParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1215,7 +1215,7 @@ AirfoilPerformanceFileInfo
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="97.81351208650739" width="313.02071636652363" x="9260.958361913616" y="-1017.1489407169722"/>
+          <y:Geometry height="97.81351208650739" width="313.02071636652363" x="9295.921058271042" y="-1356.2870953840002"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="93.59716796875" x="109.71177419888681" xml:space="preserve" y="3.0">&lt;&lt;interface&gt;&gt;
@@ -1331,7 +1331,7 @@ AirfoilGeometryFileListInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="105.1348371981187" width="262.8727994576275" x="8974.000659529593" y="-1469.5892130910731"/>
+          <y:Geometry height="105.1348371981187" width="262.8727994576275" x="9008.96335588702" y="-1808.727367758101"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="110.16455078125" x="76.35412433818874" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1349,7 +1349,7 @@ AirfoilCoordinate<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="111.23918748775873" width="227.0963937985125" x="9009.777065188708" y="-1322.6899480757138"/>
+          <y:Geometry height="111.23918748775873" width="227.0963937985125" x="9044.739761546134" y="-1661.8281027427417"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="84.18994140625" x="71.45322619613125" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1368,7 +1368,7 @@ AirfoilMarker<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="161.1379477290766" width="341.66215722252673" x="9828.419398962018" y="-1256.957505585137"/>
+          <y:Geometry height="161.1379477290766" width="341.66215722252673" x="9819.471036932933" y="-1866.3818792024376"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="142.7216796875" x="99.47023876751337" xml:space="preserve" y="3.0">AirfoilGeometryParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1390,7 +1390,7 @@ AirfoilMarker<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="405.0377175184774" width="313.02071636652363" x="9411.93056574667" y="-1469.5892130910731"/>
+          <y:Geometry height="405.0377175184774" width="313.02071636652363" x="9446.893262104097" y="-1808.727367758101"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="130.419921875" x="91.30039724576181" xml:space="preserve" y="3.0">AirfoilGeometryData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1438,6 +1438,96 @@ AirfoilGeometryFileInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
 + fileName: string
 + exists: bool</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve">+ AirfoilGeometryFileInfo(path: string&amp;)</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n74">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="592.6475461724231" width="547.2658009736497" x="9839.474369901367" y="-1663.4642551853644"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="149.208984375" x="199.02840829932484" xml:space="preserve" y="3.0">AirfoilPerformanceData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">- name: string
+- xa: double
+- relativeThickness: double
+- reynoldsNumber: double
+- depang: double
+- nAlpha: int
+- nVals: int
+- performancePoints: vector&lt;AirfoilPerformancePoint&gt;
+- headers: vector&lt;string&gt;</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve"> + setName(refNum: string&amp;): void
++ setXa(xa: double): void
++ setRelativeThickness(thickness: double): void
++ setReynoldsNumber(reynolds: double): void
++ setDepang(depang double): void
++ setNAlpha(nAlpha: int): void
++ setNVals(nVals: int):void
++ addHeader(header: string&amp;):void
++ addPerformancePoint(alpha: double, cl: double , cd: double , cm: double): void
++ getName(): string&amp;
++ getXa():double
++ getRelativeThickness(): double
++ getReynoldsNumber(): double
++ getDepang(): double
++ getNAlpha(): int
++ getNVals(): int
++ getPerformanceData(): std::vector&lt;AirfoilPerformancePoint&gt;&amp; 
++ getHeaders(): vector&lt;string&gt;&amp;
++ getTypeName(): string
++ getRowCount(): size_t
+ + getPerformanceAtAlpha( targetAlpha: double , tolerance: double): AirfoilPerformancePoint
++ interpolatePerformance( targetAlpha: double): AirfoilPerformancePoint
++ getMaxClAlpha(): double
++ getMaxCl(): double
++ getMinCd(): double
++ getStallAlpha(): double
++ getAlphaRange(): vector&lt;double&gt;</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n75">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="135.64163032756255" width="446.130693938514" x="10416.740170875017" y="-1263.337258675113"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="153.525390625" x="146.302651656757" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+AirfoilPerformancePoint<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">+ alpha: double
++ cl: double
++ cd: double
++ cm: double</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">+ AirfoilPerformancePoint(alpha: double , cl: double , cd: double , cm: double)</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n76">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="147.6064468480805" width="347.5358902105745" x="10430.965468172595" y="-1440.9437055231933"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="161.5107421875" x="93.01257401153725" xml:space="preserve" y="3.0">AirfoilPerformanceParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve"/>
+            <y:MethodLabel xml:space="preserve">- tokenizeLine(line: string&amp; , delimiter: char): vector&lt;string&gt;
+- isHeaderLine(tokens: vector&lt;string&gt;&amp;): bool
+- isDataLine(tokens: vector&lt;string&gt;&amp;): bool
++ parseFile(filePath: string&amp;): IStructuredData*
++ getSupportedExtensions(): vector&lt;string&gt;</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -2103,6 +2193,50 @@ AirfoilGeometryFileInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e65" source="n74" target="n75">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e66" source="n74" target="n56">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e67" source="n76" target="n74">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e68" source="n76" target="n57">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
