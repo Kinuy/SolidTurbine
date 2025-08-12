@@ -20,7 +20,7 @@ int main(int argc , char** argv){
 		schema.addString("project_date", true, "Date of simulation run");
 		schema.addString("project_engineer", true, "Engineer responsible for simulation");
 		// Data tables -> airfoil performance, airfoil geometry , blade geometry
-		//schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
+		schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
 		schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data file list");
 		schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
 		// Turbine data
@@ -47,8 +47,9 @@ int main(int argc , char** argv){
 		// Get Blade data
 		const BladeGeometryData* bladeGeometry = config.getBladeGeometry("blade_geometry");
 		
-		// Get airfoil perfo file list
-		const AirfoilPerformanceFileListData* airfoilFileList = config.getAirfoilPerformanceFileList("airfoil_performance_files");
+		// Get airfoil perfo and geo file list
+		const AirfoilPerformanceFileListData* airfoilPerformanceFileList = config.getAirfoilPerformanceFileList("airfoil_performance_files");
+		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList("airfoil_geometry_files");
 
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
