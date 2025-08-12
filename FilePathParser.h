@@ -15,6 +15,7 @@
 #include "IStructuredData.h"
 #include "AirfoilGeometryFileListParser.h"
 #include "AirfoilGeometryParser.h"
+#include "AirfoilPerformanceParser.h"
 
 
 // Responsible for parsing file paths and delegating to specific data file parsers

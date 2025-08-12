@@ -5,6 +5,7 @@ FilePathParser::FilePathParser() {
     // Register supported data file parsers
     dataFileParsers["blade_geometry"] = std::make_unique<BladeGeometryParser>();
     dataFileParsers["airfoil_geometry"] = std::make_unique<AirfoilGeometryParser>();
+    dataFileParsers["airfoil_performance"] = std::make_unique<AirfoilPerformanceParser>();
     // Register supported file list parsers
     fileListParsers["airfoil_performance_files"] = std::make_unique<AirfoilPerformanceFileListParser>();
     fileListParsers["airfoil_geometry_files"] = std::make_unique<AirfoilGeometryFileListParser>();
