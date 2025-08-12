@@ -4,6 +4,7 @@
 FilePathParser::FilePathParser() {
     // Register supported data file parsers
     dataFileParsers["blade_geometry"] = std::make_unique<BladeGeometryParser>();
+    dataFileParsers["airfoil_geometry"] = std::make_unique<AirfoilGeometryParser>();
     // Register supported file list parsers
     fileListParsers["airfoil_performance_files"] = std::make_unique<AirfoilPerformanceFileListParser>();
     fileListParsers["airfoil_geometry_files"] = std::make_unique<AirfoilGeometryFileListParser>();
@@ -67,4 +68,15 @@ std::string FilePathParser::extractFileListType(const std::string& parameterName
 
 bool FilePathParser::isFileListParameter(const std::string& parameterName) const {
     return parameterName.find("_files_file") != std::string::npos;
+}
+
+// NEW: Parse individual files from a file list (for loading each airfoil geometry file)
+std::unique_ptr<IStructuredData> FilePathParser::parseIndividualFile(const std::string& filePath,
+    const std::string& fileType) const {
+    auto parserIt = dataFileParsers.find(fileType);
+    if (parserIt == dataFileParsers.end()) {
+        throw std::runtime_error("No parser available for file type: " + fileType);
+    }
+
+    return parserIt->second->parseFile(filePath);
 }

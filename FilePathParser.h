@@ -14,6 +14,7 @@
 #include "IFileListParser.h"
 #include "IStructuredData.h"
 #include "AirfoilGeometryFileListParser.h"
+#include "AirfoilGeometryParser.h"
 
 
 // Responsible for parsing file paths and delegating to specific data file parsers
@@ -46,6 +47,9 @@ public:
 
     std::unique_ptr<IStructuredData> parseFileListFile(const std::string& parameterName,
         const std::string& filePath) const;
+
+    std::unique_ptr<IStructuredData> parseIndividualFile(const std::string& filePath,
+        const std::string& fileType) const;
 
 };
 
