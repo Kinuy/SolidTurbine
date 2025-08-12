@@ -4,6 +4,9 @@
 #include <unordered_map>
 #include <string>
 #include <stdexcept>
+#include <vector>
+#include <filesystem>
+#include <iostream>
 
 #include "IValueParser.h"
 #include "IMultiValueParser.h"
@@ -38,6 +41,9 @@ private:
     std::string extractDataKey(const std::string& paramName) const;
 
     std::string extractFileListDataKey(const std::string& paramName) const;
+
+    void loadIndividualAirfoilGeometries(Configuration& config, const FilePathParser* filePathParser,
+        const std::string& fileListKey) const;
 
 public:
 

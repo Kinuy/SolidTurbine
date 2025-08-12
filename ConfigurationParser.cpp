@@ -1,4 +1,4 @@
-#include "ConfigurationParser.h"
+﻿#include "ConfigurationParser.h"
 
 ConfigurationParser::ConfigurationParser(
     ConfigurationSchema schema, 
@@ -104,6 +104,39 @@ Configuration ConfigurationParser::parse() {
     return config;
 }
 
+void ConfigurationParser::loadIndividualAirfoilGeometries(Configuration& config, const FilePathParser* filePathParser,
+    const std::string& fileListKey) const {
+    const AirfoilGeometryFileListData* geometryFileList =
+        config.getStructuredData<AirfoilGeometryFileListData>(fileListKey);
+
+    if (!geometryFileList) {
+        return; // No geometry file list to process
+    }
+
+    auto validFilePaths = geometryFileList->getValidFilePaths();
+    std::cout << "Loading " << validFilePaths.size() << " individual airfoil geometry files..." << std::endl;
+
+    for (const auto& geometryFilePath : validFilePaths) {
+        try {
+            // Parse each individual airfoil geometry file
+            auto airfoilGeometry = filePathParser->parseIndividualFile(geometryFilePath, "airfoil_geometry");
+
+            // Add to the collection of loaded airfoil geometries
+            config.addToCollection("loaded_airfoil_geometries", std::move(airfoilGeometry));
+
+            std::cout << "  Loaded: " << std::filesystem::path(geometryFilePath).filename().string() << std::endl;
+
+        }
+        catch (const std::exception& e) {
+            std::cout << "  Failed to load " << geometryFilePath << ": " << e.what() << std::endl;
+            // Continue loading other files even if one fails
+        }
+    }
+
+    std::cout << "Successfully loaded " << config.getAirfoilGeometries().size()
+        << " airfoil geometries." << std::endl;
+}
+
 void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps& parserMaps) const {
     // Load regular data files
     for (const std::string& paramName : parserMaps.dataFileParams) {
@@ -154,8 +187,15 @@ void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps&
                     auto fileListData = filePathParser->parseFileListFile(paramName, filePath);
 
                     // Store file list data with a key derived from parameter name
-                    std::string dataKey = extractFileListDataKey(paramName);
+                    const std::string dataKey = extractFileListDataKey(paramName);
                     config.setStructuredData(dataKey, std::move(fileListData));
+
+                    // If this is an airfoil geometry file list, load each individual file
+                    if (paramName == "airfoil_geometry_files_file") {
+                        loadIndividualAirfoilGeometries(config, filePathParser, dataKey);
+                    }
+                    // Can extend this pattern for other file types that need individual loading
+
                 }
             }
 
@@ -184,3 +224,4 @@ std::string ConfigurationParser::extractFileListDataKey(const std::string& param
     }
     return dataKey;
 }
+
