@@ -23,9 +23,17 @@ ConfigurationParser::ParserMaps ConfigurationParser::createParserMaps() const {
         else {
             maps.singleValueParsers[param.name] = param.parser.get();
             maps.requiredKeys[param.name] = param.required;
-            // Track data file parameters
+            // Check if this is a file-related parameter
             if (schema.isDataFileParameter(param.name)) {
-                maps.dataFileParams.push_back(param.name);
+                const FilePathParser* filePathParser =
+                    dynamic_cast<const FilePathParser*>(param.parser.get());
+
+                if (filePathParser && filePathParser->isFileListParameter(param.name)) {
+                    maps.fileListParams.push_back(param.name);
+                }
+                else {
+                    maps.dataFileParams.push_back(param.name);
+                }
             }
         }
     }
@@ -87,7 +95,7 @@ Configuration ConfigurationParser::parse() {
         }
     }
 
-    // Load external data files
+    // Load external data files (both regular and file lists)
     loadDataFiles(config, parserMaps);
 
     // Validate required parameters
@@ -97,7 +105,7 @@ Configuration ConfigurationParser::parse() {
 }
 
 void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps& parserMaps) const {
-    // Load all external data files
+    // Load regular data files
     for (const std::string& paramName : parserMaps.dataFileParams) {
         if (!config.hasValue(paramName)) {
             continue; // Skip if file path wasn't provided
@@ -127,10 +135,49 @@ void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps&
                 paramName + "': " + e.what());
         }
     }
+    // Load file list files
+    for (const std::string& paramName : parserMaps.fileListParams) {
+        if (!config.hasValue(paramName)) {
+            continue; // Skip if file path wasn't provided
+        }
+
+        try {
+            std::string filePath = config.getFilePath(paramName);
+
+            // Get the file path parser to load the file list
+            auto parserIt = parserMaps.singleValueParsers.find(paramName);
+            if (parserIt != parserMaps.singleValueParsers.end()) {
+                const FilePathParser* filePathParser =
+                    dynamic_cast<const FilePathParser*>(parserIt->second);
+
+                if (filePathParser) {
+                    auto fileListData = filePathParser->parseFileListFile(paramName, filePath);
+
+                    // Store file list data with a key derived from parameter name
+                    std::string dataKey = extractFileListDataKey(paramName);
+                    config.setStructuredData(dataKey, std::move(fileListData));
+                }
+            }
+
+        }
+        catch (const std::exception& e) {
+            throw std::runtime_error("Error loading file list for parameter '" +
+                paramName + "': " + e.what());
+        }
+    }
 }
 
 std::string ConfigurationParser::extractDataKey(const std::string& paramName) const {
     // Convert "blade_geometry_file" to "blade_geometry"
+    std::string dataKey = paramName;
+    if (dataKey.length() > 5 && dataKey.substr(dataKey.length() - 5) == "_file") {
+        dataKey = dataKey.substr(0, dataKey.length() - 5);
+    }
+    return dataKey;
+}
+
+std::string ConfigurationParser::extractFileListDataKey(const std::string& paramName) const {
+    // Convert "airfoil_performance_files_file" to "airfoil_performance_files"
     std::string dataKey = paramName;
     if (dataKey.length() > 5 && dataKey.substr(dataKey.length() - 5) == "_file") {
         dataKey = dataKey.substr(0, dataKey.length() - 5);

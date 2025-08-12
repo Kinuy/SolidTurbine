@@ -26,6 +26,7 @@ private:
         std::unordered_map<std::string, const IMultiValueParser*> multiValueParsers;
         std::unordered_map<std::string, bool> requiredKeys;
         std::vector<std::string> dataFileParams; // Track data file parameters
+        std::vector<std::string> fileListParams; // Track file list parameters
     };
 
     ParserMaps createParserMaps() const;
@@ -36,7 +37,10 @@ private:
 
     std::string extractDataKey(const std::string& paramName) const;
 
+    std::string extractFileListDataKey(const std::string& paramName) const;
+
 public:
+
     ConfigurationParser(ConfigurationSchema schema, std::unique_ptr<IFileReader> reader);
 
     Configuration parse();
