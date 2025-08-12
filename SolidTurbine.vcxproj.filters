@@ -93,6 +93,12 @@
     <ClCompile Include="FilePathParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AirfoilPerformanceFileListData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AirfoilPerformanceFileListParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AeroCharacteristicPoint.h">
@@ -216,6 +222,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FilePathParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AirfoilPerformanceFileInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AirfoilPerformanceFileListData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IFileListParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AirfoilPerformanceFileListParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
