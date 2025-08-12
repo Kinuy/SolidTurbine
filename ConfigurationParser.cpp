@@ -194,6 +194,11 @@ void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps&
                     if (paramName == "airfoil_geometry_files_file") {
                         loadIndividualAirfoilGeometries(config, filePathParser, dataKey);
                     }
+
+                    // If this is an airfoil performance file list, load each individual file
+                    else if (paramName == "airfoil_performance_files_file") {
+                        loadIndividualAirfoilPerformances(config, filePathParser, dataKey);
+                    }
                     // Can extend this pattern for other file types that need individual loading
 
                 }
@@ -223,5 +228,38 @@ std::string ConfigurationParser::extractFileListDataKey(const std::string& param
         dataKey = dataKey.substr(0, dataKey.length() - 5);
     }
     return dataKey;
+}
+
+void ConfigurationParser::loadIndividualAirfoilPerformances(Configuration& config, const FilePathParser* filePathParser,
+    const std::string& fileListKey) const {
+    const AirfoilPerformanceFileListData* performanceFileList =
+        config.getStructuredData<AirfoilPerformanceFileListData>(fileListKey);
+
+    if (!performanceFileList) {
+        return; // No performance file list to process
+    }
+
+    auto validFilePaths = performanceFileList->getValidFilePaths();
+    std::cout << "Loading " << validFilePaths.size() << " individual airfoil performance files..." << std::endl;
+
+    for (const auto& performanceFilePath : validFilePaths) {
+        try {
+            // Parse each individual airfoil performance file
+            auto airfoilPerformance = filePathParser->parseIndividualFile(performanceFilePath, "airfoil_performance");
+
+            // Add to the collection of loaded airfoil performances
+            config.addToCollection("loaded_airfoil_performances", std::move(airfoilPerformance));
+
+            std::cout << "  Loaded: " << std::filesystem::path(performanceFilePath).filename().string() << std::endl;
+
+        }
+        catch (const std::exception& e) {
+            std::cout << "  Failed to load " << performanceFilePath << ": " << e.what() << std::endl;
+            // Continue loading other files even if one fails
+        }
+    }
+
+    std::cout << "Successfully loaded " << config.getAirfoilPerformances().size()
+        << " airfoil performance datasets." << std::endl;
 }
 

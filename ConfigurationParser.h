@@ -45,6 +45,10 @@ private:
     void loadIndividualAirfoilGeometries(Configuration& config, const FilePathParser* filePathParser,
         const std::string& fileListKey) const;
 
+    // Load individual airfoil performance files from the file list
+    void loadIndividualAirfoilPerformances(Configuration& config, const FilePathParser* filePathParser,
+        const std::string& fileListKey) const;
+
 public:
 
     ConfigurationParser(ConfigurationSchema schema, std::unique_ptr<IFileReader> reader);
