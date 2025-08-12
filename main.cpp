@@ -20,8 +20,8 @@ int main(int argc , char** argv){
 		schema.addString("project_date", true, "Date of simulation run");
 		schema.addString("project_engineer", true, "Engineer responsible for simulation");
 		// Data tables -> airfoil performance, airfoil geometry , blade geometry
-		//schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file");
-		schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data");
+		//schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
+		schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data file list");
 		schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
 		// Turbine data
 		schema.addBool("turbine_is_horizontal", true, "flag for horizontal or vertical turbine");
