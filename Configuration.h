@@ -11,6 +11,7 @@
 #include "AirfoilGeometryFileListData.h"
 #include "AirfoilGeometryData.h"
 #include "AirfoilPerformanceData.h"
+#include "BladeGeometryInterpolator.h"
 
 
 // Configuration stores parsed values
@@ -76,6 +77,7 @@ public:
         return result;
     }
 
+
     bool hasValue(const std::string& key) const;
 
     // Check if collection exists and has data
@@ -118,6 +120,10 @@ public:
         double toleranceThickness = 5.0,
         double toleranceReynolds = 500000.0,
         const std::string& collectionKey = "loaded_airfoil_performances") const;
+
+    std::unique_ptr<BladeGeometryInterpolator> createBladeInterpolator(InterpolationMethod method = InterpolationMethod::LINEAR) const;
+
+    std::unique_ptr<BladeGeometryInterpolator> createBladeInterpolator(const std::string& methodName) const;
 
 };
 
