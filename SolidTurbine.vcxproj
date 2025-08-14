@@ -126,6 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,14 +145,17 @@
     <ClCompile Include="AirfoilPerformanceFileListData.cpp" />
     <ClCompile Include="AirfoilPerformanceFileListParser.cpp" />
     <ClCompile Include="AirfoilPerformanceParser.cpp" />
+    <ClCompile Include="AkimaSplineInterpolationStrategy.cpp" />
     <ClCompile Include="Blade.cpp" />
     <ClCompile Include="BladeGeometryData.cpp" />
+    <ClCompile Include="BladeGeometryInterpolator.cpp" />
     <ClCompile Include="BladeGeometryParser.cpp" />
     <ClCompile Include="BladeSection.cpp" />
     <ClCompile Include="BoolParser.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationParser.cpp" />
     <ClCompile Include="ConfigurationSchema.cpp" />
+    <ClCompile Include="CubicSplineInterpolationStrategy.cpp" />
     <ClCompile Include="CustomMultiValueParser.cpp" />
     <ClCompile Include="DoubleParser.cpp" />
     <ClCompile Include="FilePathParser.cpp" />
@@ -159,9 +163,11 @@
     <ClCompile Include="HorizontalTurbine.cpp" />
     <ClCompile Include="IntParser.cpp" />
     <ClCompile Include="IValueParser.cpp" />
+    <ClCompile Include="LinearInterpolationStrategy.cpp" />
     <ClCompile Include="LineParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
+    <ClCompile Include="MonotonicCubicSplineInterpolationStrategy.cpp" />
     <ClCompile Include="OperationAnalyzer.cpp" />
     <ClCompile Include="OperationDataLogger.cpp" />
     <ClCompile Include="OperationSimulationService.cpp" />
@@ -188,8 +194,10 @@
     <ClInclude Include="AirfoilPerformanceFileListParser.h" />
     <ClInclude Include="AirfoilPerformanceParser.h" />
     <ClInclude Include="AirfoilPerformancePoint.h" />
+    <ClInclude Include="AkimaSplineInterpolationStrategy.h" />
     <ClInclude Include="Blade.h" />
     <ClInclude Include="BladeGeometryData.h" />
+    <ClInclude Include="BladeGeometryInterpolator.h" />
     <ClInclude Include="BladeGeometryParser.h" />
     <ClInclude Include="BladeGeometrySection.h" />
     <ClInclude Include="BladeSection.h" />
@@ -198,6 +206,7 @@
     <ClInclude Include="ConfigurationParameter.h" />
     <ClInclude Include="ConfigurationParser.h" />
     <ClInclude Include="ConfigurationSchema.h" />
+    <ClInclude Include="CubicSplineInterpolationStrategy.h" />
     <ClInclude Include="CustomMultiValueParser.h" />
     <ClInclude Include="DoubleParser.h" />
     <ClInclude Include="EnvironmentalConditions.h" />
@@ -208,13 +217,18 @@
     <ClInclude Include="IDataFileParser.h" />
     <ClInclude Include="IFileListParser.h" />
     <ClInclude Include="IFileReader.h" />
+    <ClInclude Include="IInterpolationStrategy.h" />
     <ClInclude Include="IMultiValueParser.h" />
+    <ClInclude Include="InterpolatedBladeSection.h" />
+    <ClInclude Include="InterpolationMethod.h" />
     <ClInclude Include="IntParser.h" />
     <ClInclude Include="IStructuredData.h" />
     <ClInclude Include="ITurbine.h" />
     <ClInclude Include="IValueParser.h" />
+    <ClInclude Include="LinearInterpolationStrategy.h" />
     <ClInclude Include="LineParser.h" />
     <ClInclude Include="MathUtility.h" />
+    <ClInclude Include="MonotonicCubicSplineInterpolationStrategy.h" />
     <ClInclude Include="OperationAnalyzer.h" />
     <ClInclude Include="OperationConditions.h" />
     <ClInclude Include="OperationDataLogger.h" />
