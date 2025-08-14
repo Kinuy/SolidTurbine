@@ -27,6 +27,7 @@ private:
 public:
 
     void setName(const std::string& name);
+
     void setRelativeThickness(double thickness);
 
     void addHeader(const std::string& header);
