@@ -51,6 +51,10 @@ int main(int argc , char** argv){
 		const AirfoilPerformanceFileListData* airfoilPerformanceFileList = config.getAirfoilPerformanceFileList();
 		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList();
 
+		// Interpolate Airfoil Geometries and performances on blade sections
+		std::unique_ptr<BladeGeometryInterpolator> bladeInterpolator = config.createBladeInterpolator();
+		std::vector<InterpolatedBladeSection> InterpolatedSection = bladeInterpolator->interpolateAllSections();
+
 
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
