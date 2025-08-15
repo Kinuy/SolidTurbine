@@ -114,7 +114,7 @@ std::unique_ptr<BladeGeometryInterpolator> Configuration::createBladeInterpolato
         throw std::runtime_error("No blade geometry data available for interpolation");
     }
 
-    std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
+    const std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
     if (airfoilGeometries.empty()) {
         throw std::runtime_error("No airfoil geometry data available for interpolation");
     }
