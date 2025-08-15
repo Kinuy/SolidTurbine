@@ -60,7 +60,7 @@ std::unique_ptr<IInterpolationStrategy> BladeGeometryInterpolator::createInterpo
 
 BladeGeometryInterpolator::BladeGeometryInterpolator(
     const BladeGeometryData& bladeGeom,
-    std::vector<const AirfoilGeometryData*>& airfoilGeoms,
+    const std::vector<const AirfoilGeometryData*>& airfoilGeoms,
     InterpolationMethod method)
     : 
     bladeGeometry(bladeGeom), 
