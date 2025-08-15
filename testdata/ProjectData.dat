@@ -1,0 +1,28 @@
+## project data
+project_name testproject
+project_id 00000
+project_revision R00
+project_date 250811
+project_engineer TW
+
+## airfoil and blade data
+airfoil_geometry_files_file AirfoilGeometry.dat
+airfoil_performance_files_file AirfoilPerformance.dat
+blade_geometry_file BladeGeometry.dat
+
+## turbine configuration
+turbine_is_horizontal true
+number_of_blades 3 #[-]
+hub_radius 1.544 #[m]
+
+## turbine operation settings
+rated_rotorspeed 7.2 #[rpm]
+min_rotorspeed 4.82 #[rpm]
+rated_electrical_power 8000000 #[W]
+
+## simulation settings
+# range vectors: start end step
+simulation_is_time_based false
+wind_speed_range 3 15 1 #[m/s]
+tip_speed_ratio_range 5 15 1 #[-]
+pitch_angle_range 0 2 0.5 #[deg]
