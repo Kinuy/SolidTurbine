@@ -29,7 +29,7 @@ private:
 
     const BladeGeometryData& bladeGeometry;
 
-    std::vector<const AirfoilGeometryData*>& airfoilGeometries;
+    const std::vector<const AirfoilGeometryData*> airfoilGeometries;
 
     std::unique_ptr<IInterpolationStrategy> interpolationStrategy;
 
@@ -46,7 +46,7 @@ private:
 public:
 
     BladeGeometryInterpolator(const BladeGeometryData& bladeGeom,
-        std::vector<const AirfoilGeometryData*>& airfoilGeoms,
+        const std::vector<const AirfoilGeometryData*>& airfoilGeoms,
         InterpolationMethod method = InterpolationMethod::LINEAR);
 
     // Change interpolation method dynamically
