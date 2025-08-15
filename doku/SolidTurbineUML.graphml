@@ -1243,16 +1243,16 @@ IFileListParser<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMod
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="135.64163032756255" width="228.66272259532707" x="7811.557174574467" y="3083.574859157581"/>
+          <y:Geometry height="135.64163032756255" width="241.4877099666428" x="7811.557174574467" y="3083.574859157581"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.57177734375" x="28.545472625788534" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.57177734375" x="34.9579663114464" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
 AirfoilGeometryFileListInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve">+ filePath: string
 + fileName: string
 + exists: bool</y:AttributeLabel>
-            <y:MethodLabel xml:space="preserve">+ AirfoilGeometryFileInfo(path: string&amp;)</y:MethodLabel>
+            <y:MethodLabel xml:space="preserve">+ AirfoilGeometryFileListInfo(path: string&amp;)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -1262,10 +1262,10 @@ AirfoilGeometryFileListInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="299.12405601971614" width="301.0084113060839" x="7775.384330219089" y="2734.503747715023"/>
+          <y:Geometry height="299.12405601971614" width="359.18633804484125" x="7775.384330219089" y="2734.5037477150227"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="175.92626953125" x="62.541070887416936" xml:space="preserve" y="3.0">AirfoilGeometryFileListData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="175.92626953125" x="91.63003425679562" xml:space="preserve" y="3.0">AirfoilGeometryFileListData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve">- fileInfo: vector&lt;AirfoilGeometryFileInfo&gt;
 - headers: vector&lt;string&gt;
@@ -1542,7 +1542,7 @@ AirfoilPerformancePoint<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="166.95574040295196" width="507.17090008572995" x="8708.009694626555" y="4392.585118136572"/>
+          <y:Geometry height="166.95574040295196" width="507.17090008572995" x="8691.577227338565" y="3716.631096649632"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="160.7490234375" x="173.21093832411498" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -1594,7 +1594,7 @@ InterpolatedBladeSection<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="138.98558331701133" width="209.1954932635108" x="9274.498609473807" y="4392.585118136572"/>
+          <y:Geometry height="138.98558331701133" width="209.1954932635108" x="9482.596578193206" y="4010.792473913485"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.92822265625" x="40.1336353036304" xml:space="preserve" y="3.0">&lt;&lt;enumeration&gt;&gt;
