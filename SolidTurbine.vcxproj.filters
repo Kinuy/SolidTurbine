@@ -15,312 +15,363 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\Airfoil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HorizontalTurbine.cpp">
+    <ClCompile Include="src\AirfoilAeroCharacteristic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Blade.cpp">
+    <ClCompile Include="src\AirfoilGeometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BladeSection.cpp">
+    <ClCompile Include="src\AirfoilGeometryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Airfoil.cpp">
+    <ClCompile Include="src\AirfoilGeometryFileListData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilAeroCharacteristic.cpp">
+    <ClCompile Include="src\AirfoilGeometryFileListParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeometry.cpp">
+    <ClCompile Include="src\AirfoilGeometryParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OperationSimulationService.cpp">
+    <ClCompile Include="src\AirfoilPerformanceData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OperationAnalyzer.cpp">
+    <ClCompile Include="src\AirfoilPerformanceFileListData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OperationDataLogger.cpp">
+    <ClCompile Include="src\AirfoilPerformanceFileListParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MathUtility.cpp">
+    <ClCompile Include="src\AirfoilPerformanceParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IValueParser.cpp">
+    <ClCompile Include="src\AkimaSplineInterpolationStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileReader.cpp">
+    <ClCompile Include="src\Blade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConfigurationParser.cpp">
+    <ClCompile Include="src\BladeGeometryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LineParser.cpp">
+    <ClCompile Include="src\BladeGeometryInterpolator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Configuration.cpp">
+    <ClCompile Include="src\BladeGeometryParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConfigurationSchema.cpp">
+    <ClCompile Include="src\BladeSection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoolParser.cpp">
+    <ClCompile Include="src\BoolParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringParser.cpp">
+    <ClCompile Include="src\Configuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IntParser.cpp">
+    <ClCompile Include="src\ConfigurationParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DoubleParser.cpp">
+    <ClCompile Include="src\ConfigurationSchema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RangeParser.cpp">
+    <ClCompile Include="src\CubicSplineInterpolationStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomMultiValueParser.cpp">
+    <ClCompile Include="src\CustomMultiValueParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BladeGeometryData.cpp">
+    <ClCompile Include="src\DoubleParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BladeGeometryParser.cpp">
+    <ClCompile Include="src\FilePathParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FilePathParser.cpp">
+    <ClCompile Include="src\FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilPerformanceFileListData.cpp">
+    <ClCompile Include="src\HorizontalTurbine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilPerformanceFileListParser.cpp">
+    <ClCompile Include="src\IntParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeometryData.cpp">
+    <ClCompile Include="src\IValueParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeometryFileListData.cpp">
+    <ClCompile Include="src\LinearInterpolationStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeometryFileListParser.cpp">
+    <ClCompile Include="src\LineParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeometryParser.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilPerformanceData.cpp">
+    <ClCompile Include="src\MathUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilPerformanceParser.cpp">
+    <ClCompile Include="src\MonotonicCubicSplineInterpolationStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BladeGeometryInterpolator.cpp">
+    <ClCompile Include="src\OperationAnalyzer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinearInterpolationStrategy.cpp">
+    <ClCompile Include="src\OperationDataLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubicSplineInterpolationStrategy.cpp">
+    <ClCompile Include="src\OperationSimulationService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AkimaSplineInterpolationStrategy.cpp">
+    <ClCompile Include="src\RangeParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MonotonicCubicSplineInterpolationStrategy.cpp">
+    <ClCompile Include="src\StringParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataExporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DefaultPathResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ExporterFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileSystemDirectoryManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FlexiblePathResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StandardFileWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AeroCharacteristicPoint.h">
+    <ClInclude Include="src\AeroCharacteristicPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryPoint.h">
+    <ClInclude Include="src\AerodynamicForces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnvironmentalConditions.h">
+    <ClInclude Include="src\Airfoil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OperationConditions.h">
+    <ClInclude Include="src\AirfoilAeroCharacteristic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectData.h">
+    <ClInclude Include="src\AirfoilCoordinate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ITurbine.h">
+    <ClInclude Include="src\AirfoilGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HorizontalTurbine.h">
+    <ClInclude Include="src\AirfoilGeometryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Blade.h">
+    <ClInclude Include="src\AirfoilGeometryFileInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeSection.h">
+    <ClInclude Include="src\AirfoilGeometryFileListData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Airfoil.h">
+    <ClInclude Include="src\AirfoilGeometryFileListParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilAeroCharacteristic.h">
+    <ClInclude Include="src\AirfoilGeometryParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometry.h">
+    <ClInclude Include="src\AirfoilGeometryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OperationSimulationService.h">
+    <ClInclude Include="src\AirfoilMarker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IAerodynamicAnalyzer.h">
+    <ClInclude Include="src\AirfoilPerformanceData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OperationAnalyzer.h">
+    <ClInclude Include="src\AirfoilPerformanceFileInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OperationDataLogger.h">
+    <ClInclude Include="src\AirfoilPerformanceFileListData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AerodynamicForces.h">
+    <ClInclude Include="src\AirfoilPerformanceFileListParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3d.h">
+    <ClInclude Include="src\AirfoilPerformanceParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SquareMatrix.h">
+    <ClInclude Include="src\AirfoilPerformancePoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MathUtility.h">
+    <ClInclude Include="src\AkimaSplineInterpolationStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IValueParser.h">
+    <ClInclude Include="src\Blade.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IMultiValueParser.h">
+    <ClInclude Include="src\BladeGeometryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IFileReader.h">
+    <ClInclude Include="src\BladeGeometryInterpolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileReader.h">
+    <ClInclude Include="src\BladeGeometryParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigurationParser.h">
+    <ClInclude Include="src\BladeGeometrySection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LineParser.h">
+    <ClInclude Include="src\BladeSection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Configuration.h">
+    <ClInclude Include="src\BoolParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigurationParameter.h">
+    <ClInclude Include="src\Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigurationSchema.h">
+    <ClInclude Include="src\ConfigurationParameter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BoolParser.h">
+    <ClInclude Include="src\ConfigurationParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringParser.h">
+    <ClInclude Include="src\ConfigurationSchema.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IntParser.h">
+    <ClInclude Include="src\CubicSplineInterpolationStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DoubleParser.h">
+    <ClInclude Include="src\CustomMultiValueParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RangeParser.h">
+    <ClInclude Include="src\DoubleParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CustomMultiValueParser.h">
+    <ClInclude Include="src\EnvironmentalConditions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IDataFileParser.h">
+    <ClInclude Include="src\FilePathParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IStructuredData.h">
+    <ClInclude Include="src\FileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeGeometrySection.h">
+    <ClInclude Include="src\HorizontalTurbine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeGeometryData.h">
+    <ClInclude Include="src\IAerodynamicAnalyzer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeGeometryParser.h">
+    <ClInclude Include="src\IDataFileParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FilePathParser.h">
+    <ClInclude Include="src\IFileListParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformanceFileInfo.h">
+    <ClInclude Include="src\IFileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformanceFileListData.h">
+    <ClInclude Include="src\IInterpolationStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IFileListParser.h">
+    <ClInclude Include="src\IMultiValueParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformanceFileListParser.h">
+    <ClInclude Include="src\InterpolatedBladeSection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilCoordinate.h">
+    <ClInclude Include="src\InterpolationMethod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryData.h">
+    <ClInclude Include="src\IntParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryFileInfo.h">
+    <ClInclude Include="src\IStructuredData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryFileListData.h">
+    <ClInclude Include="src\ITurbine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryFileListParser.h">
+    <ClInclude Include="src\IValueParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeometryParser.h">
+    <ClInclude Include="src\LinearInterpolationStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilMarker.h">
+    <ClInclude Include="src\LineParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformanceData.h">
+    <ClInclude Include="src\MathUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformanceParser.h">
+    <ClInclude Include="src\MonotonicCubicSplineInterpolationStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilPerformancePoint.h">
+    <ClInclude Include="src\OperationAnalyzer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeGeometryInterpolator.h">
+    <ClInclude Include="src\OperationConditions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IInterpolationStrategy.h">
+    <ClInclude Include="src\OperationDataLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InterpolationMethod.h">
+    <ClInclude Include="src\OperationSimulationService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinearInterpolationStrategy.h">
+    <ClInclude Include="src\ProjectData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubicSplineInterpolationStrategy.h">
+    <ClInclude Include="src\RangeParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AkimaSplineInterpolationStrategy.h">
+    <ClInclude Include="src\SquareMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonotonicCubicSplineInterpolationStrategy.h">
+    <ClInclude Include="src\StringParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InterpolatedBladeSection.h">
+    <ClInclude Include="src\Vector3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataExporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DefaultPathResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ExporterFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileSystemDirectoryManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FlexiblePathResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IDirectoryManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IExporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IPathResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StandardFileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

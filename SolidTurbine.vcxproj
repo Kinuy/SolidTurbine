@@ -134,6 +134,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataExporter.cpp" />
+    <ClCompile Include="src\DefaultPathResolver.cpp" />
+    <ClCompile Include="src\ExporterFactory.cpp" />
+    <ClCompile Include="src\FileSystemDirectoryManager.cpp" />
+    <ClCompile Include="src\FlexiblePathResolver.cpp" />
     <ClCompile Include="src\Airfoil.cpp" />
     <ClCompile Include="src\AirfoilAeroCharacteristic.cpp" />
     <ClCompile Include="src\AirfoilGeometry.cpp" />
@@ -173,8 +178,19 @@
     <ClCompile Include="src\OperationSimulationService.cpp" />
     <ClCompile Include="src\RangeParser.cpp" />
     <ClCompile Include="src\StringParser.cpp" />
+    <ClCompile Include="src\StandardFileWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PathStrategy.h" />
+    <ClInclude Include="src\DataExporter.h" />
+    <ClInclude Include="src\DefaultPathResolver.h" />
+    <ClInclude Include="src\ExporterFactory.h" />
+    <ClInclude Include="src\FileSystemDirectoryManager.h" />
+    <ClInclude Include="src\FlexiblePathResolver.h" />
+    <ClInclude Include="src\IDirectoryManager.h" />
+    <ClInclude Include="src\IExporter.h" />
+    <ClInclude Include="src\IFileWriter.h" />
+    <ClInclude Include="src\IPathResolver.h" />
     <ClInclude Include="src\AeroCharacteristicPoint.h" />
     <ClInclude Include="src\AerodynamicForces.h" />
     <ClInclude Include="src\Airfoil.h" />
@@ -238,6 +254,7 @@
     <ClInclude Include="src\SquareMatrix.h" />
     <ClInclude Include="src\StringParser.h" />
     <ClInclude Include="src\Vector3d.h" />
+    <ClInclude Include="src\StandardFileWriter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
