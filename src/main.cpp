@@ -4,6 +4,7 @@
 #include "ConfigurationSchema.h"
 #include "FileReader.h"
 #include "ConfigurationParser.h"
+#include "ExporterFactory.h"
 
 
 // Programm to simulate a given turbine using SOLID principles
@@ -55,6 +56,9 @@ int main(int argc , char** argv){
 		std::unique_ptr<BladeGeometryInterpolator> bladeInterpolator = config.createBladeInterpolator();
 		std::vector<InterpolatedBladeSection> InterpolatedSection = bladeInterpolator->interpolateAllSections();
 
+		// Export file
+		auto exporter = ExporterFactory::createExporter();
+		exporter->exportData("", "basic_test.txt", "Basic export data\n");
 
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
