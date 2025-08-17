@@ -71,6 +71,12 @@ public:
         return data_[i];
     }
 
+    // Add equality operator for test
+    bool operator==(const SquareMatrix<T>& other) const {
+        if (dim_ != other.dim_) return false;
+        return data_ == other.data_;  // std::vector has == operator
+    }
+
     void transpose() {
         std::vector<T> temp_data;
         for (std::size_t i = 0; i < dim_; ++i) {
