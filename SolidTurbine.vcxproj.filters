@@ -371,8 +371,11 @@
     <ClInclude Include="src\StandardFileWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PathStrategy.h">
+    <ClInclude Include="src\PathStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
