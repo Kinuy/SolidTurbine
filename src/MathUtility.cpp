@@ -108,7 +108,7 @@ double MathUtility::triLinearInterpolation(
 // TODO: delete this method later
 SquareMatrix<double> MathUtility::matrixMultiplikation(SquareMatrix<double> const& m1, SquareMatrix<double> const& m2) {
 
-	int dim = m1.dim();
+	int dim = m1.getDim();
 	// destination data is mc:
 	std::vector<double> mc(dim * dim);
 	for (std::size_t i = 0; i < mc.size(); ++i) {
@@ -136,7 +136,7 @@ SquareMatrix<double> MathUtility::matrixMultiplikation(SquareMatrix<double> cons
 
 
 
-	SquareMatrix<double> ret_m(m1.dim());
+	SquareMatrix<double> ret_m(m1.getDim());
 	for (std::size_t i = 0; i < mc.size(); ++i) {
 		ret_m[i] = mc[i];
 	}
@@ -191,11 +191,11 @@ Vector3d<double> MathUtility::multiplyMatrixVector(const SquareMatrix<double>& m
 
 // Simple matrix multiplication with bounds checking
 SquareMatrix<double> MathUtility::multiplyMatrices(const SquareMatrix<double>& m1, const SquareMatrix<double>& m2) {
-	if (m1.dim() != m2.dim()) {
+	if (m1.getDim() != m2.getDim()) {
 		throw std::invalid_argument("Matrix dimensions must match");
 	}
 
-	const int dim = m1.dim();
+	const int dim = m1.getDim();
 	SquareMatrix<double> result(dim);
 
 	for (int i = 0; i < dim; ++i) {
