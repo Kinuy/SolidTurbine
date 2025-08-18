@@ -66,11 +66,6 @@ int main(int argc , char** argv){
 		bool isHorizontal = config.getBool("turbine_is_horizontal");
 		bool isTimeBased = config.getBool("simulation_is_time_based");
 
-		
-
-		//std::string airfoilPerformanceFile = config.getString("airfoil_performance_file");
-		//std::string airfoilGeometryFile = config.getString("airfoil_geometry_file");
-		//std::string bladeGeometryFile = config.getString("blade_geometry_file");
 		std::cout << "Configuration loaded successfully:" << std::endl;
 
 		// Create simulation setup
