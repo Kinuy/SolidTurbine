@@ -2,9 +2,7 @@
 #include <string>
 
 
-class OperationDataLogger
-{
-private:
+class OperationDataLogger{
 
 public:
 
