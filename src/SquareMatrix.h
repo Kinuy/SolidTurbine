@@ -158,13 +158,13 @@ public:
      * Swaps rows and columns: element (i,j) becomes (j,i)
      */
     void transpose() {
-        std::vector<T> temp_data;
+        std::vector<T> tempData;
         for (std::size_t i = 0; i < dim; ++i) {
             for (std::size_t j = 0; j < dim; ++j) {
-                temp_data.push_back(data[j * dim + i]);
+                tempData.push_back(data[j * dim + i]);
             }
         }
-        data = temp_data;
+        data = tempData;
     }
 
     /**

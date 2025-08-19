@@ -68,6 +68,13 @@ class DefaultPathResolver : public IPathResolver {
 
 private:
 
+    /**
+     * @brief Default directory for path resolution
+     *
+     * This directory serves as the base for all path resolution operations.
+     * It is used when the input path is empty or relative, ensuring that all
+     * output files are organized under a consistent location.
+	 */
     std::string defaultDirectory;
 
 public:

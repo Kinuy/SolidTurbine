@@ -7,12 +7,62 @@
 #include "RangeParser.h"
 #include "FilePathParser.h"
 
-// Defines expected parameters
+/**
+ * @brief Configuration schema definition with parameter validation and type specification
+ *
+ * ConfigurationSchema defines the expected structure and validation rules for
+ * configuration files through a collection of parameter definitions. Supports
+ * both single-value and multi-value parameters with type-safe parsing and
+ * validation. Uses fluent interface design for easy schema construction.
+ *
+ * ## Key Features
+ * - **Type Safety**: Strongly typed parameter definitions with parser assignment
+ * - **Validation Rules**: Required/optional parameter specification
+ * - **Fluent Interface**: Method chaining for readable schema construction
+ * - **Multi-Value Support**: Range parameters and complex parameter groups
+ * - **File Handling**: Special support for data file and file list parameters
+ *
+ * ## Parameter Types
+ * - **Primitive Types**: double, int, string, bool with built-in parsers
+ * - **File Types**: File paths with validation and data loading
+ * - **Range Types**: Start/end/step parameter groups
+ * - **Custom Types**: User-defined parsers for complex data types
+ *
+ * ## Usage Pattern
+ * 1. Create schema instance
+ * 2. Add parameter definitions using fluent interface
+ * 3. Pass to ConfigurationParser for file processing
+ * 4. Parser validates input against schema rules
+ *
+ * @see ConfigurationParameter for individual parameter definitions
+ * @see ConfigurationParser for schema-based parsing
+ * @see IValueParser, IMultiValueParser for parser interfaces
+ *
+ * @example
+ * ```cpp
+ * ConfigurationSchema schema;
+ * schema.addDouble("max_speed", true, "Maximum rotational speed [RPM]")
+ *       .addString("project_name", false, "Project identifier")
+ *       .addRange("angle_sweep", "start", "end", "step", true, "Angle range")
+ *       .addDataFile("blade_geometry_file", true, "Blade geometry data")
+ *       .addBool("enable_analysis", false, "Enable aerodynamic analysis");
+ *
+ * // Use schema with parser
+ * ConfigurationParser parser(std::move(schema), std::move(fileReader));
+ * Configuration config = parser.parse();
+ * ```
+ */
 class ConfigurationSchema {
 
 private:
 
-
+    /**
+     * @brief Collection of parameter definitions defining the configuration structure
+     *
+     * Each ConfigurationParameter contains the parameter name, associated parser,
+     * requirement status, and documentation. The order of parameters in this
+     * vector doesn't affect parsing but may influence validation error reporting.
+     */
     std::vector<ConfigurationParameter> parameters;
 
 public:

@@ -8,27 +8,74 @@
 #include <any>
 
 #include "IValueParser.h"
-#include "BladeGeometryParser.h"
-#include "AirfoilPerformanceFileListParser.h"
 #include "IDataFileParser.h"
 #include "IFileListParser.h"
 #include "IStructuredData.h"
+
+#include "BladeGeometryParser.h"
+#include "AirfoilPerformanceParser.h"
+#include "AirfoilPerformanceFileListParser.h"
 #include "AirfoilGeometryFileListParser.h"
 #include "AirfoilGeometryParser.h"
-#include "AirfoilPerformanceParser.h"
 
 
-// Responsible for parsing file paths and delegating to specific data file parsers
+/**
+ * @brief File path parser with delegated parsing capabilities
+ *
+ * FilePathParser implements IValueParser while serving as a factory for
+ * different types of file parsers. Maintains registries of data file parsers
+ * and file list parsers, determining the appropriate parser based on
+ * parameter names and file extensions.
+ *
+ * ## Key Features
+ * - **Parser Registry**: Maintains collections of specialized file parsers
+ * - **Type Detection**: Automatic parser selection based on parameter naming
+ * - **File Validation**: Ensures file existence during parsing
+ * - **Flexible Delegation**: Supports both individual files and file lists
+ *
+ * @see IValueParser for the base interface
+ * @see IDataFileParser, IFileListParser for delegated parser types
+ *
+ * @example
+ * ```cpp
+ * FilePathParser parser;
+ * auto data = parser.parseDataFile("blade_geometry_file", "blade.dat");
+ * ```
+ */
 class FilePathParser : public IValueParser {
 
 private:
 
+    /**
+     * @brief Registry of data file parsers indexed by file type
+     *
+     * Maps file type strings (e.g., "blade_geometry", "airfoil_performance")
+     * to their corresponding parser implementations for handling individual
+     * data files.
+     */
     std::unordered_map<std::string, std::unique_ptr<IDataFileParser>> dataFileParsers;
 
+    /**
+     * @brief Registry of file list parsers indexed by list type
+     *
+     * Maps file list type strings (e.g., "airfoil_performance_files") to
+     * their corresponding parser implementations for handling files that
+     * contain lists of other files.
+     */
     std::unordered_map<std::string, std::unique_ptr<IFileListParser>> fileListParsers;
 
+    /**
+     * @brief Extracts file type from parameter name for data file parsing
+     * @param parameterName Parameter name to analyze
+     * @return File type string for parser selection
+     */
     std::string extractFileType(const std::string& parameterName) const;
 
+    /**
+     * @brief Extracts file list type from parameter name for list parsing
+     * @param parameterName Parameter name to analyze
+     * @return File list type string for parser selection
+     */
     std::string extractFileListType(const std::string& parameterName) const;
 
 public:

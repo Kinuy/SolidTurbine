@@ -2,6 +2,8 @@
 #include "ITurbine.h"
 #include "OperationConditions.h"
 #include "OperationDataLogger.h"
+
+// TODO: Documentation
 class OperationAnalyzer
 {
 private:

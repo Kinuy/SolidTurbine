@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-
+// TODO: Documentation
 class OperationDataLogger{
 
 public:
