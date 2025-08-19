@@ -123,8 +123,7 @@ public:
      * Vector3d<int> zeroVec(0, 0, 0); // Guaranteed zero vector
      * ```
      */
-    Vector3d() {};
-
+    Vector3d() : data{ T{}, T{}, T{} } {};
     /**
      * @brief Constructor with explicit component values
      *
