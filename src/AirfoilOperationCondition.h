@@ -27,7 +27,7 @@ struct AirfoilOperationCondition {
 	 * @param re Reynolds number
 	 * @param ma Mach number
 	 */
-    AirfoilOperationCondition(double aoa, double re, double ma=0.3)
-        : alpha(aoa), reynolds(re), mach(ma){
+    AirfoilOperationCondition(double re, double ma, double aoa)
+        : reynolds(re), mach(ma), alpha(aoa){
     }
 };
