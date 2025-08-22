@@ -72,12 +72,12 @@ const AirfoilGeometryData* Configuration::getAirfoilGeometryByName(const std::st
     throw std::runtime_error("Airfoil geometry not found for: " + airfoilName);
 }
 
-std::vector<const AirfoilPerformanceData*> Configuration::getAirfoilPerformances(const std::string& collectionKey) const {
-    return getCollection<AirfoilPerformanceData>(collectionKey);
+std::vector<const AirfoilPolarData*> Configuration::getAirfoilPerformances(const std::string& collectionKey) const {
+    return getCollection<AirfoilPolarData>(collectionKey);
 }
 
 // Find specific airfoil performance by reference number
-const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey) const {
+const AirfoilPolarData* Configuration::getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey) const {
     auto performances = getAirfoilPerformances(collectionKey);
 
     for (const auto* perf : performances) {
@@ -90,15 +90,16 @@ const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByRefNum(const
 }
 
 // Find airfoil performance by thickness and Reynolds number
-const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByConditions(double thickness, double reynolds,
+const AirfoilPolarData* Configuration::getAirfoilPerformanceByConditions(double thickness, double reynolds,
     double toleranceThickness,
     double toleranceReynolds,
     const std::string& collectionKey) const {
     auto performances = getAirfoilPerformances(collectionKey);
 
     for (const auto* perf : performances) {
+        // TODO: Check case if there are more reynolds numbers in data
         if (std::abs(perf->getRelativeThickness() - thickness) <= toleranceThickness &&
-            std::abs(perf->getReynoldsNumber() - reynolds) <= toleranceReynolds) {
+            std::abs(perf->getReynoldsNumbers().at(0) - reynolds) <= toleranceReynolds) {
             return perf;
         }
     }
@@ -108,41 +109,46 @@ const AirfoilPerformanceData* Configuration::getAirfoilPerformanceByConditions(d
 }
 
 // Create blade geometry interpolator for 3D blade analysis with specified method
-std::unique_ptr<BladeGeometryInterpolator> Configuration::createBladeInterpolator(InterpolationMethod method) const {
-    const BladeGeometryData* bladeGeom = getBladeGeometry();
-    if (!bladeGeom) {
-        throw std::runtime_error("No blade geometry data available for interpolation");
-    }
-
-    const std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
-    if (airfoilGeometries.empty()) {
-        throw std::runtime_error("No airfoil geometry data available for interpolation");
-    }
-
-    return std::make_unique<BladeGeometryInterpolator>(*bladeGeom, airfoilGeometries, method);
-}
-
-// Create interpolator from string method name
-std::unique_ptr<BladeGeometryInterpolator> Configuration::createBladeInterpolator(const std::string& methodName) const {
-    InterpolationMethod method = InterpolationMethod::LINEAR; // Default
-
-    if (methodName == "linear" || methodName == "Linear") {
-        method = InterpolationMethod::LINEAR;
-    }
-    else if (methodName == "cubic" || methodName == "CubicSpline") {
-        method = InterpolationMethod::CUBIC_SPLINE;
-    }
-    else if (methodName == "akima" || methodName == "AkimaSpline") {
-        method = InterpolationMethod::AKIMA_SPLINE;
-    }
-    else if (methodName == "monotonic" || methodName == "MonotonicCubicSpline") {
-        method = InterpolationMethod::MONOTONIC_CUBIC_SPLINE;
-    }
-    else {
-        std::cout << "Warning: Unknown interpolation method '" << methodName
-            << "', using Linear interpolation" << std::endl;
-    }
-
-    return createBladeInterpolator(method);
-}
+//std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(InterpolationMethod method) const {
+//    const BladeGeometryData* bladeGeom = getBladeGeometry();
+//    if (!bladeGeom) {
+//        throw std::runtime_error("No blade geometry data available for interpolation");
+//    }
+//
+//    const std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
+//    if (airfoilGeometries.empty()) {
+//        throw std::runtime_error("No airfoil geometry data available for interpolation");
+//    }
+//	const std::vector<const AirfoilPolarData*> airfoilPerformances = getAirfoilPerformances();
+//    if (airfoilPerformances.empty()) {
+//        throw std::runtime_error("No airfoil performance data available for interpolation");
+//	}
+//
+//    //return std::make_unique<BladeInterpolator>(*bladeGeom, airfoilGeometries, method);
+//    return std::make_unique<BladeInterpolator>(bladeGeom, airfoilGeometries, airfoilPerformances);
+//}
+//
+//// Create interpolator from string method name
+//std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(const std::string& methodName) const {
+//    InterpolationMethod method = InterpolationMethod::LINEAR; // Default
+//
+//    if (methodName == "linear" || methodName == "Linear") {
+//        method = InterpolationMethod::LINEAR;
+//    }
+//    else if (methodName == "cubic" || methodName == "CubicSpline") {
+//        method = InterpolationMethod::CUBIC_SPLINE;
+//    }
+//    else if (methodName == "akima" || methodName == "AkimaSpline") {
+//        method = InterpolationMethod::AKIMA_SPLINE;
+//    }
+//    else if (methodName == "monotonic" || methodName == "MonotonicCubicSpline") {
+//        method = InterpolationMethod::MONOTONIC_CUBIC_SPLINE;
+//    }
+//    else {
+//        std::cout << "Warning: Unknown interpolation method '" << methodName
+//            << "', using Linear interpolation" << std::endl;
+//    }
+//
+//    return createBladeInterpolator(method);
+//}
 
