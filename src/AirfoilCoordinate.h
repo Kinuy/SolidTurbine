@@ -42,6 +42,12 @@
 struct AirfoilCoordinate {
 
     /**
+     * @brief Index of the coordinate in the airfoil geometry
+     * Used for referencing specific points in coordinate arrays
+	 */
+    int index;
+
+    /**
      * @brief X-coordinate (chordwise direction)
      */
     double x;
@@ -57,12 +63,24 @@ struct AirfoilCoordinate {
 	double z;
 
     /**
+     * @brief Flag indicating if this coordinate is part of the top surface
+     * Used for distinguishing upper and lower surfaces in airfoil geometry
+	 */
+    bool isTopSurface;
+
+    /**
+     * @brief Flag indicating if this coordinate is part of the trailing edge
+     * Used for identifying special points in airfoil geometry
+	 */
+    bool isTrailingEdge;  // or similar flags
+
+    /**
      * @brief Constructor creating coordinate point with optional Z value
      * @param xVal X-coordinate value
      * @param yVal Y-coordinate value
      * @param zVal Z-coordinate value (default: 0 for 2D coordinates)
      */
-    AirfoilCoordinate(double xVal, double yVal, double zVal=0) : x(xVal), y(yVal), z(zVal) {}
+    AirfoilCoordinate(int idx, double xVal, double yVal, double zVal=0, bool isTop=NULL, bool isTE=NULL) : index(idx), x(xVal), y(yVal), z(zVal), isTopSurface(isTop), isTrailingEdge(isTE) {}
 
     /**
      * @brief Checks if coordinate represents a 2D point
