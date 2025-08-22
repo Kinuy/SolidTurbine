@@ -114,7 +114,7 @@ void ConfigurationParser::loadIndividualAirfoilGeometries(Configuration& config,
     }
 
     auto validFilePaths = geometryFileList->getValidFilePaths();
-    std::cout << "Loading " << validFilePaths.size() << " individual airfoil geometry files..." << std::endl;
+    std::cout << "\nLoading " << validFilePaths.size() << " individual airfoil geometry files..." << std::endl;
 
     for (const auto& geometryFilePath : validFilePaths) {
         try {
@@ -133,7 +133,7 @@ void ConfigurationParser::loadIndividualAirfoilGeometries(Configuration& config,
         }
     }
 
-    std::cout << "Successfully loaded " << config.getAirfoilGeometries().size()
+    std::cout << "\nSuccessfully loaded " << config.getAirfoilGeometries().size()
         << " airfoil geometries." << std::endl;
 }
 
@@ -240,7 +240,7 @@ void ConfigurationParser::loadIndividualAirfoilPerformances(Configuration& confi
     }
 
     auto validFilePaths = performanceFileList->getValidFilePaths();
-    std::cout << "Loading " << validFilePaths.size() << " individual airfoil performance files..." << std::endl;
+    std::cout << "\nLoading " << validFilePaths.size() << " individual airfoil performance files..." << std::endl;
 
     for (const auto& performanceFilePath : validFilePaths) {
         try {
@@ -259,7 +259,7 @@ void ConfigurationParser::loadIndividualAirfoilPerformances(Configuration& confi
         }
     }
 
-    std::cout << "Successfully loaded " << config.getAirfoilPerformances().size()
+    std::cout << "\nSuccessfully loaded " << config.getAirfoilPerformances().size()
         << " airfoil performance datasets." << std::endl;
 }
 
