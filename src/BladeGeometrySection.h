@@ -3,6 +3,9 @@
 #include<string>
 #include<vector>
 #include<stdexcept>
+#include "AirfoilCoordinate.h"
+#include "AirfoilPolarData.h"
+#include "AirfoilGeometryData.h"
 
 /**
  * @brief Data structure representing a single radial section of blade geometry
@@ -79,6 +82,49 @@ struct BladeGeometrySection {
      * @brief Relative position of twist axis along chord [%]
      */
     double relativeTwistAxis;   // [%]
+
+    /**
+     * @brief Name/identifier of the airfoil used for this section
+     *
+     * Used to reference the specific airfoil geometry associated with this
+     * blade section, typically defined in an external airfoil database.
+	 */
+	std::string airfoilName;    // Airfoil identifier (e.g., "NACA0012", "S809")
+
+    /**
+     * @brief Relative airfoil coordinates for this section
+     */
+    std::vector<AirfoilCoordinate> coordinates;
+
+    /**
+     * @brief Airfoil coordinates scaled by chord length
+     *
+     * 2D coordinates representing the airfoil shape scaled to the
+     * appropriate chord length but not yet rotated or positioned.
+     */
+    std::vector<AirfoilCoordinate> scaledCoordinates;
+
+    /**
+     * @brief Fully transformed 3D coordinates
+     *
+     * 3D coordinates after complete transformation: scaling by chord,
+     * rotation by twist angle, and translation to radial position.
+     * Ready for 3D analysis and visualization.
+     */
+    std::vector<AirfoilCoordinate> transformedCoordinates; // After scaling, rotation, and positioning
+
+    /**
+     * @brief Airfoil performance data points for this section
+     */
+    std::unique_ptr<AirfoilPolarData> airfoilPolar;
+
+    /**
+     * @brief Airfoil geometry data for this section
+     *
+     * Contains complete airfoil geometry including coordinates, markers,
+     * and metadata. Used for geometric analysis and visualization.
+	 */
+	std::unique_ptr<AirfoilGeometryData> airfoilGeometry;
 
     /**
      * @brief Default constructor
