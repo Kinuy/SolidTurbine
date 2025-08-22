@@ -9,7 +9,7 @@
 #include <memory>
 #include <algorithm>
 
-#include "AirfoilPerformanceData.h"
+#include "AirfoilPolarData.h"
 #include "IDataFileParser.h"
 
 
