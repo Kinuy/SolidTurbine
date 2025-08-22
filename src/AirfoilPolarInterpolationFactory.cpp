@@ -2,7 +2,7 @@
 
 
 std::pair<const AirfoilPolarData*, const AirfoilPolarData*> AirfoilPolarInterpolationFactory::findInterpolationPair(
-    const std::vector<std::unique_ptr<AirfoilPolarData>>& polars,
+    const std::vector<const AirfoilPolarData*>& polars,
     double targetThickness) {
 
     if (polars.size() < 2) {
@@ -12,7 +12,7 @@ std::pair<const AirfoilPolarData*, const AirfoilPolarData*> AirfoilPolarInterpol
     // Sort polars by thickness
     std::vector<const AirfoilPolarData*> sortedPolars;
     for (const auto& polar : polars) {
-        sortedPolars.push_back(polar.get());
+        sortedPolars.push_back(polar);
     }
 
     std::sort(sortedPolars.begin(), sortedPolars.end(),
@@ -79,7 +79,7 @@ const AirfoilPolarData* AirfoilPolarInterpolationFactory::findBestMatch(
 
 
 std::unique_ptr<AirfoilPolarData> AirfoilPolarInterpolationFactory::getPolarForSection(
-    const std::vector<std::unique_ptr<AirfoilPolarData>>& polars,
+    const std::vector<const AirfoilPolarData*>& polars,
     double targetThickness,
     double tolerance) {
 

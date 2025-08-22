@@ -22,7 +22,7 @@ private:
 	 * @return Pair of pointers to the left and right polar data for interpolation
      */
     static std::pair<const AirfoilPolarData*, const AirfoilPolarData*> findInterpolationPair(
-            const std::vector<std::unique_ptr<AirfoilPolarData>>& polars,
+            const std::vector<const AirfoilPolarData*>& polars,
             double targetThickness);
 
 public:
@@ -57,7 +57,7 @@ public:
 	 * @return Variant containing either a pointer to the best matching polar or a new interpolated polar
      */
     static std::unique_ptr<AirfoilPolarData> getPolarForSection(
-            const std::vector<std::unique_ptr<AirfoilPolarData>>& polars,
+            const std::vector<const AirfoilPolarData*>& polars,
             double targetThickness,
             double tolerance = 0.001);
 
