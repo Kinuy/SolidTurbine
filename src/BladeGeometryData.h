@@ -74,7 +74,9 @@ public:
      * @brief Adds a blade geometry section to the data collection
      * @param row BladeGeometrySection containing radial station data
      */
-    void addRow(const BladeGeometrySection& row);
+    // The && is needed because to is bind to rvalue in parsing process
+    // Normal copy is not possible due to unique pointers in BladeGeometrySection 
+    void addRow(BladeGeometrySection&& row);
 
     /**
      * @brief Gets all blade geometry sections
@@ -107,7 +109,16 @@ public:
      * @return BladeGeometrySection at the specified radius
      * @throws std::runtime_error if no matching radius found within tolerance
      */
-    BladeGeometrySection getRowByRadius(double radius, double tolerance) const;
+    BladeGeometrySection getRowByRadius(double radius, double tolerance = 0.001) const;
+
+    /**
+     * @brief Finds blade geometry section by relative thickness with tolerance
+     * @param relativeThickness Target relative thickness value to search for
+     * @param tolerance Acceptable difference from target (default: 0.001)
+     * @return BladeGeometrySection at the specified relative thickness
+     * @throws std::runtime_error if no matching thickness found within tolerance
+	 */
+    BladeGeometrySection getRowByRelativeThickness(double relativeThickness, double tolerance) const;
 
     /**
      * @brief Gets blade geometry section by array index
