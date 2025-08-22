@@ -32,7 +32,7 @@ std::vector<CubicSplineInterpolationStrategy::SplineSegment> CubicSplineInterpol
     std::vector<double> c(n);
     c[n - 1] = 0.0;
 
-    for (int j = n - 2; j >= 0; --j) {
+    for (size_t j = n - 2; j >= 0; --j) {
         c[j] = z[j] - mu[j] * c[j + 1];
     }
 
