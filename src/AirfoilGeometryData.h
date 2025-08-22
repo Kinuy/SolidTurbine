@@ -9,6 +9,12 @@
 #include "AirfoilMarker.h"
 #include "AirfoilGeometryFileInfo.h"
 
+#include "InterpolationMethod.h"
+#include "AkimaSplineInterpolationStrategy.h"
+#include "CubicSplineInterpolationStrategy.h"
+#include "LinearInterpolationStrategy.h"
+#include "MonotonicCubicSplineInterpolationStrategy.h"
+
 /**
  * @brief Structured data container for airfoil geometry coordinates and metadata
  *
@@ -80,6 +86,7 @@ private:
      */
     std::vector<std::string> headers;
 
+
     /**
      * @brief Finds geometry marker by type identifier
      * @param type Marker type to search for (e.g., "LE", "TE", "TESSMAX")
@@ -121,7 +128,7 @@ public:
      * @param x X-coordinate value
      * @param y Y-coordinate value
      */
-    void addCoordinate(double x, double y);
+    void addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE);
 
     /**
      * @brief Gets the airfoil name/identifier
@@ -206,6 +213,50 @@ public:
      * @note Simplified calculation comparing surfaces at matching X positions
      */
     double getMaxThickness() const;
+
+    /**
+     * @brief Main simplified interpolation method
+     * @param leftGeometry Left airfoil geometry data for interpolation
+     * @param rightGeometry Right airfoil geometry data for interpolation
+     * @param targetThickness Target relative thickness for the new Geometry
+     * @return Interpolated geometry data between two existing airfoil geometries
+     */
+    static std::unique_ptr<AirfoilGeometryData> interpolateBetweenGeometries(
+        const AirfoilGeometryData& leftGeometry, const AirfoilGeometryData& rightGeometry, double targetThickness);
+
+    /**
+     * @brief Separates coordinates into upper and lower surfaces
+     * @param nodes Vector of AirfoilCoordinate objects to separate
+     * @return Pair of vectors containing upper and lower surface coordinates
+	 */
+    static std::pair<std::vector<AirfoilCoordinate>, std::vector<AirfoilCoordinate>> separateTopBottom(const std::vector<AirfoilCoordinate>& nodes);
+
+    /**
+     * @brief Helper function to get unique x-coordinates from two surfaces
+     * @param surface1 surface top
+	 * @param surface2 surface bottom
+	 * @return Vector of x-coordinates that are unique across both surfaces
+	 */
+    static std::vector<double> getUniqueXCoordinates(const std::vector<AirfoilCoordinate>& surface1, const std::vector<AirfoilCoordinate>& surface2);
+
+    /**
+     * @brief Interpolates coordinates between two airfoil surfaces
+     * @param surface1 First surface coordinates (e.g., top surface)
+     * @param surface2 Second surface coordinates (e.g., bottom surface)
+     * @param xCoords Vector of unique x-coordinates for interpolation
+     * @param percent Interpolation factor (0.0 = surface1, 1.0 = surface2)
+     * @param isTopSurface Flag indicating if the interpolation is for the top surface
+     * @return Vector of interpolated AirfoilCoordinate objects
+	 */
+    static std::vector<AirfoilCoordinate> interpolateSurface(const std::vector<AirfoilCoordinate>& surface1, const std::vector<AirfoilCoordinate>& surface2, const std::vector<double>& xCoords, double percent, bool isTopSurface);
+
+    /**
+     * @brief Combines top and bottom surfaces into a single vector
+     * @param top Vector of AirfoilCoordinate objects for the top surface
+     * @param bottom Vector of AirfoilCoordinate objects for the bottom surface
+     * @return Combined vector of AirfoilCoordinate objects representing the full airfoil geometry
+	 */
+    static std::vector<AirfoilCoordinate> combineTopBottomSurfaces(const std::vector<AirfoilCoordinate>& top, const std::vector<AirfoilCoordinate>& bottom);
 
 };
 
