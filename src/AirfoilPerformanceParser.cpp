@@ -53,9 +53,13 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceParser::parseFile(const std::
         throw std::runtime_error("Cannot open airfoil performance file: " + filePath);
     }
 
-    auto perfData = std::make_unique<AirfoilPerformanceData>();
+    auto perfData = std::make_unique<AirfoilPolarData>();
     std::string line;
     size_t lineNumber = 0;
+
+    // TODO: Check default values here
+	double mach = 0.3; // Default Mach number 
+	double reynolds = 0.0; // Default Reynolds number
 
     while (std::getline(file, line)) {
         ++lineNumber;
@@ -85,7 +89,8 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceParser::parseFile(const std::
                     perfData->setRelativeThickness(std::stod(tokens[1]));
                 }
                 else if (tokens[0] == "REYN") {
-                    perfData->setReynoldsNumber(std::stod(tokens[1]));
+                    // TODO: remove: perfData->setReynoldsNumber(std::stod(tokens[1]));
+					reynolds = std::stod(tokens[1]);
                 }
                 else if (tokens[0] == "DEPANG") {
                     perfData->setDepang(std::stod(tokens[1]));
@@ -103,8 +108,10 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceParser::parseFile(const std::
                 double cl = std::stod(tokens[1]);
                 double cd = std::stod(tokens[2]);
                 double cm = (tokens.size() > 3) ? std::stod(tokens[3]) : 0.0;
-
-                perfData->addPerformancePoint(alpha, cl, cd, cm);
+				AirfoilAeroCoefficients aeroCoeffs(cl, cd, cm);
+				AirfoilOperationCondition condition(reynolds, mach, alpha);
+				perfData->addPolarPoint(condition, aeroCoeffs);
+                // TODO: remove: perfData->addPerformancePoint(alpha, cl, cd, cm);
             }
 
         }
