@@ -30,19 +30,19 @@ private:
 	 * Vector of pointers to airfoil geometry data used for selecting
 	 * appropriate airfoils based on thickness criteria.
 	 */
-	const std::vector<const AirfoilGeometryData*>& airfoilGeometries;
+	const std::vector<const AirfoilGeometryData*> airfoilGeometries;
 	/**
 	 * @brief Collection of available airfoil performance data for section matching
 	 *
 	 * Vector of pointers to airfoil polar data used for selecting
 	 * appropriate performance based on thickness criteria.
 	 */
-	const std::vector<const AirfoilPolarData*>& airfoilPerformances;
+	const std::vector<const AirfoilPolarData*> airfoilPerformances;
 
 	/**
 	 * @brief Store for all interpolated blade sections
 	 */
-	std::vector<std::unique_ptr<BladeGeometrySection>> bladeSection;
+	std::vector<std::unique_ptr<BladeGeometrySection>> bladeSections;
 	
 
 public:

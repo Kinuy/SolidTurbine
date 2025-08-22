@@ -1,4 +1,5 @@
 #include "BladeInterpolator.h"
+#include <iostream>
 
 
 BladeInterpolator::BladeInterpolator(
@@ -10,6 +11,7 @@ BladeInterpolator::BladeInterpolator(
 	airfoilGeometries(airfoilGeoms),
 	airfoilPerformances(airfoilPerfos)
 {
+	interpolateAllSections();
 }
 
 void BladeInterpolator::interpolateAllSections()
@@ -20,20 +22,30 @@ void BladeInterpolator::interpolateAllSections()
 	for (const auto& radius : radiusValues) {
 		interpolateSection(radius);
 	}
+	std::cout << "\nSuccessfully interpolated " << bladeSections.size() << " sections geo and perfo data" << std::endl;
 }
 
-void BladeInterpolator::interpolateSection(double targetThickness)
+void BladeInterpolator::interpolateSection(double targetRadius)
 {
-	//BladeGeometrySection section = bladeGeometry.getRowByRadius(targetThickness);
-	//auto airfoilPolar = AirfoilPolarInterpolationFactory::getPolarForSection(airfoilPerformances, targetThickness);
-	//auto airfoilGeometry = AirfoilGeometryInterpolationFactory::getAirfoilGeometryForSection(airfoilGeometries, targetThickness);
+	// Create a section object and fill it with data: blade section geo, airfoil geo , airfoil perfo 
+	BladeGeometryData* mutableBladeGeom = const_cast<BladeGeometryData*>(bladeGeometry);
+	BladeGeometrySection existingSection = mutableBladeGeom->getRowByRadius(targetRadius);
 
-	//// Set the section properties
-	//section.airfoilPolar = std::move(airfoilPolar);
-	//section.airfoilGeometry = std::move(airfoilGeometry);
+	// Get section data
+	std::unique_ptr<BladeGeometrySection> bladeSection = std::make_unique<BladeGeometrySection>(existingSection);
+
+	// Get airfoil polar data
+	std::unique_ptr<AirfoilPolarData> airfoilPolar = AirfoilPolarInterpolationFactory::getPolarForSection(airfoilPerformances, bladeSection->relativeThickness);
+	
+	// Get airfoil geo data
+	std::unique_ptr<AirfoilGeometryData> airfoilGeometry = AirfoilGeometryInterpolationFactory::getAirfoilGeometryForSection(airfoilGeometries, bladeSection->relativeThickness);
+
+	// Set the section properties
+	bladeSection->airfoilPolar = std::move(airfoilPolar);
+	bladeSection->airfoilGeometry = std::move(airfoilGeometry);
 
 
- //   // Create and store the section
- //   bladeSection.push_back(std::make_unique<BladeGeometrySection>(std::move(section)));
+    // Create and store the section
+    bladeSections.push_back(std::move(bladeSection));
 
 }
