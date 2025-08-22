@@ -140,6 +140,10 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BladeInterpolator.cpp" />
+    <ClCompile Include="src\AirfoilGeometryInterpolationFactory.cpp" />
+    <ClCompile Include="src\AirfoilPolarData.cpp" />
+    <ClCompile Include="src\AirfoilPolarInterpolationFactory.cpp" />
     <ClCompile Include="src\DataExporter.cpp" />
     <ClCompile Include="src\DefaultPathResolver.cpp" />
     <ClCompile Include="src\ExporterFactory.cpp" />
@@ -152,14 +156,12 @@
     <ClCompile Include="src\AirfoilGeometryFileListData.cpp" />
     <ClCompile Include="src\AirfoilGeometryFileListParser.cpp" />
     <ClCompile Include="src\AirfoilGeometryParser.cpp" />
-    <ClCompile Include="src\AirfoilPerformanceData.cpp" />
     <ClCompile Include="src\AirfoilPerformanceFileListData.cpp" />
     <ClCompile Include="src\AirfoilPerformanceFileListParser.cpp" />
     <ClCompile Include="src\AirfoilPerformanceParser.cpp" />
     <ClCompile Include="src\AkimaSplineInterpolationStrategy.cpp" />
     <ClCompile Include="src\Blade.cpp" />
     <ClCompile Include="src\BladeGeometryData.cpp" />
-    <ClCompile Include="src\BladeGeometryInterpolator.cpp" />
     <ClCompile Include="src\BladeGeometryParser.cpp" />
     <ClCompile Include="src\BladeSection.cpp" />
     <ClCompile Include="src\BoolParser.cpp" />
@@ -187,6 +189,15 @@
     <ClCompile Include="src\StandardFileWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BladeInterpolator.h" />
+    <ClInclude Include="src\AirfoilGeometryInterpolationFactory.h" />
+    <ClInclude Include="src\IAirfoilInterpolator.h" />
+    <ClInclude Include="src\AirfoilAeroCoefficients.h" />
+    <ClInclude Include="src\AirfoilOperationCondition.h" />
+    <ClInclude Include="src\AirfoilPolarData.h" />
+    <ClInclude Include="src\AirfoilPolarPoint.h" />
+    <ClInclude Include="src\AirfoilPolarInterpolationFactory.h" />
+    <ClInclude Include="src\IBladeInterpolator.h" />
     <ClInclude Include="src\PathStrategy.h" />
     <ClInclude Include="src\DataExporter.h" />
     <ClInclude Include="src\DefaultPathResolver.h" />
@@ -197,7 +208,6 @@
     <ClInclude Include="src\IExporter.h" />
     <ClInclude Include="src\IFileWriter.h" />
     <ClInclude Include="src\IPathResolver.h" />
-    <ClInclude Include="src\AeroCharacteristicPoint.h" />
     <ClInclude Include="src\AerodynamicForces.h" />
     <ClInclude Include="src\Airfoil.h" />
     <ClInclude Include="src\AirfoilAeroCharacteristic.h" />
@@ -210,7 +220,6 @@
     <ClInclude Include="src\AirfoilGeometryParser.h" />
     <ClInclude Include="src\AirfoilGeometryPoint.h" />
     <ClInclude Include="src\AirfoilMarker.h" />
-    <ClInclude Include="src\AirfoilPerformanceData.h" />
     <ClInclude Include="src\AirfoilPerformanceFileInfo.h" />
     <ClInclude Include="src\AirfoilPerformanceFileListData.h" />
     <ClInclude Include="src\AirfoilPerformanceFileListParser.h" />
@@ -219,7 +228,6 @@
     <ClInclude Include="src\AkimaSplineInterpolationStrategy.h" />
     <ClInclude Include="src\Blade.h" />
     <ClInclude Include="src\BladeGeometryData.h" />
-    <ClInclude Include="src\BladeGeometryInterpolator.h" />
     <ClInclude Include="src\BladeGeometryParser.h" />
     <ClInclude Include="src\BladeGeometrySection.h" />
     <ClInclude Include="src\BladeSection.h" />

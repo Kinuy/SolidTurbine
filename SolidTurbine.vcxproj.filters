@@ -36,9 +36,6 @@
     <ClCompile Include="src\AirfoilGeometryParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\AirfoilPerformanceData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\AirfoilPerformanceFileListData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BladeGeometryData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BladeGeometryInterpolator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BladeGeometryParser.cpp">
@@ -150,11 +144,20 @@
     <ClCompile Include="src\StandardFileWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AirfoilPolarData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AirfoilPolarInterpolationFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AirfoilGeometryInterpolationFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BladeInterpolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AeroCharacteristicPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\AerodynamicForces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -191,9 +194,6 @@
     <ClInclude Include="src\AirfoilMarker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\AirfoilPerformanceData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\AirfoilPerformanceFileInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -216,9 +216,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BladeGeometryData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BladeGeometryInterpolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BladeGeometryParser.h">
@@ -372,6 +369,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\PathStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IBladeInterpolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilAeroCoefficients.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilOperationCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilPolarData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilPolarPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilPolarInterpolationFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IAirfoilInterpolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AirfoilGeometryInterpolationFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BladeInterpolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
