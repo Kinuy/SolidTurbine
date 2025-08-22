@@ -154,4 +154,26 @@ struct BladeGeometrySection {
         relativeTwistAxis = std::stod(tokens[9]);
     }
 
+    /**
+     * @brief Copy constructor
+     * @param other The BladeGeometrySection to copy from
+     */
+    BladeGeometrySection(const BladeGeometrySection& other)
+        : type(other.type)
+        , bladeRadius(other.bladeRadius)
+        , chord(other.chord)
+        , twist(other.twist)
+        , relativeThickness(other.relativeThickness)
+        , xt4(other.xt4)
+        , yt4(other.yt4)
+        , pcbaX(other.pcbaX)
+        , pcbaY(other.pcbaY)
+        , relativeTwistAxis(other.relativeTwistAxis)
+        , airfoilName(other.airfoilName)
+        , coordinates(other.coordinates)
+        , scaledCoordinates(other.scaledCoordinates)
+        , transformedCoordinates(other.transformedCoordinates)
+    {
+    }
+
 };
