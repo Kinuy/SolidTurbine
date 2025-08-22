@@ -109,7 +109,7 @@ public:
      * @return BladeGeometrySection at the specified radius
      * @throws std::runtime_error if no matching radius found within tolerance
      */
-    BladeGeometrySection getRowByRadius(double radius, double tolerance = 0.001) const;
+    BladeGeometrySection& getRowByRadius(double radius, double tolerance = 0.001);
 
     /**
      * @brief Finds blade geometry section by relative thickness with tolerance
@@ -118,7 +118,7 @@ public:
      * @return BladeGeometrySection at the specified relative thickness
      * @throws std::runtime_error if no matching thickness found within tolerance
 	 */
-    BladeGeometrySection getRowByRelativeThickness(double relativeThickness, double tolerance) const;
+    BladeGeometrySection& getRowByRelativeThickness(double relativeThickness, double tolerance);
 
     /**
      * @brief Gets blade geometry section by array index
@@ -126,7 +126,7 @@ public:
      * @return BladeGeometrySection at the specified index
      * @throws std::out_of_range if index is invalid
      */
-    BladeGeometrySection getRowByIndex(int index) const;
+    BladeGeometrySection& getRowByIndex(int index);
 
     /**
      * @brief Extracts all radius values from the geometry sections
