@@ -52,7 +52,7 @@ std::unique_ptr<IStructuredData> BladeGeometryParser::parseFile(const std::strin
             // Only process DEF lines (data rows)
             if (tokens[0] == "DEF") {
                 BladeGeometrySection row(tokens);
-                bladeData->addRow(row);
+                bladeData->addRow(std::move(row));
             }
 
         }
