@@ -4,14 +4,15 @@
 #include <any>
 #include <stdexcept>
 #include <memory>
+#include <iostream>
 
 #include "IStructuredData.h"
 #include "BladeGeometryData.h"
 #include "AirfoilPerformanceFileListData.h"
 #include "AirfoilGeometryFileListData.h"
 #include "AirfoilGeometryData.h"
-#include "AirfoilPerformanceData.h"
-#include "BladeGeometryInterpolator.h"
+#include "AirfoilPolarData.h"
+#include "BladeInterpolator.h"
 
 
 /**
@@ -284,7 +285,7 @@ public:
      * @param collectionKey Collection identifier
      * @return Vector of airfoil performance pointers
      */
-    std::vector<const AirfoilPerformanceData*> getAirfoilPerformances(const std::string& collectionKey = "loaded_airfoil_performances") const;
+    std::vector<const AirfoilPolarData*> getAirfoilPerformances(const std::string& collectionKey = "loaded_airfoil_performances") const;
 
     /**
      * @brief Finds airfoil performance by reference number
@@ -293,7 +294,7 @@ public:
      * @return Pointer to matching airfoil performance
      * @throws std::runtime_error if performance data not found
      */
-    const AirfoilPerformanceData* getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey = "loaded_airfoil_performances") const;
+    const AirfoilPolarData* getAirfoilPerformanceByRefNum(const std::string& refNum, const std::string& collectionKey = "loaded_airfoil_performances") const;
 
     /**
      * @brief Finds airfoil performance by thickness and Reynolds number
@@ -305,7 +306,7 @@ public:
      * @return Pointer to matching airfoil performance
      * @throws std::runtime_error if no matching data found
      */
-    const AirfoilPerformanceData* getAirfoilPerformanceByConditions(double thickness, double reynolds,
+    const AirfoilPolarData* getAirfoilPerformanceByConditions(double thickness, double reynolds,
         double toleranceThickness = 5.0,
         double toleranceReynolds = 500000.0,
         const std::string& collectionKey = "loaded_airfoil_performances") const;
@@ -316,7 +317,7 @@ public:
      * @return Unique pointer to configured interpolator
      * @throws std::runtime_error if required data not available
      */
-    std::unique_ptr<BladeGeometryInterpolator> createBladeInterpolator(InterpolationMethod method = InterpolationMethod::LINEAR) const;
+    std::unique_ptr<BladeInterpolator> createBladeInterpolator(InterpolationMethod method = InterpolationMethod::LINEAR) const;
 
     /**
      * @brief Creates blade geometry interpolator from method name string
@@ -324,7 +325,7 @@ public:
      * @return Unique pointer to configured interpolator
      * @note Falls back to linear interpolation for unknown method names
      */
-    std::unique_ptr<BladeGeometryInterpolator> createBladeInterpolator(const std::string& methodName) const;
+    std::unique_ptr<BladeInterpolator> createBladeInterpolator(const std::string& methodName) const;
 
 };
 
