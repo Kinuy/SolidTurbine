@@ -42,6 +42,9 @@ bld/
 # Exclude generated test data 
 testdata/export/
 
+# not used files
+not_used/
+
 # Exclude doxygen docs folder
 docs/
 
