@@ -43,6 +43,7 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
     auto airfoilData = std::make_unique<AirfoilGeometryData>();
     std::string line;
     size_t lineNumber = 0;
+	int idx = 0; // Index for coordinates, used to track order
 
     while (std::getline(file, line)) {
         ++lineNumber;
@@ -75,9 +76,10 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
                 airfoilData->addMarker(markerType, markerIndex);
             }
             else if (isCoordinateLine(tokens)) {
+				idx += 1; // Increment index for each coordinate
                 double x = std::stod(tokens[1]);
                 double y = std::stod(tokens[2]);
-                airfoilData->addCoordinate(x, y);
+                airfoilData->addCoordinate(idx, x, y, 0, NULL, NULL);
             }
 
         }
