@@ -157,6 +157,7 @@ public:
         return dynamic_cast<const T*>(it->second.get());
     }
 
+
     /**
      * @brief Gets collection of structured data with type filtering
      *

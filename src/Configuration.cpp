@@ -109,46 +109,46 @@ const AirfoilPolarData* Configuration::getAirfoilPerformanceByConditions(double 
 }
 
 // Create blade geometry interpolator for 3D blade analysis with specified method
-//std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(InterpolationMethod method) const {
-//    const BladeGeometryData* bladeGeom = getBladeGeometry();
-//    if (!bladeGeom) {
-//        throw std::runtime_error("No blade geometry data available for interpolation");
-//    }
-//
-//    const std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
-//    if (airfoilGeometries.empty()) {
-//        throw std::runtime_error("No airfoil geometry data available for interpolation");
-//    }
-//	const std::vector<const AirfoilPolarData*> airfoilPerformances = getAirfoilPerformances();
-//    if (airfoilPerformances.empty()) {
-//        throw std::runtime_error("No airfoil performance data available for interpolation");
-//	}
-//
-//    //return std::make_unique<BladeInterpolator>(*bladeGeom, airfoilGeometries, method);
-//    return std::make_unique<BladeInterpolator>(bladeGeom, airfoilGeometries, airfoilPerformances);
-//}
-//
-//// Create interpolator from string method name
-//std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(const std::string& methodName) const {
-//    InterpolationMethod method = InterpolationMethod::LINEAR; // Default
-//
-//    if (methodName == "linear" || methodName == "Linear") {
-//        method = InterpolationMethod::LINEAR;
-//    }
-//    else if (methodName == "cubic" || methodName == "CubicSpline") {
-//        method = InterpolationMethod::CUBIC_SPLINE;
-//    }
-//    else if (methodName == "akima" || methodName == "AkimaSpline") {
-//        method = InterpolationMethod::AKIMA_SPLINE;
-//    }
-//    else if (methodName == "monotonic" || methodName == "MonotonicCubicSpline") {
-//        method = InterpolationMethod::MONOTONIC_CUBIC_SPLINE;
-//    }
-//    else {
-//        std::cout << "Warning: Unknown interpolation method '" << methodName
-//            << "', using Linear interpolation" << std::endl;
-//    }
-//
-//    return createBladeInterpolator(method);
-//}
+std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(InterpolationMethod method) const {
+    const BladeGeometryData* bladeGeom = getBladeGeometry();
+    if (!bladeGeom) {
+        throw std::runtime_error("No blade geometry data available for interpolation");
+    }
+
+    const std::vector<const AirfoilGeometryData*> airfoilGeometries = getAirfoilGeometries();
+    if (airfoilGeometries.empty()) {
+        throw std::runtime_error("No airfoil geometry data available for interpolation");
+    }
+	const std::vector<const AirfoilPolarData*> airfoilPerformances = getAirfoilPerformances();
+    if (airfoilPerformances.empty()) {
+        throw std::runtime_error("No airfoil performance data available for interpolation");
+	}
+
+    //return std::make_unique<BladeInterpolator>(*bladeGeom, airfoilGeometries, method);
+    return std::make_unique<BladeInterpolator>(bladeGeom, airfoilGeometries, airfoilPerformances);
+}
+
+// Create interpolator from string method name
+std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(const std::string& methodName) const {
+    InterpolationMethod method = InterpolationMethod::LINEAR; // Default
+
+    if (methodName == "linear" || methodName == "Linear") {
+        method = InterpolationMethod::LINEAR;
+    }
+    else if (methodName == "cubic" || methodName == "CubicSpline") {
+        method = InterpolationMethod::CUBIC_SPLINE;
+    }
+    else if (methodName == "akima" || methodName == "AkimaSpline") {
+        method = InterpolationMethod::AKIMA_SPLINE;
+    }
+    else if (methodName == "monotonic" || methodName == "MonotonicCubicSpline") {
+        method = InterpolationMethod::MONOTONIC_CUBIC_SPLINE;
+    }
+    else {
+        std::cout << "Warning: Unknown interpolation method '" << methodName
+            << "', using Linear interpolation" << std::endl;
+    }
+
+    return createBladeInterpolator(method);
+}
 
