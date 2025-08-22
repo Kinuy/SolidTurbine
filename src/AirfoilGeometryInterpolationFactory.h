@@ -20,7 +20,7 @@ private:
 	 * @return Pair of pointers to the left and right airfoil geometries for interpolation
      */
     static std::pair<const AirfoilGeometryData*, const AirfoilGeometryData*> findInterpolationPair(
-        const std::vector<std::unique_ptr<AirfoilGeometryData>>& airfoilGeometries,
+        const std::vector<const AirfoilGeometryData*>& airfoilGeometries,
         double targetThickness);
 
 public:
@@ -47,7 +47,7 @@ public:
 	 * @return Variant containing either a pointer to the best matching airfoil geometry or a new interpolated geometry
      */
     static std::unique_ptr<AirfoilGeometryData> getAirfoilGeometryForSection(
-        const std::vector<std::unique_ptr<AirfoilGeometryData>>& geometries,
+        const std::vector<const AirfoilGeometryData*>& geometries,
         double targetThickness,
         double tolerance = 0.001);
 

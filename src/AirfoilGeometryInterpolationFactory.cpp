@@ -2,19 +2,19 @@
 
 
 std::pair<const AirfoilGeometryData*, const AirfoilGeometryData*>
-AirfoilGeometryInterpolationFactory::findInterpolationPair(const std::vector<std::unique_ptr<AirfoilGeometryData>>& airfoilGeometries, double targetThickness) {
+AirfoilGeometryInterpolationFactory::findInterpolationPair(const std::vector<const AirfoilGeometryData*>& airfoilGeometries, double targetThickness) {
     if (airfoilGeometries.size() < 2) {
         throw std::runtime_error("Need at least 2 airfoils for interpolation");
     }
 
-    std::vector<AirfoilGeometryData*> sortedAirfoils;
+    std::vector<const AirfoilGeometryData*> sortedAirfoils;
     for (const auto& airfoil : airfoilGeometries) {
-        sortedAirfoils.push_back(airfoil.get());
+        sortedAirfoils.push_back(airfoil);
     }
 
     // Sort airfoils by thickness for easier processing
     std::sort(sortedAirfoils.begin(), sortedAirfoils.end(),
-        [](AirfoilGeometryData* a, AirfoilGeometryData* b) {
+        [](const AirfoilGeometryData* a, const AirfoilGeometryData* b) {
             return a->getRelativeThickness() < b->getRelativeThickness();
         });
 
@@ -77,7 +77,7 @@ const AirfoilGeometryData* AirfoilGeometryInterpolationFactory::findBestMatch(
 
 
 std::unique_ptr<AirfoilGeometryData> AirfoilGeometryInterpolationFactory::getAirfoilGeometryForSection(
-    const std::vector<std::unique_ptr<AirfoilGeometryData>>& airfoilGeometries,
+    const std::vector<const AirfoilGeometryData*>& airfoilGeometries,
     double targetThickness,
     double tolerance) {
 
