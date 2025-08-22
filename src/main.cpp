@@ -53,8 +53,7 @@ int main(int argc , char** argv){
 		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList();
 
 		// Interpolate Airfoil Geometries and performances on blade sections
-		std::unique_ptr<BladeGeometryInterpolator> bladeInterpolator = config.createBladeInterpolator();
-		std::vector<InterpolatedBladeSection> InterpolatedSection = bladeInterpolator->interpolateAllSections();
+		std::unique_ptr<BladeInterpolator> bladeInterpolator = config.createBladeInterpolator();
 
 		// Export file
 		auto exporter = ExporterFactory::createExporter();
