@@ -140,6 +140,16 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DXFDocument.cpp" />
+    <ClCompile Include="src\DXFEntityBase.cpp" />
+    <ClCompile Include="src\DXFEntityFactory.cpp" />
+    <ClCompile Include="src\DXFFileWriter.cpp" />
+    <ClCompile Include="src\DXFFormatter.cpp" />
+    <ClCompile Include="src\DXFLine.cpp" />
+    <ClCompile Include="src\DXFPoint.cpp" />
+    <ClCompile Include="src\DXFPolyLine.cpp" />
+    <ClCompile Include="src\DXFText.cpp" />
+    <ClCompile Include="src\DXFHandleGenerator.cpp" />
     <ClCompile Include="src\BladeInterpolator.cpp" />
     <ClCompile Include="src\AirfoilGeometryInterpolationFactory.cpp" />
     <ClCompile Include="src\AirfoilPolarData.cpp" />
@@ -189,6 +199,21 @@
     <ClCompile Include="src\StandardFileWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DXFColor.h" />
+    <ClInclude Include="src\DXFDocument.h" />
+    <ClInclude Include="src\DXFEntityBase.h" />
+    <ClInclude Include="src\DXFEntityFactory.h" />
+    <ClInclude Include="src\DXFFileWriter.h" />
+    <ClInclude Include="src\DXFFormatter.h" />
+    <ClInclude Include="src\DXFLine.h" />
+    <ClInclude Include="src\DXFPoint.h" />
+    <ClInclude Include="src\DXFPoint3D.h" />
+    <ClInclude Include="src\DXFPolyLine.h" />
+    <ClInclude Include="src\DXFText.h" />
+    <ClInclude Include="src\DXFHandleGenerator.h" />
+    <ClInclude Include="src\IDXFEntity.h" />
+    <ClInclude Include="src\IDXFWriter.h" />
+    <ClInclude Include="src\IDXFHandleGenerator.h" />
     <ClInclude Include="src\BladeInterpolator.h" />
     <ClInclude Include="src\AirfoilGeometryInterpolationFactory.h" />
     <ClInclude Include="src\IAirfoilInterpolator.h" />
