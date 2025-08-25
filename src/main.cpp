@@ -101,7 +101,7 @@ int main(int argc , char** argv){
 		std::unique_ptr<BladeInterpolator> bladeInterpolator = config.createBladeInterpolator();
 
 		// Write DXF file with sample data
-		createSampleDXF();
+		testDXFExportWorkflow();
 
 		// Export file
 		auto exporter = ExporterFactory::createExporter();
