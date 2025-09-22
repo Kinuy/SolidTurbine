@@ -18,9 +18,9 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Setup Visual Studio Developer Command Prompt
-        uses: Kinuy/setup-msvc-dev@v4
-        with:
-          arch: x64
+        run:
+          call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          msbuild SolidTurbine.sln /p:Configuration=Release /p:Platform=x64
 
       - name: Build with MSBuild (Visual Studio Solution)
         run: msbuild SolidTurbine.sln
