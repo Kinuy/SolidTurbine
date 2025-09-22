@@ -18,7 +18,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Setup Visual Studio Developer Command Prompt
-        uses: ilammy/msvc-devcmd@v1
+        uses: Kinuy/msvc-devcmd@v1.13.0
         with:
           arch: x64
 
