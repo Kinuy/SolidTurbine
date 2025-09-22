@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild
+name: Windows_Release
 
 on:
   push:
@@ -39,14 +39,11 @@ jobs:
 
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        # Add additional options to the MSBuild command line here (like platform or verbosity level).
-        # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SolidTurbine
-          #path: D:\a\SolidTurbine\build\Release\bin\SolidTurbine.exe
-          path: SolidTurbine\build\Release\bin\SolidTurbine.exe
+          path: ${{runner.workspace}}\build\Release\bin\SolidTurbine.exe
           if-no-files-found: error
