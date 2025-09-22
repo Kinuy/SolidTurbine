@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SolidTurbine
-          path: .\bin\Release\SolidTurbine.exe
+          path: ./build/Release/bin/SolidTurbine.exe
           if-no-files-found: error
