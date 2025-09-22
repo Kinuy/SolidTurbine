@@ -1,0 +1,32 @@
+name: Windows Release
+
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup Visual Studio Developer Command Prompt
+        uses: ilammy/msvc-devcmd@v1
+        with:
+          arch: x64
+
+      - name: Build with MSBuild (Visual Studio Solution)
+        run: msbuild SolidTurbine.sln
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-x64
+          path: build/Release/*exe
