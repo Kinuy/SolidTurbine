@@ -48,5 +48,6 @@ jobs:
         with:
           name: SolidTurbine
           # path: D:\a\SolidTurbine\build\Release\bin\SolidTurbine.exe
-          path: ${{github.workspace}}build\Release\bin\SolidTurbine.exe
+          path: ${{runner.workspace}}\build\Release\bin\SolidTurbine.exe
+          # D:\a\SolidTurbine\SolidTurbinebuild\Release\bin\SolidTurbine.exe
           if-no-files-found: error
