@@ -2,6 +2,7 @@
 
 #include "../src/MathUtility.h"  // Reference main project
 #include "../src/SquareMatrix.h"  // Reference main project
+#include "../src/MathUtility.cpp" // Needs to be included if core project is build as Application (.exe) and not static library (.lib)
 
 TEST(MathUtilityTest, basicLinearInterpolation_should_equal_given_number) {
     EXPECT_EQ(MathUtility::basicLinearInterpolation(2, 1, 3, 2, 4), 3); // Result should be 3
