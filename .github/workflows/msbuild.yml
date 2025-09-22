@@ -33,12 +33,6 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: List directory contents
-        run: |
-          pwd
-          ls -la
-          find . -name "*.vcxproj" -type f
-
       - name: Restore NuGet packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: nuget restore ${{env.SOLUTION_FILE_PATH}}
