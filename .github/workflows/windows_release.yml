@@ -13,9 +13,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          repository: "Kinuy/SolidTurbine"
+          submodule: true
+          lfs: true
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
 
       - name: Build with MSBuild (Visual Studio Solution)
         run: msbuild SolidTurbine.sln /p:Configuration=Release /p:Platform=x64
