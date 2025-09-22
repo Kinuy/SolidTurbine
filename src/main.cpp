@@ -17,12 +17,11 @@
 
 
 /**
- * @brief Test function for DXF writer workflow with DI and factory pattern
+ * @brief Test function for DXF writer workflow
  *
  * Creates a sample DXF file with various geometric entities
  *
  * @note Creates file "sample_solid.dxf" in current directory
- * @note Demonstrates dependency injection and factory pattern usage
  */
 void testDXFExportWorkflow() {
 	try {
@@ -31,15 +30,15 @@ void testDXFExportWorkflow() {
 		DXFDocument document(std::move(fileWriter));
 
 		// Add entities
-		document.addLine(DXFPoint3D(0, 0, 0), DXFPoint3D(10, 10, 0), DXFColor(1));     // Red line
-		document.addText(DXFPoint3D(1, 1, 0), "Blade Sextion DXF!", 0.5, DXFColor(4)); // Cyan text
+		document.addLine(DXFPoint3D(0, 0, 0), DXFPoint3D(10, 10, 0), DXFColor(1));	// Red line
+		document.addText(DXFPoint3D(1, 1, 0), "Blade Sextion DXF!", 0.5, DXFColor(4));	// Cyan text
 		document.addPoint(DXFPoint3D(5, 5, 5), DXFColor(4)); // Cyan text
 
 		std::vector<DXFPoint3D> polyPoints = {
 			DXFPoint3D(15, 0, 2), DXFPoint3D(20, 5, 11),
 			DXFPoint3D(15, 10, 50), DXFPoint3D(10, 5, 100)
 		};
-		document.addPolyLine(polyPoints, true, DXFColor(1));                      // Magenta closed polyline
+		document.addPolyLine(polyPoints, true, DXFColor(1));	// Magenta closed polyline
 
 		std::cout << "DXF file 'blade3D.dxf' created successfully!" << std::endl;
 
@@ -50,15 +49,19 @@ void testDXFExportWorkflow() {
 }
 
 
-// At the end of your main function
+/**
+ * @brief Dummy Function to keep window after run open 
+ */
 void waitForKeyPress() {
 	std::cout << "Press Enter to continue...";
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.get();
 }
 
 
-// Programm to simulate a given turbine using SOLID principles
+
+/**
+ * @brief Programm to simulate a given turbine using SOLID principles
+ */
 int main(int argc , char** argv){
 
 	
