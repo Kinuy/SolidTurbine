@@ -50,6 +50,12 @@ void testDXFExportWorkflow() {
 }
 
 
+// At the end of your main function
+void waitForKeyPress() {
+	std::cout << "Press Enter to continue...";
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cin.get();
+}
 
 
 // Programm to simulate a given turbine using SOLID principles
@@ -121,8 +127,10 @@ int main(int argc , char** argv){
 	}
 	catch(const std::exception& e){
 		std::cerr << "Configuration error: " << e.what() << std::endl;
+		waitForKeyPress();
 		return 1;
 	}
 
+	waitForKeyPress();
 	return 0;
 }
