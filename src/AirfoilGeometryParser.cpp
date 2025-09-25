@@ -1,22 +1,12 @@
 #include "AirfoilGeometryParser.h"
 
-std::vector<std::string> AirfoilGeometryParser::tokenizeLine(const std::string& line, char delimiter = '\t') const {
+std::vector<std::string> AirfoilGeometryParser::tokenizeLine(const std::string& line) const {
     std::vector<std::string> tokens;
-    std::stringstream ss(line);
+    std::istringstream iss(line);
     std::string token;
 
-    while (std::getline(ss, token, delimiter)) {
-        // Trim whitespace
-        token.erase(0, token.find_first_not_of(" \t"));
-        token.erase(token.find_last_not_of(" \t") + 1);
-        if (!token.empty()) {
-            tokens.push_back(token);
-        }
-    }
-
-    // If tab didn't work, try space separation
-    if (tokens.size() <= 1 && delimiter == '\t') {
-        return tokenizeLine(line, ' ');
+    while (iss >> token) {
+        tokens.push_back(token);
     }
 
     return tokens;
@@ -79,7 +69,7 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
 				idx += 1; // Increment index for each coordinate
                 double x = std::stod(tokens[1]);
                 double y = std::stod(tokens[2]);
-                airfoilData->addCoordinate(idx, x, y, 0, NULL, NULL);
+                airfoilData->addCoordinate(idx, x, y, 0, airfoilData->coordinateIsTop(y), airfoilData->coordinateIsTE(x), false, false);
             }
 
         }
@@ -93,7 +83,7 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
     if (airfoilData->getRowCount() == 0) {
         throw std::runtime_error("No valid airfoil coordinate data found in file: " + filePath);
     }
-
+    airfoilData->findAndAssignTETEAndTEBEPoints();
     return std::move(airfoilData);
 }
 
