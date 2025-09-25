@@ -2,6 +2,8 @@
 #include <set>
 #include "MathUtility.h"
 #include "AirfoilPolarData.h"
+#include <algorithm>
+#include <iostream>
 
 
 void AirfoilGeometryData::setName(const std::string& n) { name = n; }
@@ -10,7 +12,12 @@ void AirfoilGeometryData::setName(const std::string& n) { name = n; }
 
 void AirfoilGeometryData::setRelativeThickness(double thickness) { relativeThickness = thickness; }
 
-
+void AirfoilGeometryData::setZCoordinates(double z)
+{
+    for (auto& coord : coordinates) {
+        coord.z = z;
+    }
+}
 
 void AirfoilGeometryData::addHeader(const std::string& header) {
     headers.push_back(header);
@@ -20,8 +27,8 @@ void AirfoilGeometryData::addMarker(const std::string& type, int index) {
     markers.emplace_back(type, index);
 }
 
-void AirfoilGeometryData::addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE) {
-    coordinates.emplace_back(idx, x, y, z, isTop, isTE);
+void AirfoilGeometryData::addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE, bool isTETE, bool isTEBE) {
+    coordinates.emplace_back(idx, x, y, z, isTop, isTE, isTETE, isTEBE);
 }
 
 const std::string& AirfoilGeometryData::getName() const { return name; }
@@ -99,16 +106,115 @@ double AirfoilGeometryData::getMaxThickness() const {
     return maxThickness;
 }
 
+bool AirfoilGeometryData::coordinateIsTop(const double y) const
+{
+    if (y >= 0) {
+        return true;
+    }
+    return false;
+}
+
+bool AirfoilGeometryData::coordinateIsTE(const double x) const
+{
+    if (x == 1) {
+		return true;
+    }
+    return false;
+}
+
+void AirfoilGeometryData::findAndAssignTETEAndTEBEPoints()
+{
+    // Lambda to find both TETE and TEBE in single pass
+    auto findTrailingEdgePoints = [](auto& coordinates) {
+        auto teteIt = coordinates.end();
+        auto tebeIt = coordinates.end();
+        double maxXUpper = std::numeric_limits<double>::lowest();
+        double maxXLower = std::numeric_limits<double>::lowest();
+
+        for (auto it = coordinates.begin(); it != coordinates.end(); ++it) {
+            if (it->y >= 0.0 && it->x > maxXUpper) {
+                maxXUpper = it->x;
+                teteIt = it;
+            }
+            else if (it->y < 0.0 && it->x > maxXLower) {
+                maxXLower = it->x;
+                tebeIt = it;
+            }
+        }
+
+        return std::make_pair(teteIt, tebeIt);
+        };
+
+    // Reset all flags
+    std::for_each(coordinates.begin(), coordinates.end(),
+        [](auto& coord) {
+            coord.isTETopEdge = false;
+            coord.isTEBottomEdge = false;
+        });
+
+    auto [teteIt, tebeIt] = findTrailingEdgePoints(coordinates);
+
+    if (teteIt != coordinates.end()) teteIt->isTETopEdge = true;
+    if (tebeIt != coordinates.end()) tebeIt->isTEBottomEdge = true;
+}
+
 std::pair<std::vector<AirfoilCoordinate>, std::vector<AirfoilCoordinate>> AirfoilGeometryData::separateTopBottom(const std::vector<AirfoilCoordinate>& nodes) {
     std::vector<AirfoilCoordinate> top, bottom;
 
     for (const auto& node : nodes) {
         if (node.isTopSurface) {
-            top.push_back(node);
+            if (node.x == 1 && node.isTETopEdge == false) {
+                continue;
+            }
+            else {
+                top.push_back(node);
+            }
+            
         }
         else {
-            bottom.push_back(node);
+            if (node.x == 1 && node.isTEBottomEdge == false) {
+                continue;
+            }
+            else {
+                bottom.push_back(node);
+            }
         }
+    }
+
+    // Sort upper surface: trailing edge to leading edge (x decreasing)
+    std::sort(top.begin(), top.end(),
+        [](const auto& a, const auto& b) {
+            return a.x > b.x;  // Descending x
+        });
+
+    // Sort lower surface: leading edge to trailing edge (x increasing)
+    std::sort(bottom.begin(), bottom.end(),
+        [](const auto& a, const auto& b) {
+            return a.x < b.x;  // Ascending x
+        });
+
+    // Check for first and last points 
+    // for top -> first (1, 0) and last (0,0)
+    // for bottom -> first (0,0) and last (1,0)
+    // if there are these points missing append , insert them
+    AirfoilCoordinate nodeTopFirst = AirfoilCoordinate(0, 1, 0, 0, true, true, true, false);
+    AirfoilCoordinate nodeTopLast = AirfoilCoordinate(0, 0, 0, 0, true, false, false, false);
+    AirfoilCoordinate nodeBottomFirst = AirfoilCoordinate(0, 0, 0, 0, false, false, false, false);
+    AirfoilCoordinate nodeBottomLast = AirfoilCoordinate(0, 0, 0, 0, false, true, false, true);
+
+    // check top
+    if (top.front().x != 1.0) {
+        top.insert(top.begin(), nodeTopFirst);
+    }
+    if (top.back().x != 0.0) {
+        top.push_back(nodeTopLast);
+    }
+    // check bottom
+    if (bottom.front().x != 0.0) {
+        bottom.insert(bottom.begin(), nodeBottomFirst);
+    }
+    if (bottom.back().x != 1.0) {
+        bottom.push_back(nodeBottomLast);
     }
 
     return { top, bottom };
@@ -124,7 +230,7 @@ std::vector<double> AirfoilGeometryData::getUniqueXCoordinates(const std::vector
         xSet.insert(node.x);
     }
     for (const auto& node : surface2) {
-        xSet.insert(node.y);
+        xSet.insert(node.x);
     }
 
     // Convert to sorted vector
@@ -134,8 +240,8 @@ std::vector<double> AirfoilGeometryData::getUniqueXCoordinates(const std::vector
 
 // Helper function to interpolate a single surface
 std::vector<AirfoilCoordinate> AirfoilGeometryData::interpolateSurface(
-    const std::vector<AirfoilCoordinate>& surface1,
-    const std::vector<AirfoilCoordinate>& surface2,
+    const std::vector<AirfoilCoordinate>& surface1, //thick
+    const std::vector<AirfoilCoordinate>& surface2, //thin
     const std::vector<double>& xCoords,
     double percent,
     bool isTopSurface) {
@@ -162,24 +268,29 @@ std::vector<AirfoilCoordinate> AirfoilGeometryData::interpolateSurface(
     int indexCounter = 0;
 
     for (double x : xCoords) {
+    //for (double x : x1) {
         // Interpolate y-values at this x-coordinate
         double y1_interp = MathUtility::linearInterpolation(x,x1, y1);
         double y2_interp = MathUtility::linearInterpolation(x,x2, y2);
 
         // Linear interpolation between the two surfaces
-        double y_final = (1.0 - percent) * y2_interp + percent * y1_interp;
+        double y_final = (1.0 - percent) * y1_interp + percent * y2_interp;
 
         // Create node (adjust x order for top surface)
-        double x_final = isTopSurface ? xCoords[xCoords.size() - 1 - (indexCounter % xCoords.size())] : x;
+        //double x_final = isTopSurface ? xCoords[xCoords.size() - 1 - (indexCounter % xCoords.size())] : x;
+        double x_final = x;
         result.emplace_back(indexCounter++, x_final, y_final, 0,isTopSurface, false);
+    }
+    if (isTopSurface) {
+        std::reverse(result.begin(), result.end());
     }
 
     return result;
 }
 
 // Helper function to combine top and bottom surfaces
-std::vector<AirfoilCoordinate> AirfoilGeometryData::combineTopBottomSurfaces(const std::vector<AirfoilCoordinate>& top,
-    const std::vector<AirfoilCoordinate>& bottom) {
+std::vector<AirfoilCoordinate> AirfoilGeometryData::combineTopBottomSurfaces( std::vector<AirfoilCoordinate>& top,
+     std::vector<AirfoilCoordinate>& bottom) {
     std::vector<AirfoilCoordinate> combined;
     int indexCounter = 0;
 
@@ -257,6 +368,8 @@ std::unique_ptr<AirfoilGeometryData> AirfoilGeometryData::interpolateBetweenGeom
 
     return result;
 }
+
+
 
 AirfoilMarker AirfoilGeometryData::getMarkerByType(const std::string& type) const {
     auto it = std::find_if(markers.begin(), markers.end(),

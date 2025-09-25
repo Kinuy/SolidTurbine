@@ -111,6 +111,11 @@ public:
     void setRelativeThickness(double thickness);
 
     /**
+     * @brief Sets z coordinate for all coordinates in vector. This is needed for section interpolation.
+     */
+    void setZCoordinates(double z);
+
+    /**
      * @brief Adds a header line to the dataset
      * @param header Header string to add
      */
@@ -128,7 +133,7 @@ public:
      * @param x X-coordinate value
      * @param y Y-coordinate value
      */
-    void addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE);
+    void addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE, bool isTETE, bool isTEBE);
 
     /**
      * @brief Gets the airfoil name/identifier
@@ -215,6 +220,23 @@ public:
     double getMaxThickness() const;
 
     /**
+    * @brief Check if airfoil coordinate is part of top surface
+    * @return true if coordinate is part of top surface, false if it is part of bootm surface
+    */
+    bool coordinateIsTop(const double y) const;
+
+    /**
+    * @brief Check if airfoil coordinate is part of trailing edge
+    * @return true if coordinate is part , false if it is not part of trailing edge
+    */
+    bool coordinateIsTE(const double x) const;
+
+    /**
+    * @brief Finds and assignes trailing edge top edge (TETE) and trailing edge bottom edge (TEBE) point
+    */
+    void findAndAssignTETEAndTEBEPoints();
+
+    /**
      * @brief Main simplified interpolation method
      * @param leftGeometry Left airfoil geometry data for interpolation
      * @param rightGeometry Right airfoil geometry data for interpolation
@@ -256,7 +278,7 @@ public:
      * @param bottom Vector of AirfoilCoordinate objects for the bottom surface
      * @return Combined vector of AirfoilCoordinate objects representing the full airfoil geometry
 	 */
-    static std::vector<AirfoilCoordinate> combineTopBottomSurfaces(const std::vector<AirfoilCoordinate>& top, const std::vector<AirfoilCoordinate>& bottom);
+    static std::vector<AirfoilCoordinate> combineTopBottomSurfaces( std::vector<AirfoilCoordinate>& top,  std::vector<AirfoilCoordinate>& bottom);
 
 };
 
