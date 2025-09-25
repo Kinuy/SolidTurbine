@@ -17,7 +17,7 @@ BladeInterpolator::BladeInterpolator(
 void BladeInterpolator::interpolateAllSections()
 {
 	// Get all radius values from the blade geometry
-	auto radiusValues = bladeGeometry->getRadiusValues();
+	std::vector<double>  radiusValues = bladeGeometry->getRadiusValues();
 	// Interpolate each section based on the radius values
 	for (const auto& radius : radiusValues) {
 		interpolateSection(radius);
@@ -40,6 +40,10 @@ void BladeInterpolator::interpolateSection(double targetRadius)
 	// Get airfoil geo data
 	std::unique_ptr<AirfoilGeometryData> airfoilGeometry = AirfoilGeometryInterpolationFactory::getAirfoilGeometryForSection(airfoilGeometries, bladeSection->relativeThickness);
 
+	// Set z-coordinate to section relative radius
+	double lastBladeRadius = bladeGeometry->getRadiusValues().back();
+	airfoilGeometry->setZCoordinates(targetRadius / lastBladeRadius);
+
 	// Set the section properties
 	bladeSection->airfoilPolar = std::move(airfoilPolar);
 	bladeSection->airfoilGeometry = std::move(airfoilGeometry);
@@ -48,4 +52,9 @@ void BladeInterpolator::interpolateSection(double targetRadius)
     // Create and store the section
     bladeSections.push_back(std::move(bladeSection));
 
+}
+
+std::vector<std::unique_ptr<BladeGeometrySection>> BladeInterpolator::getBladeSections()
+{
+	return std::move(bladeSections);
 }
