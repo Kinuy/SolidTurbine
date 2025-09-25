@@ -69,7 +69,7 @@ private:
      * @return Vector of trimmed, non-empty tokens
      * @note Falls back to space delimiter if tab produces ≤1 token
      */
-    std::vector<std::string> tokenizeLine(const std::string& line, char delimiter) const;
+    std::vector<std::string> tokenizeLine(const std::string& line) const;
 
     /**
      * @brief Checks if tokens represent an airfoil coordinate line
