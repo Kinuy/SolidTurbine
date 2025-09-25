@@ -75,12 +75,36 @@ struct AirfoilCoordinate {
     bool isTrailingEdge;  // or similar flags
 
     /**
+     * @brief Flag indicates if point is last point of TE at top surface -> counting points counter clockwise (TE->Top->LE->Bottom)
+     * @return True if point is last point of TE at Top surface
+     */
+    bool isTETopEdge;
+
+    /**
+     * @brief Flag indicates if point is first point of TE at bottom surface -> counting points counter clockwise (TE->Top->LE->Bottom)
+     * @return True if point is first point of TE at bottom surface
+     */
+    bool isTEBottomEdge;
+
+
+
+    /**
      * @brief Constructor creating coordinate point with optional Z value
      * @param xVal X-coordinate value
      * @param yVal Y-coordinate value
      * @param zVal Z-coordinate value (default: 0 for 2D coordinates)
      */
-    AirfoilCoordinate(int idx, double xVal, double yVal, double zVal=0, bool isTop=NULL, bool isTE=NULL) : index(idx), x(xVal), y(yVal), z(zVal), isTopSurface(isTop), isTrailingEdge(isTE) {}
+    AirfoilCoordinate(int idx, double xVal, double yVal, double zVal=0, bool isTop=NULL, bool isTE=NULL, bool isTETE=NULL, bool isTEBE=NULL) 
+        : 
+        index(idx), 
+        x(xVal), 
+        y(yVal), 
+        z(zVal), 
+        isTopSurface(isTop), 
+        isTrailingEdge(isTE),
+        isTETopEdge(isTETE),
+        isTEBottomEdge(isTEBE)
+    {}
 
     /**
      * @brief Checks if coordinate represents a 2D point
