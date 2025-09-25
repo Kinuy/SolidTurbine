@@ -124,7 +124,7 @@ std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(Interp
         throw std::runtime_error("No airfoil performance data available for interpolation");
 	}
 
-    //return std::make_unique<BladeInterpolator>(*bladeGeom, airfoilGeometries, method);
+
     return std::make_unique<BladeInterpolator>(bladeGeom, airfoilGeometries, airfoilPerformances);
 }
 
