@@ -152,6 +152,7 @@ struct BladeGeometrySection {
         pcbaX = std::stod(tokens[7]);
         pcbaY = std::stod(tokens[8]);
         relativeTwistAxis = std::stod(tokens[9]);
+        airfoilName = "R_" + std::to_string(bladeRadius) + "_m_" + "RelThick_" + std::to_string(relativeThickness);
     }
 
     /**
