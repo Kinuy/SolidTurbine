@@ -5,58 +5,16 @@
 #include "FileReader.h"
 #include "ConfigurationParser.h"
 #include "ExporterFactory.h"
-
-#include "DXFDocument.h"
-#include "DXFFileWriter.h"
-
-#include "DXFEntityFactory.h"
-#include "DXFPoint3D.h"
-#include "DXFFormatter.h"
-#include "DXFColor.h"
-
-
-
-/**
- * @brief Test function for DXF writer workflow
- *
- * Creates a sample DXF file with various geometric entities
- *
- * @note Creates file "sample_solid.dxf" in current directory
- */
-void testDXFExportWorkflow() {
-	try {
-		// Dependency Injection - easily swap file writer for writing to file or memory.
-		auto fileWriter = std::make_unique<DXFFileWriter>("blade3D.dxf");
-		DXFDocument document(std::move(fileWriter));
-
-		// Add entities
-		document.addLine(DXFPoint3D(0, 0, 0), DXFPoint3D(10, 10, 0), DXFColor(1));	// Red line
-		document.addText(DXFPoint3D(1, 1, 0), "Blade Sextion DXF!", 0.5, DXFColor(4));	// Cyan text
-		document.addPoint(DXFPoint3D(5, 5, 5), DXFColor(4)); // Cyan text
-
-		std::vector<DXFPoint3D> polyPoints = {
-			DXFPoint3D(15, 0, 2), DXFPoint3D(20, 5, 11),
-			DXFPoint3D(15, 10, 50), DXFPoint3D(10, 5, 100)
-		};
-		document.addPolyLine(polyPoints, true, DXFColor(1));	// Magenta closed polyline
-
-		std::cout << "DXF file 'blade3D.dxf' created successfully!" << std::endl;
-
-	}
-	catch (const std::exception& e) {
-		std::cerr << "Error: " << e.what() << std::endl;
-	}
-}
+#include "DXFBlade3D.h"
 
 
 /**
  * @brief Dummy Function to keep window after run open 
  */
-void waitForKeyPress() {
+static void waitForKeyPress() {
 	std::cout << "Press Enter to continue...";
 	std::cin.get();
 }
-
 
 
 /**
@@ -110,11 +68,11 @@ int main(int argc , char** argv){
 		std::unique_ptr<BladeInterpolator> bladeInterpolator = config.createBladeInterpolator();
 
 		// Write DXF file with sample data
-		testDXFExportWorkflow();
+		auto dxfBlade3D = std::make_unique<DXFBlade3D>(std::move(bladeInterpolator));
 
-		// Export file
+		// Export 3D section data to custom text file
 		auto exporter = ExporterFactory::createExporter();
-		exporter->exportData("", "basic_test.txt", "Basic export data\n");
+		exporter->exportData("", "BladeSections.txt", dxfBlade3D->dataToString());
 
 		// Use configuration and pas to objects with type safety
 		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
