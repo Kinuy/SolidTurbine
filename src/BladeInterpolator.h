@@ -69,5 +69,7 @@ public:
 	 */
 	void interpolateSection(double targetThickness);
 
+	std::vector<std::unique_ptr<BladeGeometrySection>> getBladeSections();
+
 };
 
