@@ -86,6 +86,10 @@ private:
      */
     std::vector<std::string> headers;
 
+    /**
+     * @brief Orientation of airfoil coordinates -> default is from TE->top->LE->bottom->TE
+     */
+    bool coordinateOrientation;
 
     /**
      * @brief Finds geometry marker by type identifier
@@ -116,6 +120,11 @@ public:
     void setZCoordinates(double z);
 
     /**
+     * @brief Sets the index of a given marker.
+     */
+    void setMarkerIndex(std::string type, int idx);
+
+    /**
      * @brief Adds a header line to the dataset
      * @param header Header string to add
      */
@@ -134,6 +143,41 @@ public:
      * @param y Y-coordinate value
      */
     void addCoordinate(int idx, double x, double y, double z, bool isTop, bool isTE, bool isTETE, bool isTEBE);
+
+    /**
+     * @brief Add airfoil nose point (0,0) to coordinates and insert copy of last top surface point to beginning of bottom surface point list  
+     */
+    void addAirfoilNosePoint(const bool nosePointExists);
+
+    /**
+     * @brief Add airfoil nose point to coordinates
+     */
+    void insertNosePointAtOrigin(const bool nosePointExists);
+
+    /**
+     * @brief Add airfoil nose point interpolated y value to coordinates
+     */
+    void insertNosePointWithInterpolation(const bool nosePointExists);
+
+    /**
+     * @brief Move all aifoil coordinates by x nd y value of nose so that nose is centered in (0,0) position.
+     */
+    void moveAllCoordinatesByNoseXY(const bool centeredNosePointExists);
+
+    /**
+     * @brief Check orientation of coordinates start from TE top to Nose to bottom to top or reversed, if not counterclockwise reverse!
+     */
+    void orientationToDefaultCounterClockwiseOrientation();
+
+    /**
+     * @brief Find and assign LE
+     */
+    void findAndAssignLE();
+
+    /**
+     * @brief Find and assign top or bottom flag to airfoil coordinate
+     */
+    void findAndAssignTopBottom();
 
     /**
      * @brief Gets the airfoil name/identifier
@@ -223,7 +267,7 @@ public:
     * @brief Check if airfoil coordinate is part of top surface
     * @return true if coordinate is part of top surface, false if it is part of bootm surface
     */
-    bool coordinateIsTop(const double y) const;
+    bool coordinateIsTop(const int idx, const int topSide) const;
 
     /**
     * @brief Check if airfoil coordinate is part of trailing edge
