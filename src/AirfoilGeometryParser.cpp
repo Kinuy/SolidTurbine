@@ -34,6 +34,7 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
     std::string line;
     size_t lineNumber = 0;
 	int idx = 0; // Index for coordinates, used to track order
+    bool nosePointExists = false;
 
     while (std::getline(file, line)) {
         ++lineNumber;
@@ -69,7 +70,10 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
 				idx += 1; // Increment index for each coordinate
                 double x = std::stod(tokens[1]);
                 double y = std::stod(tokens[2]);
-                airfoilData->addCoordinate(idx, x, y, 0, airfoilData->coordinateIsTop(y), airfoilData->coordinateIsTE(x), false, false);
+                if (x == 0 && y == 0) {
+                    nosePointExists = true;
+				}
+                airfoilData->addCoordinate(idx, x, y, 0, false, airfoilData->coordinateIsTE(x), false, false);
             }
 
         }
@@ -79,11 +83,29 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
                 ": " + e.what());
         }
     }
+    file.close();
 
     if (airfoilData->getRowCount() == 0) {
         throw std::runtime_error("No valid airfoil coordinate data found in file: " + filePath);
     }
+
+
+	// Nose of airfoil has to be at (0,0)
+    airfoilData->moveAllCoordinatesByNoseXY(nosePointExists);
+
+    // Check orientation of coordinates
+    airfoilData->orientationToDefaultCounterClockwiseOrientation();
+
+    // Find LE
+    airfoilData->findAndAssignLE();
+
+    // Assign top bottom
+    airfoilData->findAndAssignTopBottom();
+
+    // Find and assign trailing edge top edge (TETE) and trailing edge bottom edge (TEBE) point
     airfoilData->findAndAssignTETEAndTEBEPoints();
+
+
     return std::move(airfoilData);
 }
 
