@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\build\Release\bin\</OutDir>
+    <OutDir>$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>..\build\Release\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\build\Debug\bin\</OutDir>
+    <OutDir>$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>..\build\Debug\obj\</IntDir>
     <TargetName>SolidTurbine</TargetName>
   </PropertyGroup>
@@ -140,6 +140,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DXFBlade3D.cpp" />
     <ClCompile Include="src\DXFDocument.cpp" />
     <ClCompile Include="src\DXFEntityBase.cpp" />
     <ClCompile Include="src\DXFEntityFactory.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="src\StandardFileWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DXFBlade3D.h" />
     <ClInclude Include="src\DXFColor.h" />
     <ClInclude Include="src\DXFDocument.h" />
     <ClInclude Include="src\DXFEntityBase.h" />
