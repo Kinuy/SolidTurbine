@@ -19,13 +19,19 @@ DXFBlade3D::~DXFBlade3D()
 
 void DXFBlade3D::createDXFModel()
 {
-	
+	fillDxfPointList();
+
+	fillDxfPolyLineList();
+}
+
+void DXFBlade3D::fillDxfPointList()
+{
 	// iterate over sections
 	for (int s = 0; s < bladeSections.size(); s++) {
 		// iterate over coordinates in each section
 		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
 		for (int c = 0; c < bladeSectionsCoord.size(); c++) {
-			
+
 			double sectionScale = bladeSections.at(s)->chord;
 			double xScale = bladeSectionsCoord.at(c).x * sectionScale;
 			double yScale = bladeSectionsCoord.at(c).y * sectionScale;
@@ -33,6 +39,28 @@ void DXFBlade3D::createDXFModel()
 			// fill list with points
 			dxfPointList.emplace_back(xScale, yScale, zScale);
 		}
+	}
+}
+
+void DXFBlade3D::fillDxfPolyLineList()
+{
+	// iterate over sections
+	for (int s = 0; s < bladeSections.size(); s++) {
+		// Create temp list for all points of one airfoil
+		std::vector<DXFPoint3D> airfoilPolyPoints;
+
+		// iterate over coordinates in each section
+		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
+		for (int c = 0; c < bladeSectionsCoord.size(); c++) {
+
+			double sectionScale = bladeSections.at(s)->chord;
+			double xScale = bladeSectionsCoord.at(c).x * sectionScale;
+			double yScale = bladeSectionsCoord.at(c).y * sectionScale;
+			double zScale = bladeSections.at(s)->bladeRadius;
+			// fill list with points
+			airfoilPolyPoints.emplace_back(xScale, yScale, zScale);
+		}
+		dxfPolyLineList.push_back(airfoilPolyPoints);
 	}
 }
 
@@ -47,10 +75,11 @@ void DXFBlade3D::writeDXFFile() const
 			document.addPoint(point, DXFColor(2)); // Green points for blade geometry
 		}
 
-		//std::vector<DXFPoint3D> airfoilPolyPoints = {
-		//	DXFPoint3D(15, 0, 2), DXFPoint3D(20, 5, 11),
-		//	DXFPoint3D(15, 10, 50), DXFPoint3D(10, 5, 100)
-		//};
+		for (const auto& polyLine : dxfPolyLineList) {
+			document.addPolyLine(polyLine, true, DXFColor(4)); // blue points for blade geometry
+		}
+
+
 		//document.addPolyLine(airfoilPolyPoints, true, DXFColor(1));	// Magenta closed polyline
 
 		std::cout << "DXF file 'Blade3D.dxf' created successfully!" << std::endl;

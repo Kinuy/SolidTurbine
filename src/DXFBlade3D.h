@@ -38,10 +38,14 @@ class DXFBlade3D
 		std::string dxfFilePath;
 
 		/**
-		 * @brief strore of all 3D points for DXF document
+		 * @brief Store of all 3D points for DXF document
 		 */
 		std::vector<DXFPoint3D> dxfPointList;
-		
+
+		/**
+		 * @brief Store for all airfoils as poly line for DXF document
+		 */
+		std::vector<std::vector<DXFPoint3D>> dxfPolyLineList;
 
 	public:
 		
@@ -54,6 +58,16 @@ class DXFBlade3D
 		 * 
 		 */
 		void createDXFModel();
+
+		/**
+		 * @brief Fill point list with blade section data as 3d points 
+		 */
+		void fillDxfPointList();
+		
+		/**
+		* @brief Fill polyline list with blade section data aech airfoil geo as one polyline
+		*/
+		void fillDxfPolyLineList();
 
 		/**
 		 * @brief Write the DXF Document to file
