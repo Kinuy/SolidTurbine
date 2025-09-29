@@ -23,6 +23,7 @@ void DXFPolyLine::writeTo(IDXFWriter& writer, int& handleCounter) const  {
     for (const auto& point : points) {
         writer.writeGroupCode(10, point.x);
         writer.writeGroupCode(20, point.y);
+        writer.writeGroupCode(30, point.z);
     }
 }
 
