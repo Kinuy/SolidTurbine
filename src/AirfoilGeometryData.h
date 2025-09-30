@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
+#include <numbers>
 #include "IStructuredData.h"
 #include "AirfoilCoordinate.h"
 #include "AirfoilMarker.h"
@@ -80,6 +81,11 @@ private:
      * @brief Complete set of airfoil coordinate points defining the geometry
      */
     std::vector<AirfoilCoordinate> coordinates;
+
+    /**
+     * @brief Complete set of scaled (with chord in m and max thickness in m) coordinate points defining the geometry
+     */
+	std::vector<AirfoilCoordinate> scaledCoordinates;
 
     /**
      * @brief Header lines from source file (comments and metadata)
@@ -204,6 +210,12 @@ public:
     const std::vector<AirfoilCoordinate>& getCoordinates() const;
 
     /**
+     * @brief Gets all acled and rotated coordinate points
+     * @return Const reference to vector of AirfoilCoordinate objects
+     */
+	const std::vector<AirfoilCoordinate>& getScaledAndRotatedCoordinates() const;
+
+    /**
      * @brief Gets all header lines
      * @return Const reference to vector of header strings
      */
@@ -279,6 +291,36 @@ public:
     * @brief Finds and assignes trailing edge top edge (TETE) and trailing edge bottom edge (TEBE) point
     */
     void findAndAssignTETEAndTEBEPoints();
+
+    /**
+	 * @brief Applies a twist angle to the airfoil geometry around the quarter-chord point and pitch axis position 
+	 *  
+	*/
+    void applyTwistAroundQuarterChord(double twistAngleDegrees, double pitchAxis);
+
+    /**
+     * @brief Applies a twist angle to the airfoil geometry around the quarter-chord point
+	 * @param twistAngleDegrees Twist angle in degrees (positive = leading edge up), negative = leading edge down, 0 = no twist, pivotX and pivotY set rotation point
+     * @note Modifies all coordinates in place
+	 */
+    void applyTwistAngleAroundPivotPoint(double twistAngleDegrees, double pivotX, double pivotY);
+
+    /**
+	 * @brief Applies Scaling of coordiante points x-> with chord in m and y with abs thickness in m of airfoil, if exists z with radius in m
+	 * @param chordLength Chord length in m
+	 * @param maxThickness Maximum thickness in m
+	 * @param targetRadius Target radius in m (default = 0 for 2D airfoils)
+     * @note Modifies all coordinates in place
+     */
+	void applyScalingWithChordAndMaxThickness(double chordLength, double maxThickness, double targetRadius = 0);
+
+    /*
+    * @brief Apply translation in x and y direction to meet prebend and sweep position of airfoil
+	* @param pcbaX Prebend value in m (translation in x direction), positive towards top of blade, negative towards bottom of blade
+	* @param pcbaY Sweep value in m (translation in y direction), positive towards leading edge, negative towards trailing edge
+    * @note Modifies all coordinates in place
+    */
+    void applyTranslationXY(double pcbaX, double pcbaY);
 
     /**
      * @brief Main simplified interpolation method

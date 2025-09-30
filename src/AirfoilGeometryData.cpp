@@ -226,6 +226,8 @@ const std::vector<AirfoilMarker>& AirfoilGeometryData::getMarkers() const { retu
 
 const std::vector<AirfoilCoordinate>& AirfoilGeometryData::getCoordinates() const { return coordinates; }
 
+const std::vector<AirfoilCoordinate>& AirfoilGeometryData::getScaledAndRotatedCoordinates() const { return scaledCoordinates; }
+
 const std::vector<std::string>& AirfoilGeometryData::getHeaders() const { return headers; }
 
 std::string AirfoilGeometryData::getTypeName() const  { return "AirfoilGeometry"; }
@@ -348,6 +350,71 @@ void AirfoilGeometryData::findAndAssignTETEAndTEBEPoints()
     tebeIt->isTEBottomEdge = true;
     //if (teteIt != coordinates.end()) teteIt->isTETopEdge = true;
     //if (tebeIt != coordinates.end()) tebeIt->isTEBottomEdge = true;
+}
+
+void AirfoilGeometryData::applyTwistAroundQuarterChord(double twistAngleDegrees, double pitchAxis)
+{
+    if (scaledCoordinates.empty()) return;
+
+    auto [minIt, maxIt] = std::minmax_element(coordinates.begin(), coordinates.end(),
+        [](const AirfoilCoordinate& a, const AirfoilCoordinate& b) {
+            return a.x < b.x;
+        });
+
+    double quarterChordX = minIt->x + (0.25 + pitchAxis / 100.0) * (maxIt->x - minIt->x);
+    double quarterChordY = 0.0;
+
+    applyTwistAngleAroundPivotPoint(twistAngleDegrees, quarterChordX, quarterChordY);
+}
+
+void AirfoilGeometryData::applyTwistAngleAroundPivotPoint(double twistAngleDegrees, double pivotX, double pivotY)
+{
+    if (scaledCoordinates.empty()) return;
+
+    // Convert degrees to radians
+    double angleRad = twistAngleDegrees * std::numbers::pi / 180.0;
+
+    // 2D rotation matrix
+    double rotMatrix[2][2] = {
+        {std::cos(angleRad), -std::sin(angleRad)},
+        {std::sin(angleRad),  std::cos(angleRad)}
+    };
+
+    for (auto& coord : coordinates) {
+        // Translate to pivot point
+        double xTemp = coord.x - pivotX;
+        double yTemp = coord.y - pivotY;
+
+        // Apply rotation matrix
+        double xNew = rotMatrix[0][0] * xTemp + rotMatrix[0][1] * yTemp;
+        double yNew = rotMatrix[1][0] * xTemp + rotMatrix[1][1] * yTemp;
+
+        // Translate back
+        coord.x = xNew + pivotX;
+        coord.y = yNew + pivotY;
+    }
+}
+
+void AirfoilGeometryData::applyScalingWithChordAndMaxThickness(double chordLength, double maxThickness, double targetRadius)
+{
+    // Copy original coordinates
+	scaledCoordinates = coordinates;
+	
+    // Scale all coordinates
+    for (auto& coord : scaledCoordinates) {
+        coord.x *= chordLength;
+        coord.y *= maxThickness;
+		coord.z *= targetRadius;
+	}
+}
+
+void AirfoilGeometryData::applyTranslationXY(double pcbaX, double pcbaY)
+{
+    // Translate all coordinates
+    for (auto& coord : scaledCoordinates) {
+        coord.x += pcbaY;
+        coord.y += pcbaX;
+    }
 }
 
 std::pair<std::vector<AirfoilCoordinate>, std::vector<AirfoilCoordinate>> AirfoilGeometryData::separateTopBottom(const std::vector<AirfoilCoordinate>& nodes) {
