@@ -45,5 +45,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SolidTurbine
-          path: ${{runner.workspace}}\build\Release\bin\SolidTurbine.exe
+          path: ${{runner.workspace}}\SolidTurbine\build\x64\Release\SolidTurbine.exe
           if-no-files-found: error
