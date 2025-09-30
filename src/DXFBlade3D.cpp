@@ -29,13 +29,14 @@ void DXFBlade3D::fillDxfPointList()
 	// iterate over sections
 	for (int s = 0; s < bladeSections.size(); s++) {
 		// iterate over coordinates in each section
-		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
+		//auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
+		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getScaledAndRotatedCoordinates();
 		for (int c = 0; c < bladeSectionsCoord.size(); c++) {
 
-			double sectionScale = bladeSections.at(s)->chord;
-			double xScale = bladeSectionsCoord.at(c).x * sectionScale;
-			double yScale = bladeSectionsCoord.at(c).y * sectionScale;
-			double zScale = bladeSections.at(s)->bladeRadius;
+			//double sectionScale = bladeSections.at(s)->chord;
+			double xScale = bladeSectionsCoord.at(c).x; //* sectionScale;
+			double yScale = bladeSectionsCoord.at(c).y; // *sectionScale;
+			double zScale = bladeSectionsCoord.at(c).z; //bladeSections.at(s)->bladeRadius;
 			// fill list with points
 			dxfPointList.emplace_back(xScale, yScale, zScale);
 		}
@@ -50,13 +51,14 @@ void DXFBlade3D::fillDxfPolyLineList()
 		std::vector<DXFPoint3D> airfoilPolyPoints;
 
 		// iterate over coordinates in each section
-		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
+		//auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getCoordinates();
+		auto bladeSectionsCoord = bladeSections.at(s)->airfoilGeometry->getScaledAndRotatedCoordinates();
 		for (int c = 0; c < bladeSectionsCoord.size(); c++) {
 
-			double sectionScale = bladeSections.at(s)->chord;
-			double xScale = bladeSectionsCoord.at(c).x * sectionScale;
-			double yScale = bladeSectionsCoord.at(c).y * sectionScale;
-			double zScale = bladeSections.at(s)->bladeRadius;
+			//double sectionScale = bladeSections.at(s)->chord;
+			double xScale = bladeSectionsCoord.at(c).x; // *sectionScale;
+			double yScale = bladeSectionsCoord.at(c).y; // *sectionScale;
+			double zScale = bladeSectionsCoord.at(c).z; //bladeSections.at(s)->bladeRadius;
 			// fill list with points
 			airfoilPolyPoints.emplace_back(xScale, yScale, zScale);
 		}
