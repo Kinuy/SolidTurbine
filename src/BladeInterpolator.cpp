@@ -44,6 +44,15 @@ void BladeInterpolator::interpolateSection(double targetRadius)
 	double lastBladeRadius = bladeGeometry->getRadiusValues().back();
 	airfoilGeometry->setZCoordinates(targetRadius / lastBladeRadius);
 
+	// Scale airfoil geometry with chord and max thickness
+	airfoilGeometry->applyScalingWithChordAndMaxThickness(bladeSection->chord, bladeSection->relativeThickness / 100.0 * bladeSection->chord, targetRadius);
+
+	// Apply twist angle around quarter chord + relative twist axis position point
+	airfoilGeometry->applyTwistAroundQuarterChord(bladeSection->twist, bladeSection->relativeTwistAxis);
+
+	// Apply prebend PCBAx and sweep PCBAy 
+	airfoilGeometry->applyTranslationXY(bladeSection->pcbaX, bladeSection->pcbaY);
+
 	// Set the section properties
 	bladeSection->airfoilPolar = std::move(airfoilPolar);
 	bladeSection->airfoilGeometry = std::move(airfoilGeometry);
