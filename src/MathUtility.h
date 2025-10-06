@@ -184,6 +184,12 @@ public:
 	 */
 	static SquareMatrix<double> createInverseXRotationMatrix(double psi, const SquareMatrix<double>& a43);
 
+	/**
+	 * @brief Helper method to return constant 1/(4*?)
+	 * @return Constant value of 1/(4*?)
+	 */
+	static const double getOneOver4Pi();
+
 };
 
 

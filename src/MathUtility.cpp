@@ -1,5 +1,10 @@
 #include "MathUtility.h"
 #include <stdexcept>
+#include <numbers>
+
+const double MathUtility::getOneOver4Pi(){
+	return 1.0 / (4 * std::numbers::pi);
+}
 
 // Simple basic linear interpolation
 double MathUtility::basicLinearInterpolation(
