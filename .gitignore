@@ -35,7 +35,7 @@ bld/
 
 # Visual Studio project files
 *.sln
-*.vcxproj
+#*.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
 
