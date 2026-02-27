@@ -1,9 +1,9 @@
 #	Revision	RXX
 #	Date	XXXXXX
 #	Description	Absolute or relative path to 2d airfoil geometry data
-AirfoilsGeo\DTU-Cylinder.geo
-AirfoilsGeo\FFA-W3-480.geo
-AirfoilsGeo\FFA-W3-360.geo
-AirfoilsGeo\FFA-W3-301.geo
-AirfoilsGeo\FFA-W3-241.geo
-AirfoilsGeo\NACA64618.geo
+AirfoilsGeo/DTU-Cylinder.geo
+AirfoilsGeo/FFA-W3-480.geo
+AirfoilsGeo/FFA-W3-360.geo
+AirfoilsGeo/FFA-W3-301.geo
+AirfoilsGeo/FFA-W3-241.geo
+AirfoilsGeo/NACA64618.geo
