@@ -1,0 +1,169 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug SolidTurbine (macOS - LLDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${workspaceFolder}/testdata/ProjectData.dat"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/testdata",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "CMake: Build"
+        },
+        {
+            "name": "Debug SolidTurbine (Linux - GDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${workspaceFolder}/testdata/ProjectData.dat"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/testdata",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "CMake: Build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug SolidTurbine - No Args (macOS - LLDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "CMake: Build"
+        },
+        {
+            "name": "Debug SolidTurbine - No Args (Linux - GDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "CMake: Build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug SolidTurbine - Custom Args (macOS - LLDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${input:configFile}"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "CMake: Build"
+        },
+        {
+            "name": "Debug SolidTurbine - Custom Args (Linux - GDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${input:configFile}"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "CMake: Build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Run SolidTurbine (macOS - No Debug)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${workspaceFolder}/testdata/ProjectData.dat"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/testdata",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "CMake: Build"
+        },
+        {
+            "name": "Run SolidTurbine (Linux - No Debug)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/solidturbine",
+            "args": [
+                "${workspaceFolder}/testdata/ProjectData.dat"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/testdata",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "CMake: Build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "configFile",
+            "type": "promptString",
+            "description": "Path to configuration file",
+            "default": "${workspaceFolder}/testdata/ProjectData.dat"
+        }
+    ]
+}

@@ -60,7 +60,7 @@ build/
 testdata/output/
 
 # Exclude vscode folder
-.vscode/
+
 
 # Exclude libraries folder
 libs/

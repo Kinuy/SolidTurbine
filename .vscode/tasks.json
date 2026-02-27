@@ -1,0 +1,123 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Configure",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-B",
+                "build",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Configure CMake build system for SolidTurbine"
+        },
+        {
+            "label": "CMake: Build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug",
+                "--target",
+                "solidturbine",
+                "-j",
+                "14"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "dependsOn": ["CMake: Configure"],
+            "detail": "Build SolidTurbine executable using CMake"
+        },
+        {
+            "label": "CMake: Clean Build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug",
+                "--target",
+                "clean"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Clean build artifacts"
+        },
+        {
+            "label": "CMake: Rebuild",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "rm -rf build && cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cmake --build build --config Debug --target solidturbine -j 14"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Clean rebuild from scratch"
+        },
+        {
+            "label": "CMake: Configure Release",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-B",
+                "build",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Configure CMake for Release build"
+        },
+        {
+            "label": "CMake: Build Release",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Release",
+                "--target",
+                "solidturbine",
+                "-j",
+                "14"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "dependsOn": ["CMake: Configure Release"],
+            "detail": "Build SolidTurbine in Release mode"
+        },
+        {
+            "label": "Run SolidTurbine",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/src/solidturbine",
+            "group": "test",
+            "dependsOn": ["CMake: Build"],
+            "problemMatcher": [],
+            "detail": "Build and run SolidTurbine"
+        },
+        {
+            "label": "Clean All",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-rf",
+                "build"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Remove build directory completely"
+        }
+    ]
+}
