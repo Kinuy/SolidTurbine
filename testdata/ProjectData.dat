@@ -14,6 +14,11 @@ blade_geometry_file BladeGeometry.dat
 turbine_is_horizontal true
 number_of_blades 3 #[-]
 hub_radius 1.544 #[m]
+cone 0.0 #[deg]
+yaw 0.0 #[deg]
+tilt 0.0 #[deg]
+tower_dist 0.0 #[m]
+hub_height 100 #[m]
 
 ## turbine operation settings
 rated_rotorspeed 7.2 #[rpm]
@@ -26,3 +31,17 @@ simulation_is_time_based false
 wind_speed_range 3 15 1 #[m/s]
 tip_speed_ratio_range 5 15 1 #[-]
 pitch_angle_range 0 2 0.5 #[deg]
+aep_vmean_range 4 11 1 #[m/s]
+aep_money_kwh 0.4 #[EUR/kWh]
+
+tip_extra_dist 0.0 #[m]
+convergence_tol 0.001 #[-]
+power_mode L0 #[L0|POWER]
+max_dp_dn 0.1 #[W/rpm]
+n_nenn 10 #[rpm]
+lambda_opt 12.0 #[-]
+kinematic_viscosity 1.45e-6 #[m^2/s]
+speed_of_sound 340 #[m/s]
+air_density 1.225 #[kg/m^3]
+aep_k_factor 2 #[-]
+wake_transition 0.4 #[-]
