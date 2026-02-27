@@ -2358,7 +2358,7 @@ DXFGroupCode<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="31.654017349278092" width="223.50578640560343" x="19395.556861372203" y="1002.9250769092365"/>
+          <y:Geometry height="31.654017349278092" width="223.50578640560343" x="19342.031216607385" y="1441.835363980733"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="137.630859375" x="42.937463515301715" xml:space="preserve" y="3.0">LiftingSurfaceCreator<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2390,13 +2390,52 @@ DXFGroupCode<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="100.0" x="19980.180368024598" y="932.7654196879467"/>
+          <y:Geometry height="646.0427782177499" width="422.90094563402454" x="19835.926614357617" y="231.57947326884823"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="51.68994140625" x="24.155029296875" xml:space="preserve" y="3.0">Surface<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="51.68994140625" x="185.60550211388727" xml:space="preserve" y="3.0">Surface<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve"/>
-            <y:MethodLabel xml:space="preserve"/>
+            <y:AttributeLabel xml:space="preserve">+ id: string
++ nodes: vector&lt;Vector3d&gt;
++ panelNodeNeighbors
++ panelNodes
++ panelNeighbors
++ transformedPanelPoints
+
+# panelCollocationPoints
+# panelNormals
+# panelCoordinateTransformations
+# panelSurfaceAreas
+</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">+ Surface(id: string&amp;)
++ rotate()
++ transform()
++ transform()
++ transform()
++ panelColocationPoint()
++ panelNormal()
++ panelCoordinateTransformation()
++ panelSurfaceArea()
++ sourceAndDoubletInfluence()
++ sourceAndDoubletInfluence()
++ sourceInfluence()
++ sourceInfluence()
++ doubletInfluence()
++ doubletInfluence()
++ sourceUnitVelocity()
++ vortexRingUnitVelocity()
++ sourceUnitVelocity()
++ sourceUnitVelocity()
++ vortexRingUnitVelocity()
++ vortexRingUnitVelocity()
++ addTriangle()
++ addQuadrangle()
++ calcTopology()
++ calcGeometry()
++ calcGeometry()
++ cutPanels()
++ getNumberOfNodes()
++ getNumberOfPanels()</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -2406,7 +2445,7 @@ DXFGroupCode<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="100.0" x="20200.415201785756" y="1094.2802961196949"/>
+          <y:Geometry height="28.0" width="100.0" x="20551.543431442955" y="1094.2802961196949"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="37.9599609375" x="31.02001953125" xml:space="preserve" y="3.0">Wake<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2422,7 +2461,7 @@ DXFGroupCode<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="112.42365898754724" x="20194.203372291984" y="1174.2044002153634"/>
+          <y:Geometry height="28.0" width="112.42365898754724" x="20545.331601949183" y="1174.2044002153634"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.841796875" x="9.790931056273621" xml:space="preserve" y="3.0">RLWakeModel<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2438,13 +2477,31 @@ DXFGroupCode<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="39.41880421649421" width="198.43009234618148" x="19960.734144443897" y="1537.6279836658696"/>
+          <y:Geometry height="356.5170457343736" width="292.9920647640247" x="19295.13404559593" y="957.1879695108623"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="162.2216796875" x="18.10420632934074" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="162.2216796875" x="65.38519253826234" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
 LiftingSurfaceParameters<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve"/>
+            <y:AttributeLabel xml:space="preserve">+ linearSolverMaxIterations
++ linearSolverTolerance
++ unsteadyBernoulli
++ convectWake
++ wakeEmissionFollowBisector
++ wakeEmissionDistanceFactor
++ wakeVortexCoreRadius
++ staticWakeLength
++ zeroThreshold
++ rlCollocationPointDelta
++ rlInterpolationLayerThickness
++ rlMaxBoundaryLayerIterations
++ rlBoundaryLayerIterationTolerance
++ rlFluidKinematicViscosity
++ rlInitialVortexCoreRadius
++ rlMinVortexCoreRadius
++ rlLambsConstant
++ rlAPrime
++ ramasamy_leishman_data</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve"/>
           </y:UML>
         </y:UMLClassNode>
@@ -2455,12 +2512,20 @@ LiftingSurfaceParameters<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="127.03972838465779" x="19353.624442666063" y="1193.4227829681718"/>
+          <y:Geometry height="176.08761718265964" width="458.8987259265232" x="18130.98488503312" y="315.87692304607754"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="99.36083984375" x="13.839444270453896" xml:space="preserve" y="3.0">BoundaryLayer<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="99.36083984375" x="179.7689430413866" xml:space="preserve" y="3.0">BoundaryLayer<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve"/>
+            <y:AttributeLabel xml:space="preserve">+ recalculate(freestreamVelocity: Vector3d&amp; , surfaceVelocities: MatrixXd&amp;): bool
+
++ thickness(surface: Surface* , panel: int): double
+
++ velocity(surface: Surface&amp; , panel: int , y: double): Vector3d
+
++ transpirationVelocity(surface: (Surface*)&amp; , panle: int): double
+
++ friction(surface: (Surface*)&amp; , panel: int ): Vector3d</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve"/>
           </y:UML>
         </y:UMLClassNode>
@@ -2471,13 +2536,58 @@ LiftingSurfaceParameters<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="157.73347411859504" x="20461.254589665496" y="1053.875921761669"/>
+          <y:Geometry height="751.7856630975766" width="400.38306371909493" x="18864.750981876834" y="231.57947326884823"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="131.13720703125" x="13.29813354367252" xml:space="preserve" y="3.0">LiftingSurfaceSolver<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="131.13720703125" x="134.62292834392247" xml:space="preserve" y="3.0">LiftingSurfaceSolver<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve"/>
-            <y:MethodLabel xml:space="preserve"/>
+            <y:AttributeLabel xml:space="preserve">- logFolder
+- nonWakeSurfaces
+- nonWakePanels
+- surfaceToBody
+- sourceCoefficients
+- doubletCoefficients
+- surfaceVelocityPotentials
+- surfaceVelocities
+- pressureCoefficients
+- previousSurfaceVelocityPotentials
++ bodies
++ freestream_velocity
++ fluidDensity</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">- computeSourceCoefficient():
+- computeSurfaceVelocityPotential():
+- computeSurfaceVelocityPotentialTimeDerivative():
+- computeSurfaceVelocity():
+- computeReferenceVelocitySquared():
+- computePressureCoefficient():
+- computeVelocityInterpolated():
+- computeVelocity():
+- computeVelocityPotential():
+- computeTrailingEdgeVortexDisplacement():
+- computeScalarFieldGradient():
+- computeIndex():
+
++ LiftingSurfaceSolver():
++ dirHandler():
++ addBody():
++ addBody():
++ setFreestreamVelocity():
++ setFluidDensity():
++ initializeWakes():
++ updateWakes():
++ solve():
++ propagate():
++ velocityPotential():
++ velocity():
++ surfaceVelocityPotential():
++ surfaceVelocity():
++ pressureCoefficient():
++ force():
++ force():
++ moment():
++ moment():
++ traceStreamline():
++ log():</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -2538,7 +2648,7 @@ LiftingSurfaceData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Label
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="168.51282529896343" x="20463.743532147055" y="1152.2802961196949"/>
+          <y:Geometry height="28.0" width="168.51282529896343" x="20830.572617601934" y="1303.5899951862013"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.15625" x="25.178287649481717" xml:space="preserve" y="3.0">SurfacePanelEdge<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2554,7 +2664,7 @@ LiftingSurfaceData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Label
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="233.18402760611934" x="20461.254589665496" y="1219.328816131093"/>
+          <y:Geometry height="28.0" width="233.18402760611934" x="20828.083675120375" y="1370.6385151975994"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="174.50439453125" x="29.33981653743467" xml:space="preserve" y="3.0">CompareSurfacePanelEdge<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2570,7 +2680,7 @@ LiftingSurfaceData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Label
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="116.21026257241829" width="485.3047106771628" x="19174.49195151981" y="1330.103538962192"/>
+          <y:Geometry height="116.21026257241829" width="485.3047106771628" x="17886.551107273786" y="100.55000712465244"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.078125" x="192.6132928385814" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -2588,7 +2698,7 @@ BladeBodyData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="157.73347411859504" x="20463.743532147055" y="1094.2802961196949"/>
+          <y:Geometry height="28.0" width="157.73347411859504" x="20737.79483334292" y="822.7374015441496"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.8671875" x="19.43314330929752" xml:space="preserve" y="3.0">SurfacePanelPoint<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2627,7 +2737,7 @@ BladeBodyData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="145.67521686597684" x="19434.472146142016" y="917.0645638902672"/>
+          <y:Geometry height="28.0" width="145.67521686597684" x="19380.9465013772" y="1363.7701896129845"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="97.92626953125" x="23.874473667363418" xml:space="preserve" y="3.0">SurfaceCreator<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2659,7 +2769,7 @@ BladeBodyData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="168.51282529896343" x="19544.895551291836" y="1185.76465872333"/>
+          <y:Geometry height="28.0" width="168.51282529896343" x="18256.954707045814" y="-43.78887311420954"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.36083984375" x="21.575992727606717" xml:space="preserve" y="3.0">BladeBodyManager<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -2675,7 +2785,7 @@ BladeBodyData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="46.270086746390916" width="157.73347411859504" x="19747.202505595462" y="1537.6279836658696"/>
+          <y:Geometry height="46.270086746390916" width="157.73347411859504" x="18499.015603763306" y="557.8956414891181"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="147.04443359375" x="5.34452026242252" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
@@ -2692,14 +2802,15 @@ SurfacePanelPointData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:La
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="46.270086746390916" width="157.73347411859504" x="20200.415201785756" y="1537.6279836658696"/>
+          <y:Geometry height="107.6461594100474" width="380.4001563402344" x="19878.42740365141" y="1002.9250769092365"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="146.33349609375" x="5.69998901242252" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="146.33349609375" x="117.0333301232422" xml:space="preserve" y="3.0">&lt;&lt;struct&gt;&gt;
 SurfacePanelEdgeData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve"/>
-            <y:MethodLabel xml:space="preserve"/>
+            <y:AttributeLabel xml:space="preserve">+ panel: int
++ edge: int</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">+ SurfacePanelEdgeData(surface: Surface* , panel: int , edge: int)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -2709,10 +2820,26 @@ SurfacePanelEdgeData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
       <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="100.0" x="20458.765647183936" y="942.9705970531885"/>
+          <y:Geometry height="28.0" width="100.0" x="18864.750981876834" y="1257.8445022262667"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="89.95361328125" x="5.023193359375" xml:space="preserve" y="3.0">VTKFileWriter<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve"/>
+            <y:MethodLabel xml:space="preserve"/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n143">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="28.0" width="100.0" x="18864.750981876834" y="1138.1296735078813"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="89.2490234375" x="5.37548828125" xml:space="preserve" y="3.0">SurfaceWriter<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve"/>
             <y:MethodLabel xml:space="preserve"/>
@@ -3899,6 +4026,105 @@ SurfacePanelEdgeData<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
       </data>
     </edge>
     <edge id="e117" source="n131" target="n124">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e118" source="n141" target="n123">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e119" source="n142" target="n143">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e120" source="n128" target="n139">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e121" source="n128" target="n140">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e122" source="n128" target="n127">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e123" source="n128" target="n123">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e124" source="n128" target="n122">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e125" source="n128" target="n143">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e126" source="n128" target="n126">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
