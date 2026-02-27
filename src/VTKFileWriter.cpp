@@ -5,15 +5,14 @@ const char* VTKFileWriter::fileExtension() const
     return ".vtk";
 }
 
-
 bool VTKFileWriter::write(
-    const std::shared_ptr<Surface>& surface,
-    const std::string& filename,
-    int node_offset,
-    int panel_offset,
-    const std::vector<std::string>& view_names,
+    const std::shared_ptr<Surface> &surface,
+    const std::string &filename,
+    int /*node_offset*/,
+    int /*panel_offset*/,
+    const std::vector<std::string> &view_names,
     const std::vector<Eigen::MatrixXd,
-    Eigen::aligned_allocator<Eigen::MatrixXd> >& view_data)
+                      Eigen::aligned_allocator<Eigen::MatrixXd>> &view_data)
 {
     std::cout << "Surface " << surface->id << "\t: Saving to " << filename << "." << std::endl;
 

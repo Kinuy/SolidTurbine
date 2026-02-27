@@ -2,7 +2,8 @@
 #include <stdexcept>
 #include <numbers>
 
-const double MathUtility::getOneOver4Pi(){
+double MathUtility::getOneOver4Pi()
+{
 	return 1.0 / (4 * std::numbers::pi);
 }
 

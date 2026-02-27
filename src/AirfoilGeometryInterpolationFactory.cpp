@@ -75,11 +75,11 @@ const AirfoilGeometryData* AirfoilGeometryInterpolationFactory::findBestMatch(
     return bestMatch;
 }
 
-
 std::unique_ptr<AirfoilGeometryData> AirfoilGeometryInterpolationFactory::getAirfoilGeometryForSection(
-    const std::vector<const AirfoilGeometryData*>& airfoilGeometries,
+    const std::vector<const AirfoilGeometryData *> &airfoilGeometries,
     double targetThickness,
-    double tolerance) {
+    double /*tolerance*/)
+{
 
     // Try exact match first
     //const auto* exactMatch = findBestMatch(airfoilGeometries, targetThickness);

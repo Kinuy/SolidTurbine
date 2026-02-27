@@ -71,7 +71,7 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceFileListParser::parseFileList
         throw std::runtime_error(errorMsg);
     }
 
-    return std::move(fileListData);
+    return fileListData;
 }
 
 std::vector<std::string> AirfoilPerformanceFileListParser::getSupportedExtensions() const {

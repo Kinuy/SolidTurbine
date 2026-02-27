@@ -4,7 +4,7 @@
 #include "AirfoilPolarData.h"
 #include <algorithm>
 #include <iostream>
-
+#include <numbers>
 
 void AirfoilGeometryData::setName(const std::string& n) { name = n; }
 
@@ -66,7 +66,8 @@ void AirfoilGeometryData::addAirfoilNosePoint(const bool nosePointExists)
 	    coordinates[insertPos + 1].isTopSurface = false;
 
         // Update all indices after insertion
-        for (int i = 0; i < coordinates.size(); ++i) {
+        for (size_t i = 0; i < coordinates.size(); ++i)
+        {
             coordinates[i].index = i;
         }
     }
@@ -319,8 +320,8 @@ void AirfoilGeometryData::findAndAssignTETEAndTEBEPoints()
     auto findTrailingEdgePoints = [](auto& coordinates) {
         auto teteIt = coordinates.end();
         auto tebeIt = coordinates.end();
-        double maxXUpper = std::numeric_limits<double>::lowest();
-        double maxXLower = std::numeric_limits<double>::lowest();
+        [[maybe_unused]] double maxXUpper = std::numeric_limits<double>::lowest();
+        [[maybe_unused]] double maxXLower = std::numeric_limits<double>::lowest();
 
         for (auto it = coordinates.begin(); it != coordinates.end(); ++it) {
             auto index = std::distance(coordinates.begin(), it);

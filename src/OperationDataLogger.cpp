@@ -1,5 +1,5 @@
 #include "OperationDataLogger.h"
 
-void OperationDataLogger::logPerformance(std::string& message)
+void OperationDataLogger::logPerformance(std::string & /*message*/)
 {
 }

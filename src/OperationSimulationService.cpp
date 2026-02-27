@@ -16,7 +16,8 @@ void OperationSimulationService::addAnalyzer(std::unique_ptr <IAerodynamicAnalyz
 
 void OperationSimulationService::runSimulation()
 {
-	for (const auto& turbine : turbines) {
+	for ([[maybe_unused]] const auto &turbine : turbines)
+	{
 		for (const auto & analyzer : analyzers) {
 			analyzer->setOperationConditions(OperationConditions({ 10.0 }, { 7.0 }, { 5.0 })); // Example conditions
 			analyzer->setEnvironmentalConditions(EnvironmentalConditions());

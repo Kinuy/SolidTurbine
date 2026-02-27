@@ -66,7 +66,7 @@ std::unique_ptr<IStructuredData> BladeGeometryParser::parseFile(const std::strin
         throw std::runtime_error("No valid blade geometry data found in file: " + filePath);
     }
 
-    return std::move(bladeData);
+    return bladeData;
 }
 
 std::vector<std::string> BladeGeometryParser::getSupportedExtensions() const {

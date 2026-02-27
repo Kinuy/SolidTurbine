@@ -104,7 +104,7 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceParser::parseFile(const std::
             }
             // Parse data lines
             else if (isDataLine(tokens)) {
-                double alpha = std::stod(tokens[0]);
+                double alpha = std::stod(tokens[0]) * std::numbers::pi / 180.0; // convert to radians
                 double cl = std::stod(tokens[1]);
                 double cd = std::stod(tokens[2]);
                 double cm = (tokens.size() > 3) ? std::stod(tokens[3]) : 0.0;
@@ -134,7 +134,7 @@ std::unique_ptr<IStructuredData> AirfoilPerformanceParser::parseFile(const std::
             << ") in file: " << filePath << std::endl;
     }
 
-    return std::move(perfData);
+    return perfData;
 }
 
 std::vector<std::string> AirfoilPerformanceParser::getSupportedExtensions() const {

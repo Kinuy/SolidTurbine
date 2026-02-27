@@ -77,11 +77,11 @@ const AirfoilPolarData* AirfoilPolarInterpolationFactory::findBestMatch(
     return bestMatch;
 }
 
-
 std::unique_ptr<AirfoilPolarData> AirfoilPolarInterpolationFactory::getPolarForSection(
-    const std::vector<const AirfoilPolarData*>& polars,
+    const std::vector<const AirfoilPolarData *> &polars,
     double targetThickness,
-    double tolerance) {
+    double /*tolerance*/)
+{
 
     // Try exact match first
     //const auto* exactMatch = findBestMatch(polars, targetThickness);

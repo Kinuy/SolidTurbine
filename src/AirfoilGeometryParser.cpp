@@ -105,8 +105,7 @@ std::unique_ptr<IStructuredData> AirfoilGeometryParser::parseFile(const std::str
     // Find and assign trailing edge top edge (TETE) and trailing edge bottom edge (TEBE) point
     airfoilData->findAndAssignTETEAndTEBEPoints();
 
-
-    return std::move(airfoilData);
+    return airfoilData;
 }
 
 std::vector<std::string> AirfoilGeometryParser::getSupportedExtensions() const {

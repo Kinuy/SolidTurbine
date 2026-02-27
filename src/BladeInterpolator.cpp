@@ -63,7 +63,7 @@ void BladeInterpolator::interpolateSection(double targetRadius)
 
 }
 
-std::vector<std::unique_ptr<BladeGeometrySection>> BladeInterpolator::getBladeSections()
+const std::vector<std::unique_ptr<BladeGeometrySection>> &BladeInterpolator::getBladeSections() const
 {
-	return std::move(bladeSections);
+	return bladeSections;
 }

@@ -36,60 +36,214 @@ std::vector<std::vector<std::vector<double>>> AirfoilPolarData::buildAlphaGrid(
     return alphaGrid;
 }
 
+// void AirfoilPolarData::buildInterpolationGrids(
+//     const std::vector<double>& reynolds,
+//     const std::vector<double>& machs,
+//     const std::vector<double>& alphas,
+//     std::vector<std::vector<std::vector<double>>>& clGrid,
+//     std::vector<std::vector<std::vector<double>>>& cdGrid,
+//     std::vector<std::vector<std::vector<double>>>& cmGrid) const {
+
+//     // Initialize grids
+//     clGrid.resize(reynolds.size());
+//     cdGrid.resize(reynolds.size());
+//     cmGrid.resize(reynolds.size());
+
+//     for (size_t r = 0; r < reynolds.size(); ++r) {
+//         clGrid[r].resize(machs.size());
+//         cdGrid[r].resize(machs.size());
+//         cmGrid[r].resize(machs.size());
+
+//         for (size_t m = 0; m < machs.size(); ++m) {
+//             clGrid[r][m].resize(alphas.size());
+//             cdGrid[r][m].resize(alphas.size());
+//             cmGrid[r][m].resize(alphas.size());
+
+//             for (size_t a = 0; a < alphas.size(); ++a) {
+//                 AirfoilOperationCondition condition(reynolds[r], machs[m], alphas[a]);
+//                 auto coeffs = findOrInterpolateCoefficients(condition);
+
+//                 clGrid[r][m][a] = coeffs.cl;
+//                 cdGrid[r][m][a] = coeffs.cd;
+//                 cmGrid[r][m][a] = coeffs.cm;
+//             }
+//         }
+//     }
+// }
 
 void AirfoilPolarData::buildInterpolationGrids(
-    const std::vector<double>& reynolds,
-    const std::vector<double>& machs,
-    const std::vector<double>& alphas,
-    std::vector<std::vector<std::vector<double>>>& clGrid,
-    std::vector<std::vector<std::vector<double>>>& cdGrid,
-    std::vector<std::vector<std::vector<double>>>& cmGrid) const {
+    const std::vector<double> &reynolds,
+    const std::vector<double> &machs,
+    const std::vector<double> &alphas,
+    std::vector<std::vector<std::vector<double>>> &clGrid,
+    std::vector<std::vector<std::vector<double>>> &cdGrid,
+    std::vector<std::vector<std::vector<double>>> &cmGrid) const
+{
+    // ── Allocate grids first ──────────────────────────────────────────────────
+    clGrid.assign(reynolds.size(), std::vector<std::vector<double>>(
+                                       machs.size(), std::vector<double>(alphas.size(), 0.0)));
+    cdGrid.assign(reynolds.size(), std::vector<std::vector<double>>(
+                                       machs.size(), std::vector<double>(alphas.size(), 0.0)));
+    cmGrid.assign(reynolds.size(), std::vector<std::vector<double>>(
+                                       machs.size(), std::vector<double>(alphas.size(), 0.0)));
 
-    // Initialize grids
-    clGrid.resize(reynolds.size());
-    cdGrid.resize(reynolds.size());
-    cmGrid.resize(reynolds.size());
+    // ── Fill with direct lookups ──────────────────────────────────────────────
+    for (size_t r = 0; r < reynolds.size(); ++r)
+        for (size_t m = 0; m < machs.size(); ++m)
+            for (size_t a = 0; a < alphas.size(); ++a)
+            {
+                AirfoilOperationCondition cond(reynolds[r], machs[m], alphas[a]);
+                auto it = std::find_if(polarData.begin(), polarData.end(),
+                                       [&cond](const AirfoilPolarPoint &p)
+                                       {
+                                           return std::abs(p.condition.reynolds - cond.reynolds) < 1e-6 &&
+                                                  std::abs(p.condition.mach - cond.mach) < 1e-6 &&
+                                                  std::abs(p.condition.alpha - cond.alpha) < 1e-6;
+                                       });
 
-    for (size_t r = 0; r < reynolds.size(); ++r) {
-        clGrid[r].resize(machs.size());
-        cdGrid[r].resize(machs.size());
-        cmGrid[r].resize(machs.size());
-
-        for (size_t m = 0; m < machs.size(); ++m) {
-            clGrid[r][m].resize(alphas.size());
-            cdGrid[r][m].resize(alphas.size());
-            cmGrid[r][m].resize(alphas.size());
-
-            for (size_t a = 0; a < alphas.size(); ++a) {
-                AirfoilOperationCondition condition(reynolds[r], machs[m], alphas[a]);
-                auto coeffs = findOrInterpolateCoefficients(condition);
-
-                clGrid[r][m][a] = coeffs.cl;
-                cdGrid[r][m][a] = coeffs.cd;
-                cmGrid[r][m][a] = coeffs.cm;
+                clGrid[r][m][a] = (it != polarData.end()) ? it->coefficients.cl : 0.0;
+                cdGrid[r][m][a] = (it != polarData.end()) ? it->coefficients.cd : 0.0;
+                cmGrid[r][m][a] = (it != polarData.end()) ? it->coefficients.cm : 0.0;
             }
-        }
-    }
 }
 
+// AirfoilAeroCoefficients AirfoilPolarData::findOrInterpolateCoefficients(const AirfoilOperationCondition& condition) const {
+//     // Find exact match first
+//     auto it = std::find_if(polarData.begin(), polarData.end(),
+//                            [&condition](const AirfoilPolarPoint &point)
+//                            {
+//                                return std::abs(point.condition.reynolds - condition.reynolds) < 1e-6 &&
+//                                       std::abs(point.condition.mach - condition.mach) < 1e-6 &&
+//                                       std::abs(point.condition.alpha - condition.alpha) < 1e-6;
+//                            });
 
-AirfoilAeroCoefficients AirfoilPolarData::findOrInterpolateCoefficients(const AirfoilOperationCondition& condition) const {
-    // Find exact match first
+//     if (it != polarData.end()) {
+//         return it->coefficients;
+//     }
+
+//     // TODO: fix: Return zero coefficients for missing data (could be improved with nearest neighbor)
+//     return AirfoilAeroCoefficients(0.0, 0.0, 0.0);
+// }
+
+// AirfoilAeroCoefficients AirfoilPolarData::findOrInterpolateCoefficients(
+//     const AirfoilOperationCondition &condition) const
+// {
+//     if (polarData.empty())
+//         throw std::runtime_error(
+//             "AirfoilPolarData '" + name + "': no polar data available");
+
+//     // ── Exact match ───────────────────────────────────────────────────────────
+//     auto it = std::find_if(polarData.begin(), polarData.end(),
+//                            [&condition](const AirfoilPolarPoint &p)
+//                            {
+//                                return std::abs(p.condition.reynolds - condition.reynolds) < 1e-6 &&
+//                                       std::abs(p.condition.mach - condition.mach) < 1e-6 &&
+//                                       std::abs(p.condition.alpha - condition.alpha) < 1e-6;
+//                            });
+
+//     if (it != polarData.end())
+//         return it->coefficients;
+
+//     // ── Boundary checks — throw if outside data range ─────────────────────────
+//     auto reynolds = getReynoldsNumbers(); // sorted ascending (via std::set)
+//     auto machs = getMachNumbers();
+//     auto alphas = getAnglesOfAttack();
+
+//     if (condition.reynolds < reynolds.front() || condition.reynolds > reynolds.back())
+//         throw std::out_of_range(
+//             "AirfoilPolarData '" + name + "': Reynolds " +
+//             std::to_string(condition.reynolds) +
+//             " is outside data range [" +
+//             std::to_string(reynolds.front()) + ", " +
+//             std::to_string(reynolds.back()) + "]");
+
+//     if (condition.mach < machs.front() || condition.mach > machs.back())
+//         throw std::out_of_range(
+//             "AirfoilPolarData '" + name + "': Mach " +
+//             std::to_string(condition.mach) +
+//             " is outside data range [" +
+//             std::to_string(machs.front()) + ", " +
+//             std::to_string(machs.back()) + "]");
+
+//     if (condition.alpha < alphas.front() || condition.alpha > alphas.back())
+//         throw std::out_of_range(
+//             "AirfoilPolarData '" + name + "': alpha " +
+//             std::to_string(condition.alpha) +
+//             " is outside data range [" +
+//             std::to_string(alphas.front()) + ", " +
+//             std::to_string(alphas.back()) + "]");
+
+//     // ── Interpolate ───────────────────────────────────────────────────────────
+//     return performTrilinearInterpolation(condition);
+// }
+
+AirfoilAeroCoefficients AirfoilPolarData::findOrInterpolateCoefficients(
+    const AirfoilOperationCondition &condition) const
+{
+
+    if (!interpolationStrategy)
+        throw std::runtime_error("interpolationStrategy is null in '" + name + "'");
+
+    if (polarData.empty())
+        throw std::runtime_error(
+            "AirfoilPolarData '" + name + "': no polar data available");
+
+    // ── Exact match ───────────────────────────────────────────────────────────
     auto it = std::find_if(polarData.begin(), polarData.end(),
-        [&condition](const AirfoilPolarPoint& point) {
-            return std::abs(point.condition.reynolds - condition.reynolds) < 1e-6 &&
-                std::abs(point.condition.mach - condition.mach) < 1e-6 &&
-                std::abs(point.condition.alpha - condition.alpha) < 1e-6;
-        });
+                           [&condition](const AirfoilPolarPoint &p)
+                           {
+                               return std::abs(p.condition.reynolds - condition.reynolds) < 1e-6 &&
+                                      std::abs(p.condition.mach - condition.mach) < 1e-6 &&
+                                      std::abs(p.condition.alpha - condition.alpha) < 1e-6;
+                           });
 
-    if (it != polarData.end()) {
+    if (it != polarData.end())
         return it->coefficients;
+
+    // ── Build clamped condition (Re, Mach) — throw only for alpha ─────────────
+    auto reynolds = getReynoldsNumbers(); // sorted ascending
+    auto machs = getMachNumbers();
+    auto alphas = getAnglesOfAttack();
+
+    double re = condition.reynolds;
+    double mach = condition.mach;
+
+    if (re < reynolds.front())
+    {
+        // std::cout << "[AirfoilPolarData '" << name << "'] Re clamped: "
+        //           << re << " -> " << reynolds.front() << " (below range)\n";
+        re = reynolds.front();
+    }
+    else if (re > reynolds.back())
+    {
+        // std::cout << "[AirfoilPolarData '" << name << "'] Re clamped: "
+        //           << re << " -> " << reynolds.back() << " (above range)\n";
+        re = reynolds.back();
     }
 
-    // TODO: fix: Return zero coefficients for missing data (could be improved with nearest neighbor)
-    return AirfoilAeroCoefficients(0.0, 0.0, 0.0);
-}
+    if (mach < machs.front())
+    {
+        // std::cout << "[AirfoilPolarData '" << name << "'] Mach clamped: "
+        //           << mach << " -> " << machs.front() << " (below range)\n";
+        mach = machs.front();
+    }
+    else if (mach > machs.back())
+    {
+        // std::cout << "[AirfoilPolarData '" << name << "'] Mach clamped: "
+        //           << mach << " -> " << machs.back() << " (above range)\n";
+        mach = machs.back();
+    }
 
+    if (condition.alpha < alphas.front() || condition.alpha > alphas.back())
+        throw std::out_of_range(
+            "AirfoilPolarData '" + name + "': alpha " +
+            std::to_string(condition.alpha) +
+            " is outside data range [" +
+            std::to_string(alphas.front()) + ", " +
+            std::to_string(alphas.back()) + "]");
+
+    return performTrilinearInterpolation({re, mach, condition.alpha});
+}
 
 AirfoilAeroCoefficients AirfoilPolarData::interpolateCoefficients(const AirfoilOperationCondition& target) const {
     if (polarData.empty()) {
@@ -98,11 +252,12 @@ AirfoilAeroCoefficients AirfoilPolarData::interpolateCoefficients(const AirfoilO
 
     // For exact matches, return directly
     auto exactMatch = std::find_if(polarData.begin(), polarData.end(),
-        [&target](const AirfoilPolarPoint& point) {
-            return std::abs(point.condition.reynolds - target.reynolds) < 1e-6 &&
-                std::abs(point.condition.mach - target.mach) < 1e-6 &&
-                std::abs(point.condition.alpha - target.alpha) < 1e-6;
-        });
+                                   [&target](const AirfoilPolarPoint &point)
+                                   {
+                                       return std::abs(point.condition.reynolds - target.reynolds) < 1e-6 &&
+                                              std::abs(point.condition.mach - target.mach) < 1e-6 &&
+                                              std::abs(point.condition.alpha - target.alpha) < 1e-6;
+                                   });
 
     if (exactMatch != polarData.end()) {
         return exactMatch->coefficients;
@@ -126,26 +281,26 @@ AirfoilAeroCoefficients AirfoilPolarData::performTrilinearInterpolation(const Ai
 
     // Use existing trilinear interpolation
     double cl = MathUtility::triLinearInterpolation(
-        target.reynolds, 
-        target.mach, 
+        target.reynolds,
+        target.mach,
         target.alpha,
-        reynolds, 
+        reynolds,
         buildMachGrid(reynolds, machs),
         buildAlphaGrid(reynolds, machs, alphas), clGrid);
 
     double cd = MathUtility::triLinearInterpolation(
-        target.reynolds, 
-        target.mach, 
+        target.reynolds,
+        target.mach,
         target.alpha,
-        reynolds, 
+        reynolds,
         buildMachGrid(reynolds, machs),
         buildAlphaGrid(reynolds, machs, alphas), cdGrid);
 
     double cm = MathUtility::triLinearInterpolation(
-        target.reynolds, 
-        target.mach, 
+        target.reynolds,
+        target.mach,
         target.alpha,
-        reynolds, 
+        reynolds,
         buildMachGrid(reynolds, machs),
         buildAlphaGrid(reynolds, machs, alphas), cmGrid);
 
@@ -197,14 +352,14 @@ std::vector<AirfoilOperationCondition> AirfoilPolarData::createCombinedCondition
 
     for (const auto& point : left.polarData) {
         uniqueConditions.emplace(point.condition.reynolds,
-            point.condition.mach,
-            point.condition.alpha);
+                                 point.condition.mach,
+                                 point.condition.alpha);
     }
 
     for (const auto& point : right.polarData) {
         uniqueConditions.emplace(point.condition.reynolds,
-            point.condition.mach,
-            point.condition.alpha);
+                                 point.condition.mach,
+                                 point.condition.alpha);
     }
 
     std::vector<AirfoilOperationCondition> result;

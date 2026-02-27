@@ -1,97 +1,418 @@
+#include <chrono>
+#include <filesystem>
 #include <iostream>
 #include <memory>
+#include <numbers>
+#include <vector>
 
 #include "ConfigurationSchema.h"
 #include "FileReader.h"
 #include "ConfigurationParser.h"
 #include "ExporterFactory.h"
-#include "DXFBlade3D.h"
+#include "DXFDocument.h"
+#include "TurbineGeometry.h"
 
+// ── Simulation layer ──────────────────────────────────────────────────────────
+#include "ConfigurationAdapter.h"
+#include "FlowCalculatorFactory.h"
+#include "NingSolverFactory.h"
+#include "VariableSpeedController.h"
+#include "StandardPitchSchedule.h"
+#include "EfficiencyModels.h"
+#include "OperationSolver.h"
+#include "AEPCalculator.h"
+#include "BEMPostprocessor.h"
 
-/**
- * @brief Dummy Function to keep window after run open 
- */
-static void waitForKeyPress() {
-	std::cout << "Press Enter to continue...";
-	std::cin.get();
+// ── Output layer ──────────────────────────────────────────────────────────────
+#include "TecplotFormatter.h"
+#include "IBlade3DExporter.h"
+#include "TecplotBlade3DExporter.h"
+#include "ISimulationResultsExporter.h"
+#include "TecplotSimulationExporter.h"
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+static void waitForKeyPress()
+{
+    std::cout << "Press Enter to continue...";
+    std::cin.get();
 }
 
+static void printTiming(int step, std::string_view label,
+                        std::chrono::steady_clock::time_point t0,
+                        std::chrono::steady_clock::time_point t1,
+                        std::string_view extra = "")
+{
+    double ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
+    double s = ms / 1000.0;
+
+    std::cout << "[" << step << "] " << label;
+    for (int i = static_cast<int>(label.size()); i < 26; ++i)
+        std::cout << ' ';
+    std::cout << ": " << ms << " ms (" << s << " s)";
+    if (!extra.empty())
+        std::cout << "  (" << extra << ")";
+    std::cout << '\n';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// main
+// ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * @brief Programm to simulate a given turbine using SOLID principles
+ * @brief Wind turbine performance simulation using SOLID principles.
  */
-int main(int argc , char** argv){
+int main(int /*argc*/, char **argv)
+{
+    auto t_total_start = std::chrono::steady_clock::now();
 
-	
-	try {
-		// Define simulation schema
-		ConfigurationSchema schema;
-		// Project data
-		schema.addString("project_name", true, "Name of project");
-		schema.addString("project_id", true, "Project number for identification");
-		schema.addString("project_revision", true, "Project revision");
-		schema.addString("project_date", true, "Date of simulation run");
-		schema.addString("project_engineer", true, "Engineer responsible for simulation");
-		// Data tables -> airfoil performance, airfoil geometry , blade geometry
-		schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
-		schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data file list");
-		schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
-		// Turbine data
-		schema.addBool("turbine_is_horizontal", true, "flag for horizontal or vertical turbine");
-		schema.addInt("number_of_blades", true, "blade number of turbine");	
-		schema.addDouble("hub_radius", true, "turbine hub radius [m]");
-		// Operation data
-		schema.addDouble("rated_rotorspeed", true, "rotor speed at rated conditions [rpm]");
-		schema.addDouble("min_rotorspeed", true, "cut in min rotor speed [rpm]");
-		schema.addDouble("rated_electrical_power", true, "rated electrical power of turbine [W]");
-		// Simulation data
-		schema.addBool("simulation_is_time_based",true, "flag for static or time based simulation");
-		schema.addRange("wind_speed_range","windspeed_start","windspeed_end","windspeed_step", true, "wind speed range for static simulation [m/s]");
-		schema.addRange("tip_speed_ratio_range","tsr_start","tsr_end","tsr_step", true, "tip speed ratio range for static simulation [-]");
-		schema.addRange("pitch_angle_range","pitch_start","pitch_emd","pitch_step", true, "pitch angle range for static simulation [deg]");
+    try
+    {
+        // ── 1. Schema ─────────────────────────────────────────────────────────
+        auto t0 = std::chrono::steady_clock::now();
 
-		// Create parser
-		auto fileReader = std::make_unique<FileReader>("ProjectData.dat");
-		ConfigurationParser parser(std::move(schema), std::move(fileReader));
+        ConfigurationSchema schema;
 
-		// Parse configuration
-		Configuration config = parser.parse();
+        // Project data
+        schema.addString("project_name", true, "Name of project");
+        schema.addString("project_id", true, "Project number for identification");
+        schema.addString("project_revision", true, "Project revision");
+        schema.addString("project_date", true, "Date of simulation run");
+        schema.addString("project_engineer", true, "Engineer responsible for simulation");
 
-		// Get Blade data
-		const BladeGeometryData* bladeGeometry = config.getBladeGeometry();
-		
-		// Get airfoil perfo and geo file list -> processes internally each file in list
-		const AirfoilPerformanceFileListData* airfoilPerformanceFileList = config.getAirfoilPerformanceFileList();
-		const AirfoilGeometryFileListData* airfoilGeometryFileList = config.getAirfoilGeometryFileList();
+        // Data tables
+        schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
+        schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data file list");
+        schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
 
-		// Interpolate Airfoil Geometries and performances on blade sections
-		std::unique_ptr<BladeInterpolator> bladeInterpolator = config.createBladeInterpolator();
+        // Turbine data
+        schema.addBool("turbine_is_horizontal", true, "Flag for horizontal or vertical turbine");
+        schema.addInt("number_of_blades", true, "Blade count");
+        schema.addDouble("hub_radius", true, "Turbine hub radius [m]");
+        schema.addDouble("cone", true, "Cone angle [deg]");
+        schema.addDouble("yaw", true, "Yaw angle [deg]");
+        schema.addDouble("tilt", true, "Tilt angle [deg]");
+        schema.addDouble("tower_dist", true, "Tower distance [m]");
+        schema.addDouble("hub_height", true, "Hub height [m]");
 
-		// Write DXF file with sample data
-		auto dxfBlade3D = std::make_unique<DXFBlade3D>(std::move(bladeInterpolator));
+        // Operation data
+        schema.addDouble("rated_rotorspeed", true, "Rotor speed at rated conditions [rpm]");
+        schema.addDouble("min_rotorspeed", true, "Cut-in min rotor speed [rpm]");
+        schema.addDouble("rated_electrical_power", true, "Rated electrical power [W]");
 
-		// Export 3D section data to custom text file
-		auto exporter = ExporterFactory::createExporter();
-		exporter->exportData("", "BladeSections.txt", dxfBlade3D->dataToString());
+        // Simulation data
+        schema.addBool("simulation_is_time_based", true, "Flag for static or time-based simulation");
+        schema.addRange("wind_speed_range",
+                        "windspeed_start", "windspeed_end", "windspeed_step",
+                        true, "Wind speed range for static simulation [m/s]");
+        schema.addRange("tip_speed_ratio_range",
+                        "tsr_start", "tsr_end", "tsr_step",
+                        true, "Tip speed ratio range [-]");
+        schema.addRange("pitch_angle_range",
+                        "pitch_start", "pitch_emd", "pitch_step",
+                        true, "Pitch angle range [deg]");
 
-		// Use configuration and pas to objects with type safety
-		double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
-		int numberOfBlades = config.getInt("number_of_blades");
-		bool isHorizontal = config.getBool("turbine_is_horizontal");
-		bool isTimeBased = config.getBool("simulation_is_time_based");
+        // Solver / controller keys
+        schema.addDouble("n_nenn", true, "Maximum rotor speed [rpm]");
+        schema.addDouble("lambda_opt", true, "Optimal tip-speed ratio [-]");
+        schema.addDouble("max_dp_dn", true, "Max dP/dn gradient [W/rpm]");
+        schema.addString("power_mode", true, "Speed control mode: L0 or POWER");
+        schema.addDouble("kinematic_viscosity", true, "Air kinematic viscosity [m^2/s]");
+        schema.addDouble("speed_of_sound", true, "Speed of sound [m/s]");
+        schema.addDouble("air_density", true, "Air density [kg/m^3]");
+        schema.addDouble("convergence_tol", true, "BEM convergence tolerance");
+        schema.addDouble("wake_transition", true, "Empirical wake transition point");
+        schema.addDouble("tip_extra_dist", true, "Tip singularity extra distance [m]");
 
-		std::cout << "Configuration loaded successfully:" << std::endl;
+        // AEP keys
+        schema.addDouble("aep_k_factor", true, "Weibull k factor for AEP");
+        schema.addDouble("aep_money_kwh", true, "Energy price [EUR/kWh]");
+        schema.addRange("aep_vmean_range",
+                        "vmean_start", "vmean_end", "vmean_step",
+                        true, "Mean wind speed range for AEP [m/s]");
 
-		// Create simulation setup
+        auto t1 = std::chrono::steady_clock::now();
+        printTiming(1, "Schema built", t0, t1);
 
+        // ── 2. Parse ──────────────────────────────────────────────────────────
+        auto fileReader = std::make_unique<FileReader>(argv[1]);
+        ConfigurationParser parser(std::move(schema), std::move(fileReader));
+        Configuration config = parser.parse();
 
-	}
-	catch(const std::exception& e){
-		std::cerr << "Configuration error: " << e.what() << std::endl;
-		waitForKeyPress();
-		return 1;
-	}
+        [[maybe_unused]] const BladeGeometryData *bladeGeometry = config.getBladeGeometry();
+        [[maybe_unused]] const AirfoilPerformanceFileListData *airfoilPerformanceFileList = config.getAirfoilPerformanceFileList();
+        [[maybe_unused]] const AirfoilGeometryFileListData *airfoilGeometryFileList = config.getAirfoilGeometryFileList();
 
-	waitForKeyPress();
-	return 0;
+        [[maybe_unused]] double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
+        [[maybe_unused]] bool isHorizontal = config.getBool("turbine_is_horizontal");
+        [[maybe_unused]] bool isTimeBased = config.getBool("simulation_is_time_based");
+
+        std::cout << "Configuration loaded successfully.\n";
+
+        auto t2 = std::chrono::steady_clock::now();
+        printTiming(2, "Config parsed", t1, t2);
+
+        // ── 3. Blade geometry export (DXF + Tecplot 3D) ───────────────────────
+        //
+        // createBladeInterpolator() is called once per exporter so each can
+        // take ownership independently.  config holds all raw data so each
+        // call is cheap — no deep-copy machinery needed.
+        //
+        {
+            namespace fs = std::filesystem;
+
+            const std::string output_dir = "output";
+            fs::create_directories(output_dir);
+
+            // ── 3a. DXF ───────────────────────────────────────────────────────
+            // DXFBlade3D writes "blade3D.dxf" to the working directory
+            // on construction — move it into the output folder afterwards.
+            {
+                const std::string dxf_path = output_dir + "/blade3D.dxf";
+                const std::string txt_path = output_dir + "/BladeSections.txt";
+
+                for (auto const &p : {dxf_path, txt_path})
+                    if (fs::exists(p))
+                        fs::remove(p);
+
+                auto dxfInterpolator = config.createBladeInterpolator();
+                auto dxfBlade3D = std::make_unique<DXFBlade3D>(
+                    std::move(dxfInterpolator));
+
+                if (fs::exists("blade3D.dxf"))
+                    fs::rename("blade3D.dxf", dxf_path);
+
+                auto txtExporter = ExporterFactory::createExporter();
+                txtExporter->exportData("", txt_path, dxfBlade3D->dataToString());
+
+                std::cout << "  -> " << dxf_path << " written\n";
+                std::cout << "  -> " << txt_path << " written\n";
+            }
+
+            // ── 3b. Tecplot 3D blade geometry ─────────────────────────────────
+            // One zone per airfoil section, variables X Y Z chord radius
+            // rel_thickness.  Tecplot can animate over zones or display all
+            // sections simultaneously as a 3D surface.
+            {
+                const std::string tec_path = output_dir + "/blade3D_geometry.dat";
+
+                // Shared formatter — same TecplotFormatter used by all exporters.
+                auto formatter = std::make_shared<TecplotFormatter>();
+                std::unique_ptr<IBlade3DExporter> blade3DExporter =
+                    std::make_unique<TecplotBlade3DExporter>(formatter);
+
+                auto tecInterpolator = config.createBladeInterpolator();
+
+                if (blade3DExporter->Export(*tecInterpolator, tec_path))
+                    std::cout << "  -> " << tec_path << " written"
+                              << "  (" << tecInterpolator->getBladeSections().size()
+                              << " sections)\n";
+                else
+                    std::cerr << "  -> " << tec_path << " FAILED\n";
+            }
+        }
+
+        auto t3 = std::chrono::steady_clock::now();
+        printTiming(3, "Blade geometry exported", t2, t3, "3 files");
+
+        // ── 4. Build TurbineGeometry ──────────────────────────────────────────
+        //
+        // Fresh interpolator — independent from the ones used in step 3.
+        //
+        auto bladeInterpolator = config.createBladeInterpolator();
+        auto turbine = std::make_unique<TurbineGeometry>(std::move(bladeInterpolator));
+        turbine->setTurbineConfiguration(
+            config.getDouble("hub_radius"),
+            config.getDouble("cone"),
+            config.getDouble("yaw"),
+            config.getDouble("tilt"),
+            config.getDouble("tower_dist"),
+            config.getDouble("hub_height"),
+            config.getInt("number_of_blades"));
+        turbine->PreComputeRotationMatrices();
+        turbine->set_number_of_blades(config.getInt("number_of_blades"));
+
+        auto t4 = std::chrono::steady_clock::now();
+        printTiming(4, "TurbineGeometry built", t3, t4,
+                    std::to_string(turbine->num_sections()) + " sections");
+
+        // ── 5. Wrap Configuration as ISimulationConfig ────────────────────────
+        ConfigurationAdapter sim_config(config);
+
+        auto t5 = std::chrono::steady_clock::now();
+        printTiming(5, "SimConfig wrapped", t4, t5);
+
+        // ── 6. Build controller ───────────────────────────────────────────────
+        auto ctrl_params = TurbineControllerParams::FromConfig(turbine.get(), &sim_config);
+
+        auto pitch_sched = std::make_unique<StandardPitchSchedule>(
+            0.0,
+            std::vector<double>{0.0},
+            std::vector<double>{0.0});
+
+        auto eta_model = std::make_unique<ConstantEfficiency>(0.94);
+        auto controller = std::make_unique<VariableSpeedController>(
+            std::move(ctrl_params),
+            pitch_sched.get(),
+            eta_model.get());
+
+        auto t6 = std::chrono::steady_clock::now();
+        printTiming(6, "Controller built", t5, t6);
+
+        // ── 7. Build OperationSolver ──────────────────────────────────────────
+        auto op_params = OperationSolverParams::FromConfig(turbine.get(), &sim_config);
+
+        // Wind speed vector from config range
+        std::vector<double> vinf_vec;
+        for (double v = sim_config.wind_speed_start();
+             v <= sim_config.wind_speed_end() + sim_config.wind_speed_step() * 1e-9;
+             v += sim_config.wind_speed_step())
+            vinf_vec.push_back(v);
+
+        FlowCalculatorFactory fc_factory;
+        NingSolverFactory solver_factory;
+        const double psi = 0.0; // steady-state: single azimuth
+
+        // Collect postprocessor results per wind speed for rotor disc export.
+        std::vector<BEMPostprocessResult> pp_vec;
+        pp_vec.reserve(vinf_vec.size());
+
+        // BEM callback: FlowCalculator + NingSolver + BEMPostprocessor per point.
+        BEMCallback bem_callback = [&](double vinf,
+                                       double lambda,
+                                       double pitch_deg)
+            -> std::pair<double, double>
+        {
+            double rot_rate = lambda * vinf / turbine->RotorRadius();
+            double pitch_rad = pitch_deg * std::numbers::pi / 180.0;
+
+            auto fc = fc_factory.Build(turbine.get(), rot_rate, vinf, psi, FlowModifiers{});
+            auto solver = solver_factory.Build(turbine.get(), &sim_config, fc.get(), pitch_rad, psi);
+
+            if (!solver->Solve())
+                return {0.0, 0.0};
+
+            BEMPostprocessor postproc(
+                turbine.get(),
+                &sim_config,
+                fc.get(),
+                static_cast<double>(turbine->num_blades()));
+
+            postproc.Process(*solver);
+
+            if (!postproc.Success())
+                return {0.0, 0.0};
+
+            BEMPostprocessResult const &pp = postproc.Result();
+
+            // Store for rotor disc export (one entry per converged wind speed).
+            pp_vec.push_back(pp);
+
+            return {pp.cp, pp.ct};
+        };
+
+        OperationSolver op_solver(op_params, controller.get(), bem_callback);
+
+        auto t7 = std::chrono::steady_clock::now();
+        printTiming(7, "OperationSolver built", t6, t7,
+                    std::to_string(vinf_vec.size()) + " wind speed points");
+
+        // ── 8. Run power curve ────────────────────────────────────────────────
+        auto power_curve = op_solver.Run(0.0, vinf_vec);
+
+        auto t8 = std::chrono::steady_clock::now();
+        printTiming(8, "Power curve solved", t7, t8,
+                    std::to_string(vinf_vec.size()) + " wind speed points");
+
+        // ── 9. AEP ────────────────────────────────────────────────────────────
+        std::vector<double> pel_vec;
+        pel_vec.reserve(power_curve.size());
+        for (auto const &pt : power_curve)
+            pel_vec.push_back(pt.p_el);
+
+        AEPCalculator aep_calc(
+            vinf_vec, pel_vec,
+            sim_config.wind_speed_bin_width(),
+            sim_config.weibull_k(),
+            sim_config.energy_price_per_kwh());
+
+        auto vmean_vec = sim_config.mean_wind_speeds();
+        auto aep_results = aep_calc.ComputeRange(vmean_vec);
+
+        auto t9 = std::chrono::steady_clock::now();
+        printTiming(9, "AEP computed", t8, t9,
+                    std::to_string(vmean_vec.size()) + " mean wind speed(s)");
+
+        // ── 10. Export simulation results ─────────────────────────────────────
+        auto formatter = std::make_shared<TecplotFormatter>();
+        std::unique_ptr<ISimulationResultsExporter> simExporter =
+            std::make_unique<TecplotSimulationExporter>(formatter);
+
+        // turbine_performance.dat — power curve, one row per wind speed
+        if (simExporter->ExportPowerCurve(power_curve, "output/turbine_performance.dat"))
+            std::cout << "  -> output/turbine_performance.dat written\n";
+        else
+            std::cerr << "  -> output/turbine_performance.dat FAILED\n";
+
+        // blade_data.dat — section loads at the rated operating point
+        if (!pp_vec.empty() && !power_curve.empty())
+        {
+            // Pick operating point with highest electrical power (≈ rated).
+            std::size_t rated_idx = 0;
+            double p_max = 0.0;
+            for (std::size_t i = 0; i < power_curve.size(); ++i)
+            {
+                if (power_curve[i].p_el > p_max)
+                {
+                    p_max = power_curve[i].p_el;
+                    rated_idx = i;
+                }
+            }
+            // Guard: pp_vec may be shorter than power_curve if any point
+            // failed to converge and was skipped in the callback.
+            std::size_t blade_idx = std::min(rated_idx, pp_vec.size() - 1);
+
+            if (simExporter->ExportBladeData(pp_vec[blade_idx], turbine.get(),
+                                             vinf_vec[blade_idx], "output/blade_data.dat"))
+                std::cout << "  -> output/blade_data.dat written"
+                          << "  (v_inf = " << vinf_vec[blade_idx] << " m/s)\n";
+            else
+                std::cerr << "  -> output/blade_data.dat FAILED\n";
+        }
+
+        // rotor_disc_data.dat — section loads at every wind speed, one zone each
+        if (!pp_vec.empty())
+        {
+            if (simExporter->ExportRotorDiscData(pp_vec, turbine.get(),
+                                                 vinf_vec, "output/rotor_disc_data.dat"))
+                std::cout << "  -> output/rotor_disc_data.dat written"
+                          << "  (" << pp_vec.size() << " zones)\n";
+            else
+                std::cerr << "  -> output/rotor_disc_data.dat FAILED\n";
+        }
+
+        auto t10 = std::chrono::steady_clock::now();
+        printTiming(10, "Results exported", t9, t10, "4 files");
+
+        // ── Summary ───────────────────────────────────────────────────────────
+        double total_ms = std::chrono::duration<double, std::milli>(
+                              t10 - t_total_start)
+                              .count();
+
+        std::cout << "\n"
+                  << "Total simulation time      : "
+                  << total_ms << " ms (" << total_ms / 1000.0 << " s)\n"
+                  << "Simulation complete.\n";
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << '\n';
+        waitForKeyPress();
+        return 1;
+    }
+
+    waitForKeyPress();
+    return 0;
 }

@@ -32,12 +32,14 @@ std::vector<CubicSplineInterpolationStrategy::SplineSegment> CubicSplineInterpol
     std::vector<double> c(n);
     c[n - 1] = 0.0;
 
-    for (size_t j = n - 2; j >= 0; --j) {
+    for (int j = (int)n - 2; j >= 0; --j)
+    {
         c[j] = z[j] - mu[j] * c[j + 1];
     }
 
     // Calculate spline coefficients
-    for (size_t j = 0; j < n - 1; ++j) {
+    for (int j = 0; j < (int)n - 1; ++j)
+    {
         segments[j].a = y[j];
         segments[j].b = (y[j + 1] - y[j]) / h[j] - h[j] * (2.0 * c[j] + c[j + 1]) / 3.0;
         segments[j].c = c[j];

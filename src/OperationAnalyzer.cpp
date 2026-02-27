@@ -1,9 +1,9 @@
 #include "OperationAnalyzer.h"
 
-OperationAnalyzer::OperationAnalyzer(OperationDataLogger* logger)
+OperationAnalyzer::OperationAnalyzer(OperationDataLogger * /*logger*/)
 {
 }
 
-void OperationAnalyzer::analyzePerformance(ITurbine& turbine, OperationConditions& operation)
+void OperationAnalyzer::analyzePerformance(ITurbine & /*turbine*/, OperationConditions & /*operation*/)
 {
 }

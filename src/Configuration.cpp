@@ -109,7 +109,8 @@ const AirfoilPolarData* Configuration::getAirfoilPerformanceByConditions(double 
 }
 
 // Create blade geometry interpolator for 3D blade analysis with specified method
-std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(InterpolationMethod method) const {
+std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(InterpolationMethod /*method*/) const
+{
     const BladeGeometryData* bladeGeom = getBladeGeometry();
     if (!bladeGeom) {
         throw std::runtime_error("No blade geometry data available for interpolation");
@@ -152,3 +153,10 @@ std::unique_ptr<BladeInterpolator> Configuration::createBladeInterpolator(const 
     return createBladeInterpolator(method);
 }
 
+// Create turbine
+std::unique_ptr<HorizontalTurbine> Configuration::getTurbine() const
+{
+    std::unique_ptr<BladeInterpolator> bladeData = createBladeInterpolator(); // Ensure blade geometry is available for turbine creation
+
+    return std::make_unique<HorizontalTurbine>(std::move(bladeData));
+}

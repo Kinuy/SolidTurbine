@@ -98,7 +98,7 @@ void Wake::transformTrailingEdge(const Eigen::Transform<double, 3, Eigen::Affine
         calcGeometry(k);
 }
 
-void Wake::updateProperties(double dt)
+void Wake::updateProperties(double)
 {
 }
 

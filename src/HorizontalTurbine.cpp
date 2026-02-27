@@ -1,11 +1,10 @@
 #include "HorizontalTurbine.h"
 
-HorizontalTurbine::HorizontalTurbine(const int numberOfBlades = 3)
-	: 
-	numberOfBlades(numberOfBlades) {
+HorizontalTurbine::HorizontalTurbine(std::unique_ptr<BladeInterpolator>) : numberOfBlades_(3)
+{
 }
 
 // Override the getNumberOfBlades method from ITurbine interface
 int HorizontalTurbine::getNumberOfBlades() const{
-	return numberOfBlades;
+	return numberOfBlades_;
 }
