@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+.DS_Store
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -42,11 +44,26 @@ bld/
 # Exclude generated test data 
 testdata/export/
 
+# Temporary files
+temp/
+
 # not used files
 not_used/
 
 # Exclude doxygen docs folder
 docs/
+
+# Build folder
+build/
+
+# Testdata resultfolder
+testdata/output/
+
+# Exclude vscode folder
+.vscode/
+
+# Exclude libraries folder
+libs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
