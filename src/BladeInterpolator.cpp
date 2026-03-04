@@ -47,6 +47,12 @@ void BladeInterpolator::interpolateSection(double targetRadius)
 	// Scale airfoil geometry with chord and max thickness
 	airfoilGeometry->applyScalingWithChordAndMaxThickness(bladeSection->chord, bladeSection->relativeThickness / 100.0 * bladeSection->chord, targetRadius);
 
+	// Translate pitch axis to origin so the section rotates in place around
+	// the pitch axis. Without this step the twist rotation introduces a net
+	// x-offset and sections with different chords / pitch axes are not aligned
+	// on a common blade reference line.
+	airfoilGeometry->applyPitchAxisToOrigin(bladeSection->relativeTwistAxis);
+
 	// Apply twist angle around quarter chord + relative twist axis position point
 	airfoilGeometry->applyTwistAroundQuarterChord(bladeSection->twist, bladeSection->relativeTwistAxis);
 
