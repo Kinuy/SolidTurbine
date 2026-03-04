@@ -77,4 +77,18 @@ public:
     virtual double energy_price_per_kwh() const = 0;
     virtual std::vector<double> mean_wind_speeds() const = 0;
     virtual double wind_speed_bin_width() const = 0;
+
+    // ── Noise calculation parameters ──────────────────────────────────
+    /// BL trip: 0=no trip (BPM), 1=heavy trip (BPM only), 2=light trip
+    virtual int noise_bl_tripping() const = 0;
+    /// BL properties method: 1=BPM, 2=Xfoil
+    virtual int noise_bl_properties_calc_method() const = 0;
+    /// TBL noise method: 0=none, 1=BPM, 2=TNO
+    virtual int noise_tbl_noise_calc_method() const = 0;
+    /// TI noise method: 0=none, 1=Amiet (flat plate), 2=Guidati, 3=Simplified
+    virtual int noise_ti_noise_calc_method() const = 0;
+    /// Compute bluntness TE noise: false=No, true=Yes
+    virtual bool noise_calc_blunt_te_noise() const = 0;
+    /// Compute LBL noise: false=No, true=Yes
+    virtual bool noise_calc_lam_bl_noise() const = 0;
 };

@@ -160,6 +160,20 @@ int main(int /*argc*/, char **argv)
                          "rotormap_pitch_start", "rotormap_pitch_end", "rotormap_pitch_step",
                          true, "Pitch range for Rotormap sweep [deg]");
 
+        // ── Noise calculation parameters ──────────────────────────────────────
+        schema.addInt("noise_bl_tripping", true,
+                      "BL trip: 0=no trip (BPM), 1=heavy trip (BPM only), 2=light trip");
+        schema.addInt("noise_bl_properties_calc_method", true,
+                      "BL properties method: 1=BPM, 2=Xfoil");
+        schema.addInt("noise_tbl_noise_calc_method", true,
+                      "TBL noise method: 0=none, 1=BPM, 2=TNO");
+        schema.addInt("noise_ti_noise_calc_method", true,
+                      "TI noise method: 0=none, 1=Amiet (flat plate), 2=Guidati, 3=Simplified");
+        schema.addBool("noise_calc_blunt_te_noise", true,
+                       "Compute bluntness TE noise: 0=No, 1=Yes");
+        schema.addBool("noise_calc_lam_bl_noise", true,
+                       "Compute LBL noise: 0=No, 1=Yes");
+
         auto t1 = std::chrono::steady_clock::now();
         printTiming(1, "Schema built", t0, t1);
 

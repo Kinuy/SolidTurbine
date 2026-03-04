@@ -36,6 +36,12 @@
  *   schema.addDouble("aep_k_factor", ...)    →  weibull_k()
  *   schema.addDouble("aep_money_kwh", ...)   →  energy_price_per_kwh()
  *   schema.addRange("aep_vmean_range","vmean_start","vmean_end","vmean_step",...)
+ *   schema.addInt("noise_bl_tripping", ...)              →  noise_bl_tripping()
+ *   schema.addInt("noise_bl_properties_calc_method", ...) →  noise_bl_properties_calc_method()
+ *   schema.addInt("noise_tbl_noise_calc_method", ...)     →  noise_tbl_noise_calc_method()
+ *   schema.addInt("noise_ti_noise_calc_method", ...)      →  noise_ti_noise_calc_method()
+ *   schema.addBool("noise_calc_blunt_te_noise", ...)      →  noise_calc_blunt_te_noise()
+ *   schema.addBool("noise_calc_lam_bl_noise", ...)        →  noise_calc_lam_bl_noise()
  */
 #include <string>
 #include <vector>
@@ -153,6 +159,32 @@ public:
         return cfg_.getDouble("windspeed_step") / 2.0;
     }
 
+
+    // ── Noise calculation parameters ──────────────────────────────────
+    int noise_bl_tripping() const override
+    {
+        return cfg_.getInt("noise_bl_tripping");
+    }
+    int noise_bl_properties_calc_method() const override
+    {
+        return cfg_.getInt("noise_bl_properties_calc_method");
+    }
+    int noise_tbl_noise_calc_method() const override
+    {
+        return cfg_.getInt("noise_tbl_noise_calc_method");
+    }
+    int noise_ti_noise_calc_method() const override
+    {
+        return cfg_.getInt("noise_ti_noise_calc_method");
+    }
+    bool noise_calc_blunt_te_noise() const override
+    {
+        return cfg_.getBool("noise_calc_blunt_te_noise");
+    }
+    bool noise_calc_lam_bl_noise() const override
+    {
+        return cfg_.getBool("noise_calc_lam_bl_noise");
+    }
 private:
     Configuration const &cfg_;
 };
