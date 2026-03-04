@@ -48,9 +48,44 @@ power_mode L0 #[L0|POWER]
 max_dp_dn 0.1 #[W/rpm]
 n_nenn 10 #[rpm]
 lambda_opt 12.0 #[-]
-kinematic_viscosity 1.45e-6 #[m^2/s]
+kinematic_viscosity 1.48e-5 #[m^2/s]
 speed_of_sound 340 #[m/s]
 air_density 1.225 #[kg/m^3]
 temperature 293.15 #[K]
 aep_k_factor 2 #[-]
 wake_transition 0.3539 #[-]
+
+## noise calc settings
+noise_bl_tripping 2 # ITRIP	2         #Boudary layer trip: no trip = 0 BPM, heavy trip = 1 (BPM only), light trip = 2
+noise_bl_properties_calc_method 2 # X_BLMethod	2    #X_BLMethod    Integer describing calculation method for boundary layer properties:  1 = BPM ; 2 = Xfoil  
+noise_tbl_noise_calc_method 1 # TBL_Method	1    #Integer describing TBL noise calculation: 0 = none ; 1 = BPM ; 2 = TNO  
+noise_ti_noise_calc_method 2 # TI_Method	2     #Integer describing TI noise calculation: 0 = none ; 1 = Amiet (flat plate) ; 2 = Guidati ; 3 = Simplified                                                                                
+noise_calc_blunt_te_noise 1 # IBLUNT	1        #FLAG TO COMPUTE BLUNTNESS NOISE:      0 = No ; 1 = Yes                 
+noise_calc_lam_bl_noise 1 # ILAM	1          #FLAG TO COMPUTE LBL NOISE:          0 = No ; 1 = Yes   
+##---------------------- Airfoil Properties -----------------------------------------
+# Chord_Length	0.2286                 #(m)
+# Airfoil_Span	0.509                  #(m)
+# Freestream_Velocity	63.9200         #(m/s)
+# Angle_of_Attack	3.0000              #(deg)
+# Trailing_Edge_Thickness	0.00021     #(m)
+# PSI_trailing_edge_solid_angle	12.5  #(deg)
+##---------------------- Xfoil Inputs ---------------------------------------------- 
+# x_loc_upper_tripping # XTR_upper	0.02              #XTR_upper = upper surface trip location  (normalized chord length)
+# x_loc_lower_tripping# XTR_lower	0.1               #XTR_lower = upper surface trip location  (normalized chord length)
+# ISNACA	0                #ISNACA = 1 if Airfoil is a NACA else 0 
+# Airfoil_File_Name	/Users/tobi/VscodeProjects/BladeNoise/data/s809.dat # L75_4500.geo  #Airfoil File Name or NACA Number (if spaces use quotes)
+##---------------------- Turbulent Inflow Noise Inputs -----------------------------
+# Turbulence_Intensity	0.050          #(%)                                
+# Turbulence_Length_Scale	0.06        #(m)                             
+# Thickness_at_1%_chord	0.02         #(normalized thickness)
+# Thickness_at_10%_chord	0.12        #(normalized thickness)
+# Number_of_Streamlines	40            #(Guidati full model)
+# Distance_between_streamlines	0.005  #(Guidati full model)
+##---------------------- Streamline Output Options --------------------------------
+# Write_Streamlines	1             #Flag to write streamlines: 0 = No, 1 = Yes
+# Streamline_Output_File	streamlines.dat  #Output filename for streamlines
+# Streamline_Output_Format	tecplot     #Output format: text, csv, tecplot, vtk
+##---------------------- Observer Location ----------------------------------------- 
+# noise_observer_distance # Observer_Distance	1.22                  #(m)
+# noise_angle_phi # PHI_angle_relative_to_spanline	90.      #(deg)
+# noise_angle_theta # THETA_angle_relative_to_chordline	90.   #(deg)
