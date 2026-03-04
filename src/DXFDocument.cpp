@@ -67,7 +67,7 @@ void DXFDocument::exportEntities() {
 // ============================================================
 
 DXFBlade3D::DXFBlade3D(std::unique_ptr<BladeInterpolator> bI)
-    : bladeInterpolator(std::move(bI)), dxfFilePath("output/BladeSections3D.dxf")
+    : bladeInterpolator(std::move(bI)), dxfFilePath("output/blade3D_geometry.dxf")
 {
     dxfPointList.clear();
     createDXFModel();
