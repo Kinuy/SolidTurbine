@@ -51,6 +51,7 @@ public:
     virtual double kinematic_viscosity() const = 0; ///< ν [m²/s]
     virtual double speed_of_sound() const = 0;      ///< a [m/s]
     virtual double air_density() const = 0;         ///< ρ [kg/m³]
+    virtual double temperature() const = 0;         ///< T [K]
 
     // ── BEM solver numerics ───────────────────────────────────────────────────
     virtual double convergence_tolerance() const = 0; ///< BEM residual tol
