@@ -101,6 +101,10 @@ add_executable(solidturbine
     FileOutputTarget.cpp
     TecplotFormatter.cpp
     TecplotBlade3DExporter.cpp
+    DXFBlade3DExporter.cpp
+    TurbineControlSettingsData.cpp
+    TurbineControlSettingsParser.cpp
+    RotormapSolver.cpp
 )
 
 # Collect all .cpp files in src directory
