@@ -59,6 +59,8 @@ build/
 # Testdata resultfolder
 testdata/output/
 
+testdata/TestCase/
+
 # Exclude vscode folder
 
 
