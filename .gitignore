@@ -43,6 +43,7 @@ bld/
 
 # Exclude generated test data 
 testdata/export/
+testdata/TurbineControlSettings.dat
 
 # Temporary files
 temp/
