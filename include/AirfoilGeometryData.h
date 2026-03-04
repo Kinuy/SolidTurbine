@@ -295,14 +295,14 @@ public:
      * @brief Applies a twist angle to the airfoil geometry around the quarter-chord point and pitch axis position
      *
      */
-    void applyTwistAroundQuarterChord(double twistAngleDegrees, double pitchAxis);
+    void applyTwistAroundQuarterChord(double twistAngleRad, double pitchAxis);
 
     /**
      * @brief Applies a twist angle to the airfoil geometry around the quarter-chord point
-     * @param twistAngleDegrees Twist angle in degrees (positive = leading edge up), negative = leading edge down, 0 = no twist, pivotX and pivotY set rotation point
+     * @param twistAngleRad Twist angle in radians (positive = leading edge up), negative = leading edge down, 0 = no twist, pivotX and pivotY set rotation point
      * @note Modifies all coordinates in place
      */
-    void applyTwistAngleAroundPivotPoint(double twistAngleDegrees, double pivotX, double pivotY);
+    void applyTwistAngleAroundPivotPoint(double twistAngleRad, double pivotX, double pivotY);
 
     /**
      * @brief Applies Scaling of coordiante points x-> with chord in m and y with abs thickness in m of airfoil, if exists z with radius in m
@@ -312,6 +312,21 @@ public:
      * @note Modifies all coordinates in place
      */
     void applyScalingWithChordAndMaxThickness(double chordLength, double maxThickness, double targetRadius = 0);
+
+    /**
+     * @brief Translates scaledCoordinates so that the pitch axis lands at x = 0.
+     *
+     * Must be called after applyScalingWithChordAndMaxThickness and before
+     * applyTwistAroundQuarterChord so that the twist rotation is performed
+     * around the origin rather than an offset pivot point.  Without this step
+     * the rotation introduces a spurious x-translation and sections with
+     * different chords or pitch axis positions are not aligned on a common
+     * blade reference line.
+     *
+     * @param pitchAxis  Relative pitch axis position as percentage offset from
+     *                   quarter-chord (e.g. 0 = pure quarter-chord, 25 = mid-chord)
+     */
+    void applyPitchAxisToOrigin(double pitchAxis);
 
     /*
      * @brief Apply translation in x and y direction to meet prebend and sweep position of airfoil

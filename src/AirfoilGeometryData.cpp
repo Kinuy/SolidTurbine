@@ -353,27 +353,45 @@ void AirfoilGeometryData::findAndAssignTETEAndTEBEPoints()
     //if (tebeIt != coordinates.end()) tebeIt->isTEBottomEdge = true;
 }
 
-void AirfoilGeometryData::applyTwistAroundQuarterChord(double twistAngleDegrees, double pitchAxis)
+void AirfoilGeometryData::applyPitchAxisToOrigin(double pitchAxis)
 {
     if (scaledCoordinates.empty()) return;
 
-    auto [minIt, maxIt] = std::minmax_element(coordinates.begin(), coordinates.end(),
+    // Find x-extent of the scaled section
+    auto [minIt, maxIt] = std::minmax_element(
+        scaledCoordinates.begin(), scaledCoordinates.end(),
         [](const AirfoilCoordinate& a, const AirfoilCoordinate& b) {
             return a.x < b.x;
         });
 
-    double quarterChordX = minIt->x + (0.25 + pitchAxis / 100.0) * (maxIt->x - minIt->x);
-    double quarterChordY = 0.0;
+    // x-position of the pitch axis in meters
+    double pitchAxisX = minIt->x + (0.25 + pitchAxis / 100.0) * (maxIt->x - minIt->x);
 
-    applyTwistAngleAroundPivotPoint(twistAngleDegrees, quarterChordX, quarterChordY);
+    // Shift entire section so pitch axis lands at x = 0.
+    // applyTwistAroundQuarterChord then rotates around the origin,
+    // and pcbaY (sweep) repositions the section along the blade reference line.
+    for (auto& coord : scaledCoordinates)
+        coord.x -= pitchAxisX;
 }
 
-void AirfoilGeometryData::applyTwistAngleAroundPivotPoint(double twistAngleDegrees, double pivotX, double pivotY)
+void AirfoilGeometryData::applyTwistAroundQuarterChord(double twistAngleRad, double pitchAxis)
+{
+    if (scaledCoordinates.empty()) return;
+
+    // applyPitchAxisToOrigin() has already shifted the section so that the
+    // pitch axis sits at x = 0.  The pivot is therefore the origin.
+    // pitchAxis parameter is kept in the signature for API compatibility.
+    [[maybe_unused]] double unused = pitchAxis;
+
+    applyTwistAngleAroundPivotPoint(twistAngleRad, 0.0, 0.0);
+}
+
+void AirfoilGeometryData::applyTwistAngleAroundPivotPoint(double twistAngleRad, double pivotX, double pivotY)
 {
     if (scaledCoordinates.empty()) return;
 
     // Convert degrees to radians
-    double angleRad = twistAngleDegrees * std::numbers::pi / 180.0;
+    double angleRad = twistAngleRad; //* std::numbers::pi / 180.0;
 
     // 2D rotation matrix
     double rotMatrix[2][2] = {
@@ -381,7 +399,12 @@ void AirfoilGeometryData::applyTwistAngleAroundPivotPoint(double twistAngleDegre
         {std::sin(angleRad),  std::cos(angleRad)}
     };
 
-    for (auto& coord : coordinates) {
+    // ── Rotate scaledCoordinates (not coordinates) ────────────────────────────
+    // coordinates[] holds the original normalised data and must not be touched
+    // here — it is still needed by interpolateBetweenGeometries() and other
+    // callers that work in normalised space.
+    // Z (spanwise / radial) is unchanged — twist is an in-plane rotation only.
+    for (auto& coord : scaledCoordinates) {
         // Translate to pivot point
         double xTemp = coord.x - pivotX;
         double yTemp = coord.y - pivotY;
@@ -393,6 +416,7 @@ void AirfoilGeometryData::applyTwistAngleAroundPivotPoint(double twistAngleDegre
         // Translate back
         coord.x = xNew + pivotX;
         coord.y = yNew + pivotY;
+        // coord.z unchanged
     }
 }
 
