@@ -113,7 +113,7 @@ void NingSolver::FinaliseResult()
 // ─────────────────────────────────────────────────────────────────────────────
 bool NingSolver::FindSolutionPositiveRegion(std::size_t sec)
 {
-    constexpr double eps = 1e-6;
+    constexpr double eps = 5e-9;
     const double half_pi = M_PI / 2.0;
 
     for (auto [lo, hi] : {std::pair{eps, half_pi},
@@ -154,7 +154,7 @@ bool NingSolver::FindSolutionPositiveRegion(std::size_t sec)
 // ─────────────────────────────────────────────────────────────────────────────
 bool NingSolver::FindSolutionNegativeRegion(std::size_t sec)
 {
-    constexpr double eps = 1e-6;
+    constexpr double eps = 5e-9;
     const double half_pi = M_PI / 2.0;
 
     for (auto [lo, hi] : {std::pair{-half_pi, -eps},
