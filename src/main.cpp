@@ -2,14 +2,14 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <cmath>
+#include <iomanip>
 #include <numbers>
 #include <vector>
 
 #include "ConfigurationSchema.h"
 #include "FileReader.h"
 #include "ConfigurationParser.h"
-#include "ExporterFactory.h"
-#include "DXFDocument.h"
 #include "TurbineGeometry.h"
 
 // ── Simulation layer ──────────────────────────────────────────────────────────
@@ -27,8 +27,11 @@
 #include "TecplotFormatter.h"
 #include "IBlade3DExporter.h"
 #include "TecplotBlade3DExporter.h"
+#include "DXFBlade3DExporter.h"
 #include "ISimulationResultsExporter.h"
 #include "TecplotSimulationExporter.h"
+#include "RotormapSolver.h"
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -51,7 +54,18 @@ static void printTiming(int step, std::string_view label,
     std::cout << "[" << step << "] " << label;
     for (int i = static_cast<int>(label.size()); i < 26; ++i)
         std::cout << ' ';
-    std::cout << ": " << ms << " ms (" << s << " s)";
+    std::cout << ": ";
+    if (s >= 60.0)
+    {
+        double min     = std::floor(s / 60.0);
+        double sec_rem = s - min * 60.0;
+        std::cout << std::fixed << std::setprecision(0) << min << " min "
+                  << std::setprecision(1) << sec_rem << " s";
+    }
+    else
+    {
+        std::cout << std::defaultfloat << ms << " ms (" << s << " s)";
+    }
     if (!extra.empty())
         std::cout << "  (" << extra << ")";
     std::cout << '\n';
@@ -86,6 +100,7 @@ int main(int /*argc*/, char **argv)
         schema.addDataFile("airfoil_geometry_files_file", true, "Path to airfoil geometry data file list");
         schema.addDataFile("airfoil_performance_files_file", true, "Path to airfoil performance data file list");
         schema.addDataFile("blade_geometry_file", true, "Path to blade geometry data");
+        schema.addDataFile("turbine_controller_file", true, "Path to turbine controller data");
 
         // Turbine data
         schema.addBool("turbine_is_horizontal", true, "Flag for horizontal or vertical turbine");
@@ -122,9 +137,12 @@ int main(int /*argc*/, char **argv)
         schema.addDouble("kinematic_viscosity", true, "Air kinematic viscosity [m^2/s]");
         schema.addDouble("speed_of_sound", true, "Speed of sound [m/s]");
         schema.addDouble("air_density", true, "Air density [kg/m^3]");
+        schema.addDouble("temperature", true, "Temperature [K]");
         schema.addDouble("convergence_tol", true, "BEM convergence tolerance");
         schema.addDouble("wake_transition", true, "Empirical wake transition point");
         schema.addDouble("tip_extra_dist", true, "Tip singularity extra distance [m]");
+        schema.addDouble("rotor_azimuth_psi_increment", true,
+                         "Psi azimuth step [deg]: 0=scalar at psi=0, >0 builds vector [0:step:360)");
 
         // AEP keys
         schema.addDouble("aep_k_factor", true, "Weibull k factor for AEP");
@@ -132,6 +150,15 @@ int main(int /*argc*/, char **argv)
         schema.addRange("aep_vmean_range",
                         "vmean_start", "vmean_end", "vmean_step",
                         true, "Mean wind speed range for AEP [m/s]");
+
+        // Rotormap keys
+        schema.addDouble("rotormap_v_tip",       true, "Constant tip speed for Rotormap [m/s]");
+        schema.addRange ("rotormap_lambda_range",
+                         "rotormap_lambda_start", "rotormap_lambda_end", "rotormap_lambda_step",
+                         true, "TSR range for Rotormap sweep [-]");
+        schema.addRange ("rotormap_pitch_range",
+                         "rotormap_pitch_start", "rotormap_pitch_end", "rotormap_pitch_step",
+                         true, "Pitch range for Rotormap sweep [deg]");
 
         auto t1 = std::chrono::steady_clock::now();
         printTiming(1, "Schema built", t0, t1);
@@ -154,7 +181,8 @@ int main(int /*argc*/, char **argv)
         auto t2 = std::chrono::steady_clock::now();
         printTiming(2, "Config parsed", t1, t2);
 
-        // ── 3. Blade geometry export (DXF + Tecplot 3D) ───────────────────────
+
+            // ── 3. Blade geometry export (DXF + Tecplot 3D) ───────────────────────
         //
         // createBladeInterpolator() is called once per exporter so each can
         // take ownership independently.  config holds all raw data so each
@@ -166,29 +194,23 @@ int main(int /*argc*/, char **argv)
             const std::string output_dir = "output";
             fs::create_directories(output_dir);
 
-            // ── 3a. DXF ───────────────────────────────────────────────────────
-            // DXFBlade3D writes "blade3D.dxf" to the working directory
-            // on construction — move it into the output folder afterwards.
+            // ── 3a. DXF blade geometry ───────────────────────────────────────
+            // DXFBlade3DExporter implements IBlade3DExporter — path is passed
+            // directly to Export(), no working-directory side-effects.
             {
-                const std::string dxf_path = output_dir + "/blade3D.dxf";
-                const std::string txt_path = output_dir + "/BladeSections.txt";
+                const std::string dxf_path = output_dir + "/blade3D_geometry.dxf";
 
-                for (auto const &p : {dxf_path, txt_path})
-                    if (fs::exists(p))
-                        fs::remove(p);
+                std::unique_ptr<IBlade3DExporter> dxfExporter =
+                    std::make_unique<DXFBlade3DExporter>();
 
                 auto dxfInterpolator = config.createBladeInterpolator();
-                auto dxfBlade3D = std::make_unique<DXFBlade3D>(
-                    std::move(dxfInterpolator));
 
-                if (fs::exists("blade3D.dxf"))
-                    fs::rename("blade3D.dxf", dxf_path);
-
-                auto txtExporter = ExporterFactory::createExporter();
-                txtExporter->exportData("", txt_path, dxfBlade3D->dataToString());
-
-                std::cout << "  -> " << dxf_path << " written\n";
-                std::cout << "  -> " << txt_path << " written\n";
+                if (dxfExporter->Export(*dxfInterpolator, dxf_path))
+                    std::cout << "  -> " << dxf_path << " written"
+                              << "  (" << dxfInterpolator->getBladeSections().size()
+                              << " sections)\n";
+                else
+                    std::cerr << "  -> " << dxf_path << " FAILED\n";
             }
 
             // ── 3b. Tecplot 3D blade geometry ─────────────────────────────────
@@ -244,22 +266,91 @@ int main(int /*argc*/, char **argv)
         auto t5 = std::chrono::steady_clock::now();
         printTiming(5, "SimConfig wrapped", t4, t5);
 
-        // ── 6. Build controller ───────────────────────────────────────────────
-        auto ctrl_params = TurbineControllerParams::FromConfig(turbine.get(), &sim_config);
+        // ── 6. Build controller from TurbineControlSettings ──────────────────
+        //
+        // ctrlSettings is loaded automatically by ConfigurationParser when it
+        // processes "turbine_controller_file" from the schema — no manual
+        // parsing needed in main.  Access is via config.getTurbineControlSettings().
+        //
+        const TurbineControlSettingsData* ctrlSettingsPtr =
+            config.getTurbineControlSettings();
+        if (!ctrlSettingsPtr)
+            throw std::runtime_error(
+                "Turbine controller settings not loaded — "
+                "check 'turbine_controller_file' in your config");
+        const TurbineControlSettingsData& ctrlSettings = *ctrlSettingsPtr;
+
+        // ── 6a. Pitch schedule ────────────────────────────────────────────────
+        //
+        //   P_SOLL_KL0          | kW   → converted to [W] automatically on load
+        //   MinPthAngPwr        | 0.01deg → converted to [rad] automatically on load
+        //
+        // StandardPitchSchedule: flat schedule — same min pitch at every power point.
+
+        // P_SOLL_KL0 values are already in [W] — converted from kW on load.
+        const std::vector<double>& p_soll_w =
+            ctrlSettings.getVector("P_SOLL_KL0", "OMS", "OM-1");
+
+        // MinPthAngPwr is already in radians — converted automatically on load
+        // (raw value * factor * π/180, factor reset to 1.0, unit set to "rad").
+        double minPitchRad =
+            ctrlSettings.getScalar("MinPthAngPwr", "OMS", "OM-1");
+
+        std::vector<double> pitch_at_p(p_soll_w.size(), minPitchRad);
 
         auto pitch_sched = std::make_unique<StandardPitchSchedule>(
-            0.0,
-            std::vector<double>{0.0},
-            std::vector<double>{0.0});
+            minPitchRad, p_soll_w, pitch_at_p);
 
-        auto eta_model = std::make_unique<ConstantEfficiency>(0.94);
+        // ── 6b. Efficiency model ──────────────────────────────────────────────
+        //
+        //   Wirkungsgrad | - → efficiency curve [WEA]
+        //
+        // ConstantEfficiency: use the mean across all WEA operating points.
+
+        const std::vector<double>& eta_vec =
+            ctrlSettings.getVector("Wirkungsgrad", "WEA");
+
+        double eta_mean = 0.0;
+        for (double e : eta_vec) eta_mean += e;
+        if (!eta_vec.empty())
+            eta_mean /= static_cast<double>(eta_vec.size());
+
+        auto eta_model = std::make_unique<ConstantEfficiency>(eta_mean);
+
+        // ── 6c. Controller params ─────────────────────────────────────────────
+        //
+        //   LAMBDA_OPT   | -       → optimal tip-speed ratio [WEA]
+        //   N_SOLL_P_OPT | 0.001rpm → factor applied on load, stored as [rpm]
+        //   P_RATED      | kW      → converted to [W] automatically on load
+
+        auto ctrl_params = TurbineControllerParams::FromConfig(turbine.get(), &sim_config);
+
+        if (ctrlSettings.findFeature("LAMBDA_OPT"))
+            ctrl_params.lambda_opt = ctrlSettings.getScalar("LAMBDA_OPT", "WEA");
+
+        if (ctrlSettings.findFeature("N_SOLL_P_OPT"))
+        {
+            // N_SOLL_P_OPT is in [rpm] — numeric factor (0.001) applied on load.
+            ctrl_params.n_nenn =
+                ctrlSettings.getScalar("N_SOLL_P_OPT", "OMS", "OM-1");
+        }
+
+        if (ctrlSettings.findFeature("P_RATED"))
+        {
+            // P_RATED is already in [W] — converted from kW on load.
+            ctrl_params.p_max =
+                ctrlSettings.getScalar("P_RATED", "OMS", "L0");
+        }
+
         auto controller = std::make_unique<VariableSpeedController>(
             std::move(ctrl_params),
             pitch_sched.get(),
             eta_model.get());
 
         auto t6 = std::chrono::steady_clock::now();
-        printTiming(6, "Controller built", t5, t6);
+        printTiming(6, "Controller built", t5, t6,
+                    "eta=" + std::to_string(eta_mean).substr(0, 5) +
+                    " lambda_opt=" + std::to_string(ctrl_params.lambda_opt).substr(0, 5));
 
         // ── 7. Build OperationSolver ──────────────────────────────────────────
         auto op_params = OperationSolverParams::FromConfig(turbine.get(), &sim_config);
@@ -273,44 +364,132 @@ int main(int /*argc*/, char **argv)
 
         FlowCalculatorFactory fc_factory;
         NingSolverFactory solver_factory;
-        const double psi = 0.0; // steady-state: single azimuth
+
+        // ── Azimuth (psi) vector ──────────────────────────────────────────────
+        // Config key: rotor_azimuth_psi_increment [deg]
+        //   0   → scalar solve at psi = 0  (steady-state, fastest)
+        //   >0  → vector [0 : step : 360)  (azimuthal average)
+        const double psi_step_deg = config.getDouble("rotor_azimuth_psi_increment");
+        std::vector<double> psi_vec_rad;
+        if (psi_step_deg <= 0.0)
+        {
+            psi_vec_rad.push_back(0.0);
+        }
+        else
+        {
+            constexpr double deg2rad_psi = std::numbers::pi / 180.0;
+            for (double psi_deg = 0.0;
+                 psi_deg < 360.0 - psi_step_deg * 1e-9;
+                 psi_deg += psi_step_deg)
+                psi_vec_rad.push_back(psi_deg * deg2rad_psi);
+        }
+
+        std::cout << "  Azimuth positions: " << psi_vec_rad.size()
+                  << (psi_vec_rad.size() == 1 ? " (scalar psi=0)\n" : " positions\n");
 
         // Collect postprocessor results per wind speed for rotor disc export.
         std::vector<BEMPostprocessResult> pp_vec;
         pp_vec.reserve(vinf_vec.size());
 
-        // BEM callback: FlowCalculator + NingSolver + BEMPostprocessor per point.
+        // BEM callback: averages cp, ct and BEMPostprocessResult over all psi.
         BEMCallback bem_callback = [&](double vinf,
                                        double lambda,
                                        double pitch_deg)
             -> std::pair<double, double>
         {
-            double rot_rate = lambda * vinf / turbine->RotorRadius();
+            double rot_rate  = lambda * vinf / turbine->RotorRadius();
             double pitch_rad = pitch_deg * std::numbers::pi / 180.0;
 
-            auto fc = fc_factory.Build(turbine.get(), rot_rate, vinf, psi, FlowModifiers{});
-            auto solver = solver_factory.Build(turbine.get(), &sim_config, fc.get(), pitch_rad, psi);
+            BEMPostprocessResult pp_sum{};
+            int n_converged = 0;
 
-            if (!solver->Solve())
-                return {0.0, 0.0};
+            for (double psi : psi_vec_rad)
+            {
+                auto fc = fc_factory.Build(turbine.get(), rot_rate, vinf,
+                                           psi, FlowModifiers{});
+                auto solver = solver_factory.Build(turbine.get(), &sim_config,
+                                                   fc.get(), pitch_rad, psi);
+
+                if (!solver->Solve()) continue;
 
             BEMPostprocessor postproc(
-                turbine.get(),
-                &sim_config,
-                fc.get(),
+                    turbine.get(), &sim_config, fc.get(),
                 static_cast<double>(turbine->num_blades()));
-
             postproc.Process(*solver);
-
-            if (!postproc.Success())
-                return {0.0, 0.0};
+                if (!postproc.Success()) continue;
 
             BEMPostprocessResult const &pp = postproc.Result();
 
-            // Store for rotor disc export (one entry per converged wind speed).
-            pp_vec.push_back(pp);
+                // Accumulate scalars.
+                pp_sum.cp      += pp.cp;
+                pp_sum.ct      += pp.ct;
+                pp_sum.p       += pp.p;
+                pp_sum.thrust  += pp.thrust;
+                pp_sum.torque  += pp.torque;
+                pp_sum.ctorque += pp.ctorque;
+                pp_sum.sum_fy  += pp.sum_fy;
+                pp_sum.mx      += pp.mx;
+                pp_sum.my      += pp.my;
+                pp_sum.mz      += pp.mz;
 
-            return {pp.cp, pp.ct};
+                // Accumulate per-section vectors (resize on first converged psi).
+                const std::size_t ns = pp.alpha_eff.size();
+                auto accumVec = [&](std::vector<double> &dst,
+                                    std::vector<double> const &src)
+                {
+                    if (dst.empty()) dst.assign(ns, 0.0);
+                    for (std::size_t k = 0; k < ns && k < src.size(); ++k)
+                        dst[k] += src[k];
+                };
+                accumVec(pp_sum.alpha_eff,              pp.alpha_eff);
+                accumVec(pp_sum.cl,                     pp.cl);
+                accumVec(pp_sum.cd,                     pp.cd);
+                accumVec(pp_sum.cm,                     pp.cm);
+                accumVec(pp_sum.cp_loc,                 pp.cp_loc);
+                accumVec(pp_sum.ct_loc,                 pp.ct_loc);
+                accumVec(pp_sum.element_length,         pp.element_length);
+                accumVec(pp_sum.element_thrust,         pp.element_thrust);
+                accumVec(pp_sum.element_torque,         pp.element_torque);
+                accumVec(pp_sum.element_fy,             pp.element_fy);
+                accumVec(pp_sum.element_mz,             pp.element_mz);
+                accumVec(pp_sum.element_airfoil_moment, pp.element_airfoil_moment);
+                accumVec(pp_sum.integral_fx,            pp.integral_fx);
+                accumVec(pp_sum.integral_fy,            pp.integral_fy);
+                accumVec(pp_sum.integral_mx,            pp.integral_mx);
+                accumVec(pp_sum.integral_my,            pp.integral_my);
+                accumVec(pp_sum.integral_mz,            pp.integral_mz);
+
+                ++n_converged;
+            }
+
+            if (n_converged == 0) return {0.0, 0.0};
+
+            // Average all accumulated quantities over converged psi positions.
+            const double inv_n = 1.0 / static_cast<double>(n_converged);
+            auto scaleVec = [&](std::vector<double> &v)
+            { for (auto &x : v) x *= inv_n; };
+
+            pp_sum.cp      *= inv_n;  pp_sum.ct      *= inv_n;
+            pp_sum.p       *= inv_n;  pp_sum.thrust  *= inv_n;
+            pp_sum.torque  *= inv_n;  pp_sum.ctorque *= inv_n;
+            pp_sum.sum_fy  *= inv_n;
+            pp_sum.mx      *= inv_n;  pp_sum.my      *= inv_n;
+            pp_sum.mz      *= inv_n;
+
+            scaleVec(pp_sum.alpha_eff);              scaleVec(pp_sum.cl);
+            scaleVec(pp_sum.cd);                     scaleVec(pp_sum.cm);
+            scaleVec(pp_sum.cp_loc);                 scaleVec(pp_sum.ct_loc);
+            scaleVec(pp_sum.element_length);         scaleVec(pp_sum.element_thrust);
+            scaleVec(pp_sum.element_torque);         scaleVec(pp_sum.element_fy);
+            scaleVec(pp_sum.element_mz);             scaleVec(pp_sum.element_airfoil_moment);
+            scaleVec(pp_sum.integral_fx);            scaleVec(pp_sum.integral_fy);
+            scaleVec(pp_sum.integral_mx);            scaleVec(pp_sum.integral_my);
+            scaleVec(pp_sum.integral_mz);
+
+            // Store azimuth-averaged result for rotor disc / blade export.
+            pp_vec.push_back(pp_sum);
+
+            return {pp_sum.cp, pp_sum.ct};
         };
 
         OperationSolver op_solver(op_params, controller.get(), bem_callback);
@@ -345,10 +524,38 @@ int main(int /*argc*/, char **argv)
         printTiming(9, "AEP computed", t8, t9,
                     std::to_string(vmean_vec.size()) + " mean wind speed(s)");
 
-        // ── 10. Export simulation results ─────────────────────────────────────
+        // ── 11. Export simulation results ─────────────────────────────────────
         auto formatter = std::make_shared<TecplotFormatter>();
         std::unique_ptr<ISimulationResultsExporter> simExporter =
             std::make_unique<TecplotSimulationExporter>(formatter);
+
+        // ── 10. Rotormap ──────────────────────────────────────────────────────
+        {
+            RotormapParams rm_params;
+            rm_params.v_tip        = config.getDouble("rotormap_v_tip");
+            rm_params.lambda_start = config.getDouble("rotormap_lambda_start");
+            rm_params.lambda_end   = config.getDouble("rotormap_lambda_end");
+            rm_params.lambda_step  = config.getDouble("rotormap_lambda_step");
+            constexpr double deg2rad_rm = std::numbers::pi / 180.0;
+            rm_params.pitch_start  = config.getDouble("rotormap_pitch_start") * deg2rad_rm;
+            rm_params.pitch_end    = config.getDouble("rotormap_pitch_end")   * deg2rad_rm;
+            rm_params.pitch_step   = config.getDouble("rotormap_pitch_step")  * deg2rad_rm;
+
+            RotormapSolver rm_solver(turbine.get(), &sim_config);
+            RotormapResult rm_result = rm_solver.Solve(rm_params);
+
+            // Reuse the shared simExporter — ExportRotormap is part of
+            // ISimulationResultsExporter, no separate exporter needed.
+            if (simExporter->ExportRotormap(rm_result, "output/Rotormap.dat"))
+                std::cout << "  -> " << "output/Rotormap.dat" << " written"
+                          << "  (" << rm_result.count_I() << "x"
+                          << rm_result.count_J() << " points)\n";
+            else
+                std::cerr << "  -> " << "output/Rotormap.dat" << " FAILED\n";
+        }
+
+        auto t10 = std::chrono::steady_clock::now();
+        printTiming(10, "Rotormap computed", t9, t10);
 
         // turbine_performance.dat — power curve, one row per wind speed
         if (simExporter->ExportPowerCurve(power_curve, "output/turbine_performance.dat"))
@@ -393,12 +600,12 @@ int main(int /*argc*/, char **argv)
                 std::cerr << "  -> output/rotor_disc_data.dat FAILED\n";
         }
 
-        auto t10 = std::chrono::steady_clock::now();
-        printTiming(10, "Results exported", t9, t10, "4 files");
+        auto t11 = std::chrono::steady_clock::now();
+        printTiming(11, "Results exported", t10, t11, "4 files");
 
         // ── Summary ───────────────────────────────────────────────────────────
         double total_ms = std::chrono::duration<double, std::milli>(
-                              t10 - t_total_start)
+                              t11 - t_total_start)
                               .count();
 
         std::cout << "\n"
