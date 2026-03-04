@@ -7,11 +7,14 @@
  * formatting and I/O to the injected IFormatter and FileOutputTarget.
  */
 #include "TecplotSimulationExporter.h"
+#include "RotormapSolver.h"
 #include "TurbineGeometry.h"
 #include "DataWriter.h"
 #include "FileOutputTarget.h"
 
 #include <numbers>
+#include <iomanip>
+#include <sstream>
 #include <stdexcept>
 #include <filesystem>
 
@@ -53,6 +56,13 @@ bool TecplotSimulationExporter::ExportRotorDiscData(
     std::string const &output_path) const
 {
     return Write(BuildRotorDiscFormat(pp_vec, turbine, vinf_vec), output_path);
+}
+
+bool TecplotSimulationExporter::ExportRotormap(
+    RotormapResult const &result,
+    std::string const    &output_path) const
+{
+    return Write(BuildRotormapFormat(result), output_path);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -234,6 +244,92 @@ DataFormat TecplotSimulationExporter::BuildRotorDiscFormat(
         fmt.addZone(zone);
     }
 
+    return fmt;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BuildRotormapFormat
+//
+// One single zone, one row per (pitch, lambda) point.
+// Outer loop: pitch (J-direction), inner loop: lambda (I-direction).
+// Matches Rotormap_DUMMY.dat column layout exactly.
+//
+// 16 variables per row:
+//   Pitch  v_tip  v_inf  Lambda
+//   Cp  Ct  Cm  P_aero  Ft  M
+//   Fx_R  Fy_R  Fz_R  Mx_R  My_R  Mz_R
+//
+// Root loads = integral_*[0]  (cumulative sum tip→root = full-blade load).
+// Fz_R = 0.0  (planar BEM — no out-of-plane force).
+// ─────────────────────────────────────────────────────────────────────────────
+DataFormat TecplotSimulationExporter::BuildRotormapFormat(
+    RotormapResult const &result)
+{
+    DataFormat fmt("Rotormap");
+    fmt.setVariables({"Pitch_[deg]",
+                      "v_tip_[m/s]",
+                      "v_inf_[m/s]",
+                      "Lambda_[-]",
+                      "Cp_[-]",
+                      "Ct_[-]",
+                      "Cm_[-]",
+                      "P_aero_[W]",
+                      "Ft_[N]",
+                      "M_[Nm]",
+                      "Fx_R_[N]",
+                      "Fy_R_[N]",
+                      "Fz_R_[N]",
+                      "Mx_R_[Nm]",
+                      "My_R_[Nm]",
+                      "Mz_R_[Nm]"});
+
+    const int I = result.count_I();
+    const int J = result.count_J();
+
+    // Zone title encodes the sweep ranges for traceability.
+    std::string zone_title =
+        "lambda=[" + std::to_string(result.lambda_vec.front()) +
+        ":" + std::to_string(result.lambda_vec.back()) + "]"
+        "_pitch=[" + std::to_string(result.pitch_vec.front()) +
+        ":" + std::to_string(result.pitch_vec.back()) + "]";
+
+    DataZone zone(zone_title, I, J);
+
+    for (int j = 0; j < J; ++j)
+    {
+        for (int i = 0; i < I; ++i)
+        {
+            RotormapPoint const &pt =
+                result.points[static_cast<std::size_t>(j * I + i)];
+            BEMPostprocessResult const &pp = pt.pp;
+
+            double Fx_R = pp.integral_fx.empty() ? 0.0 : pp.integral_fx.front();
+            double Fy_R = pp.integral_fy.empty() ? 0.0 : pp.integral_fy.front();
+            double Mx_R = pp.integral_mx.empty() ? 0.0 : pp.integral_mx.front();
+            double My_R = pp.integral_my.empty() ? 0.0 : pp.integral_my.front();
+            double Mz_R = pp.integral_mz.empty() ? 0.0 : pp.integral_mz.front();
+
+            constexpr double rad2deg_rm = 180.0 / std::numbers::pi;
+            zone.data.push_back({pt.pitch_rad * rad2deg_rm,
+                                 pt.v_tip,
+                                 pt.v_inf,
+                                 pt.lambda,
+                                 pp.cp,
+                                 pp.ct,
+                                 pp.ctorque,
+                                 pp.p,
+                                 pp.thrust,
+                                 pp.torque,
+                                 Fx_R,
+                                 Fy_R,
+                                 0.0,      // Fz_R — planar BEM
+                                 Mx_R,
+                                 My_R,
+                                 Mz_R});
+        }
+    }
+
+    fmt.addZone(zone);
     return fmt;
 }
 

@@ -73,7 +73,7 @@ std::string TecplotFormatter::formatZoneData(const DataZone &zone) const
     {
         for (size_t i = 0; i < row.size(); ++i)
         {
-            oss << std::fixed << std::setprecision(1) << row[i];
+            oss << std::fixed << std::setprecision(9) << row[i];
             if (i < row.size() - 1)
             {
                 oss << " ";

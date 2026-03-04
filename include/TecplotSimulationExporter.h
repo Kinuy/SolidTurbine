@@ -13,6 +13,7 @@
  *  D – depends on IFormatter and IOutputTarget abstractions.
  */
 #include "ISimulationResultsExporter.h"
+#include "RotormapSolver.h"
 #include "IFormatter.h"
 #include <memory>
 
@@ -38,6 +39,10 @@ public:
         std::vector<double> const &vinf_vec,
         std::string const &output_path) const override;
 
+    bool ExportRotormap(
+        RotormapResult const &result,
+        std::string const &output_path) const override;
+
 private:
     std::shared_ptr<IFormatter> formatter_;
 
@@ -56,6 +61,17 @@ private:
         std::vector<BEMPostprocessResult> const &pp_vec,
         TurbineGeometry const *turbine,
         std::vector<double> const &vinf_vec);
+
+    // /// Build a DataFormat from a Rotormap result (pitch x lambda grid).
+    // static DataFormat BuildRotormapFormat(
+    //     RotormapResult const &result);
+    //     std::vector<BEMPostprocessResult> const &pp_vec,
+    //     TurbineGeometry const *turbine,
+    //     std::vector<double> const &vinf_vec);
+
+    /// Build a DataFormat from a pitch x lambda Rotormap result.
+    static DataFormat BuildRotormapFormat(
+        RotormapResult const &result);
 
     /// Write a fully built DataFormat to a file path.
     bool Write(DataFormat const &fmt, std::string const &path) const;

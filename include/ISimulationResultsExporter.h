@@ -10,6 +10,7 @@
 #include <vector>
 #include "OperationSolver.h"      // PowerCurvePoint
 #include "BEMPostprocessor.h"     // BEMPostprocessResult
+#include "RotormapSolver.h"        // RotormapResult
 
 class TurbineGeometry;
 
@@ -36,4 +37,9 @@ public:
         TurbineGeometry const *turbine,
         std::vector<double> const &vinf_vec,
         std::string const &output_path) const = 0;
+
+    /// Export a pitch x lambda Rotormap in Tecplot DATAPACKING=POINT format.
+    virtual bool ExportRotormap(
+        RotormapResult const &result,
+        std::string const    &output_path) const = 0;
 };
