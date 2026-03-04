@@ -12,6 +12,14 @@ const AirfoilGeometryFileListData* Configuration::getAirfoilGeometryFileList(con
     return getStructuredData<AirfoilGeometryFileListData>(key);
 }
 
+const TurbineControlSettingsData* Configuration::getTurbineControlSettings() const {
+    // Stored under "turbine_controller" — derived from "turbine_controller_file"
+    // by ConfigurationParser::extractDataKey() stripping the "_file" suffix.
+    const auto* wrapper =
+        getStructuredData<TurbineControlSettingsStructuredData>("turbine_controller");
+    return wrapper ? &wrapper->data() : nullptr;
+}
+
 
 // Check if collection exists and has data
 bool Configuration::hasCollection(const std::string& collectionKey) const {

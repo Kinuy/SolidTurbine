@@ -14,6 +14,7 @@
 #include "AirfoilPolarData.h"
 #include "BladeInterpolator.h"
 #include "HorizontalTurbine.h"
+#include "TurbineControlSettingsDataFileParser.h"
 
 /**
  * @brief Configuration container for parsed values and structured data
@@ -271,6 +272,17 @@ public:
      * @return Pointer to AirfoilGeometryFileListData or nullptr if not found
      */
     const AirfoilGeometryFileListData *getAirfoilGeometryFileList(const std::string &key = "airfoil_geometry_files") const;
+
+    /**
+     * @brief Gets the parsed turbine control settings.
+     *
+     * The data is loaded automatically when "turbine_controller_file" is
+     * declared in the schema and the corresponding file is present.
+     * Stored under the key "turbine_controller" (suffix "_file" stripped).
+     *
+     * @return Pointer to TurbineControlSettingsData, or nullptr if not loaded.
+     */
+    const TurbineControlSettingsData *getTurbineControlSettings() const;
 
     /**
      * @brief Gets all airfoil geometries from collection
