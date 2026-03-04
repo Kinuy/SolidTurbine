@@ -17,6 +17,7 @@
 #include "AirfoilPerformanceFileListParser.h"
 #include "AirfoilGeometryFileListParser.h"
 #include "AirfoilGeometryParser.h"
+#include "TurbineControlSettingsDataFileParser.h"
 
 
 /**
