@@ -63,6 +63,10 @@ public:
     {
         return cfg_.getDouble("air_density");
     }
+    double temperature() const override
+    {
+        return cfg_.getDouble("temperature");
+    }
 
     // ── BEM solver numerics ───────────────────────────────────────────────────
     double convergence_tolerance() const override
