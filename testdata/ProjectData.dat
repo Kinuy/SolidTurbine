@@ -39,8 +39,8 @@ aep_vmean_range 4 11 1 #[m/s]
 aep_money_kwh 0.4 #[EUR/kWh]
 
 rotormap_v_tip 80.0 #[-]
-rotormap_lambda_range 2 20 1 #[-]
-rotormap_pitch_range -10 35 0.5 #[deg]
+rotormap_lambda_range 4 15 1 #[-]
+rotormap_pitch_range -1 5 0.5 #[deg]
 
 tip_extra_dist 0.0 #[m]
 convergence_tol 0.001 #[-]
