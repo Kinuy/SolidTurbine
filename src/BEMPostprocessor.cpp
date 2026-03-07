@@ -72,6 +72,9 @@ void BEMPostprocessor::AllocateArrays()
     r.cl.assign(n_sec_, 0.0);
     r.cd.assign(n_sec_, 0.0);
     r.cm.assign(n_sec_, 0.0);
+    r.local_velocity.assign(n_sec_, 0.0);
+    r.local_mach.assign(n_sec_, 0.0);
+    r.local_reynolds.assign(n_sec_, 0.0);
     r.cp_loc.assign(n_sec_, 0.0);
     r.ct_loc.assign(n_sec_, 0.0);
     r.element_length.assign(n_sec_, 0.0);
@@ -153,6 +156,9 @@ void BEMPostprocessor::ComputeLocalElementLoads(IBEMSolver const &solver)
 
         // ── Aerodynamic loading ───────────────────────────────────────────────
         double loc_vel = solver.LocalFlowVel(i);
+        result_.local_velocity[i] = loc_vel;
+        result_.local_mach[i]     = solver.LocalMachNumber(i);
+        result_.local_reynolds[i] = solver.LocalReynoldsNumber(i);
         double chord = turbine_->chord(i);
         double dr = result_.element_length[i];
         double phi = res.phi[i];
