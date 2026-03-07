@@ -647,6 +647,13 @@ std::unique_ptr<AirfoilGeometryData> AirfoilGeometryData::interpolateBetweenGeom
     // Combine surfaces into result
     result->coordinates = combineTopBottomSurfaces(interpolatedTop, interpolatedBottom);
 
+    // Check if we have enough points
+    //std::cout<< "Number of geo points at Section: " << targetThickness << " " << result->coordinates.size() << std::endl;
+    // TODO: Interpolation points are not enough
+    //if (result->coordinates.size() < 10) {
+    //    throw std::runtime_error("Not enough airfoil points");
+    //}
+
     return result;
 }
 
