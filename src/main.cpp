@@ -31,6 +31,11 @@
 #include "ISimulationResultsExporter.h"
 #include "TecplotSimulationExporter.h"
 #include "RotormapSolver.h"
+#include "SectionNoiseCalculator.h"
+#include "BEMSectionNoiseAdapter.h"
+#include "BladeNoiseConfigBuilder.h"
+#include "INoiseResultsExporter.h"
+#include "TecplotNoiseExporter.h"
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,7 +54,7 @@ static void printTiming(int step, std::string_view label,
                         std::string_view extra = "")
 {
     double ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
-    double s = ms / 1000.0;
+    double s  = ms / 1000.0;
 
     std::cout << "[" << step << "] " << label;
     for (int i = static_cast<int>(label.size()); i < 26; ++i)
@@ -189,6 +194,14 @@ int main(int /*argc*/, char **argv)
         [[maybe_unused]] double ratedRotorSpeed = config.getDouble("rated_rotorspeed");
         [[maybe_unused]] bool isHorizontal = config.getBool("turbine_is_horizontal");
         [[maybe_unused]] bool isTimeBased = config.getBool("simulation_is_time_based");
+
+        // ── Noise parameters ──────────────────────────────────────────────────
+        int  noise_bl_tripping              = config.getInt("noise_bl_tripping");
+        int  noise_bl_properties_calc_method = config.getInt("noise_bl_properties_calc_method");
+        int  noise_tbl_noise_calc_method     = config.getInt("noise_tbl_noise_calc_method");
+        int  noise_ti_noise_calc_method      = config.getInt("noise_ti_noise_calc_method");
+        bool noise_calc_blunt_te_noise       = config.getBool("noise_calc_blunt_te_noise");
+        bool noise_calc_lam_bl_noise         = config.getBool("noise_calc_lam_bl_noise");
 
         std::cout << "Configuration loaded successfully.\n";
 
@@ -459,6 +472,9 @@ int main(int /*argc*/, char **argv)
                 accumVec(pp_sum.cl,                     pp.cl);
                 accumVec(pp_sum.cd,                     pp.cd);
                 accumVec(pp_sum.cm,                     pp.cm);
+                accumVec(pp_sum.local_velocity,         pp.local_velocity);
+                accumVec(pp_sum.local_mach,             pp.local_mach);
+                accumVec(pp_sum.local_reynolds,         pp.local_reynolds);
                 accumVec(pp_sum.cp_loc,                 pp.cp_loc);
                 accumVec(pp_sum.ct_loc,                 pp.ct_loc);
                 accumVec(pp_sum.element_length,         pp.element_length);
@@ -492,6 +508,8 @@ int main(int /*argc*/, char **argv)
 
             scaleVec(pp_sum.alpha_eff);              scaleVec(pp_sum.cl);
             scaleVec(pp_sum.cd);                     scaleVec(pp_sum.cm);
+            scaleVec(pp_sum.local_velocity);         scaleVec(pp_sum.local_mach);
+            scaleVec(pp_sum.local_reynolds);
             scaleVec(pp_sum.cp_loc);                 scaleVec(pp_sum.ct_loc);
             scaleVec(pp_sum.element_length);         scaleVec(pp_sum.element_thrust);
             scaleVec(pp_sum.element_torque);         scaleVec(pp_sum.element_fy);
@@ -571,6 +589,72 @@ int main(int /*argc*/, char **argv)
         auto t10 = std::chrono::steady_clock::now();
         printTiming(10, "Rotormap computed", t9, t10);
 
+        // ── 11. Blade section noise — full power curve ───────────────────────
+        //  Enabled when at least one noise source is active in config.
+        //  Loops over all converged operating points; produces:
+        //    blade_noise_powercurve.dat — one zone per vinf, rows = sections
+        auto t11_start = std::chrono::steady_clock::now();
+        {
+            NoiseConfig noise_cfg;
+            noise_cfg.bl_tripping          = noise_bl_tripping;
+            noise_cfg.bl_properties_method = noise_bl_properties_calc_method;
+            noise_cfg.tbl_noise_method     = noise_tbl_noise_calc_method;
+            noise_cfg.ti_noise_method      = noise_ti_noise_calc_method;
+            noise_cfg.compute_bluntness    = noise_calc_blunt_te_noise;
+            noise_cfg.compute_laminar      = noise_calc_lam_bl_noise;
+
+            if (noise_cfg.any_enabled() && !pp_vec.empty())
+            {
+                auto noise_adapter = std::make_shared<BEMSectionNoiseAdapter>();
+                SectionNoiseCalculator noise_calc(noise_cfg, noise_adapter);
+
+                std::vector<BladeNoiseResult> all_noise_results;
+                all_noise_results.reserve(pp_vec.size());
+
+                const std::size_t n_pts = vinf_vec.size();
+                for (std::size_t j = 0; j < n_pts; ++j)
+                {
+                    BEMPostprocessResult const &pp_j = pp_vec[j];
+                    const double vinf_j = vinf_vec[j];
+
+                    BladeNoiseResult res = noise_calc.Calculate(
+                        pp_j, turbine.get(), sim_config,
+                        vinf_j,
+                        pp_j.local_velocity,
+                        pp_j.local_mach,
+                        pp_j.local_reynolds);
+
+                    all_noise_results.push_back(std::move(res));
+
+                    std::cout << "  [noise] v_inf = " << std::fixed
+                              << std::setprecision(1) << vinf_j << " m/s"
+                              << "  (" << (j + 1) << "/" << n_pts << ")\n";
+                }
+
+                std::unique_ptr<INoiseResultsExporter> noiseExporter =
+                    std::make_unique<TecplotNoiseExporter>(formatter);
+
+                // Full power-curve noise file (one zone per operating point)
+                if (noiseExporter->ExportPowerCurveNoise(
+                        all_noise_results, "output/blade_noise_powercurve.dat"))
+                    std::cout << "  -> output/blade_noise_powercurve.dat written"
+                              << "  (" << all_noise_results.size() << " zones, "
+                              << (all_noise_results.empty() ? 0
+                                  : all_noise_results[0].sections.size())
+                              << " sections each)\n";
+                else
+                    std::cerr << "  -> output/blade_noise_powercurve.dat FAILED\n";
+            }
+            else if (!noise_cfg.any_enabled())
+            {
+                std::cout << "  Noise calculation skipped "
+                             "(all noise sources disabled in config)\n";
+            }
+        }
+        auto t11 = std::chrono::steady_clock::now();
+        printTiming(11, "Blade noise (power curve)", t11_start, t11,
+                    std::to_string(pp_vec.size()) + " operating points");
+
         // turbine_performance.dat — power curve, one row per wind speed
         if (simExporter->ExportPowerCurve(power_curve, "output/turbine_performance.dat"))
             std::cout << "  -> output/turbine_performance.dat written\n";
@@ -614,12 +698,12 @@ int main(int /*argc*/, char **argv)
                 std::cerr << "  -> output/rotor_disc_data.dat FAILED\n";
         }
 
-        auto t11 = std::chrono::steady_clock::now();
-        printTiming(11, "Results exported", t10, t11, "4 files");
+        auto t12 = std::chrono::steady_clock::now();
+        printTiming(12, "Results exported", t10, t12, "4 files");
 
         // ── Summary ───────────────────────────────────────────────────────────
         double total_ms = std::chrono::duration<double, std::milli>(
-                              t11 - t_total_start)
+                              t12 - t_total_start)
                               .count();
 
         std::cout << "\n"
