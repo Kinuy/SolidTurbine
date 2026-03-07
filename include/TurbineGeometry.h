@@ -200,7 +200,20 @@ public:
     // double twist(std::size_t i) const { return twists_[i]; }
 
     // /// @brief Returns the absolute section thickness [m] at section @a i.
-    // double thickness(std::size_t i) const { return thicknesses_[i]; }
+    double thickness(std::size_t i) const { return blade_->getBladeSections().at(i)->relativeThickness; }
+
+    /**
+     * @brief Returns the normalised airfoil geometry for BEM section @p index.
+     *
+     * The returned AirfoilGeometryData::getCoordinates() gives the original
+     * Selig-format coordinates (x/y in [0,1]) suitable for the Xfoil boundary
+     * layer calculator.  The scaled/rotated/translated representation is in
+     * getScaledAndRotatedCoordinates() and is NOT used for noise calculations.
+     *
+     * @param index  BEM section index [0 … num_sections()-1].
+     * @return       Pointer to geometry, or nullptr if not yet interpolated.
+     */
+    const AirfoilGeometryData* airfoilGeometry(std::size_t index) const;
 
     // /// @brief Returns the X-coordinate of the aerodynamic centre at section @a i.
     // double aero_centre_x(std::size_t i) const { return aero_centres_x_[i]; }
