@@ -210,3 +210,16 @@ void TurbineGeometry::InterpForCoeff(std::size_t sec, double Re, double Ma, doub
     *Cd = coeffs.cd;
     *Cm = coeffs.cm;
 }
+
+// ── TurbineGeometry.cpp ──────────────────────────────────────────────────────
+// Add after the existing accessors (e.g. after RotorRadius()):
+
+const AirfoilGeometryData* TurbineGeometry::airfoilGeometry(std::size_t index) const
+{
+    // Section 0 of getBladeSections() is the hub stub; BEM section i maps to i+1.
+    const auto& sections = blade_->getBladeSections();
+    const std::size_t slot = index + 1;
+    if (slot >= sections.size())
+        return nullptr;
+    return sections.at(slot)->airfoilGeometry.get();
+}
