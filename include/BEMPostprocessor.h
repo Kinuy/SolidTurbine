@@ -55,6 +55,9 @@ struct BEMPostprocessResult
     double mz{0.0}; ///< torsional root moment [Nm]
 
     // ── Per-section local quantities ─────────────────────────────────────────
+    std::vector<double> local_velocity;     ///< local flow velocity per section [m/s]
+    std::vector<double> local_mach;         ///< local Mach number per section [-]
+    std::vector<double> local_reynolds;     ///< local Reynolds number per section [-]
     std::vector<double> alpha_eff;          ///< effective AoA [rad]
     std::vector<double> cl;                 ///< lift coefficient per section [-]
     std::vector<double> cd;                 ///< drag coefficient per section [-]
