@@ -36,21 +36,34 @@ FetchContent_Declare(
     GIT_TAG 5.0.1  # or latest stable version
     GIT_SHALLOW TRUE
 )
+set(EIGEN_BUILD_DOC       OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTING         OFF CACHE BOOL "" FORCE)
+set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(Eigen3)
 
 
-# Option to build tests
+# ── OpenMP ───────────────────────────────────────────────────────────────────
+find_package(OpenMP)
+
 option(BUILD_TESTS "Build unit tests" OFF)
 
 # Add subdirectories
 add_subdirectory(src)
 
-# Configure include directories for the solidturbine target
-#target_include_directories(solidturbine
-#    PUBLIC
-#        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-#        $<INSTALL_INTERFACE:include>
-#)
+# ── Per-target flags (must come after add_subdirectory so target exists) ──────
+# Warnings are set per-target inside src/CMakeLists.txt; only GCC ABI and
+# static-runtime flags live here because they apply to the final link step.
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(solidturbine PRIVATE OpenMP::OpenMP_CXX)
+endif()
+
+if(NOT MSVC)
+    target_link_options(solidturbine PRIVATE
+        -static-libgcc
+        -static-libstdc++
+    )
+    target_compile_options(solidturbine PRIVATE -Wno-psabi)
+endif()
 
 # Install targets
 install(TARGETS solidturbine
@@ -64,16 +77,3 @@ install(DIRECTORY include/
     DESTINATION include
     FILES_MATCHING PATTERN "*.h"
 )
-
-target_link_options(solidturbine PRIVATE
-    -static-libgcc
-    -static-libstdc++
-)
-
-target_compile_options(solidturbine PRIVATE -Wno-psabi)
-
-
-# Install data files
-#install(DIRECTORY data/ 
-#    DESTINATION share/solidturbine/data
-#)
