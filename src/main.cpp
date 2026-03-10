@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iomanip>
 #include <numbers>
+#include <optional>
 #include <vector>
 
 #include "ConfigurationSchema.h"
@@ -386,8 +387,11 @@ int main(int /*argc*/, char **argv)
         std::vector<double> vinf_vec;
         for (double v = sim_config.wind_speed_start();
              v <= sim_config.wind_speed_end() + sim_config.wind_speed_step() * 1e-9;
-             v += sim_config.wind_speed_step())
-            vinf_vec.push_back(v);
+             v += sim_config.wind_speed_step()){
+                vinf_vec.push_back(v);
+                // TODO: debug output: std::cout << "vinf: " << v << std::endl;
+             }
+            
 
         FlowCalculatorFactory fc_factory;
         NingSolverFactory solver_factory;
@@ -427,11 +431,21 @@ int main(int /*argc*/, char **argv)
             double rot_rate  = lambda * vinf / turbine->RotorRadius();
             double pitch_rad = pitch_deg * std::numbers::pi / 180.0;
 
-            BEMPostprocessResult pp_sum{};
-            int n_converged = 0;
+            // ── Parallel azimuth loop ─────────────────────────────────────────
+            // Each psi angle is fully independent (separate fc/solver/postproc).
+            // We collect per-psi results into a pre-sized optional vector, then
+            // reduce serially below — avoids complex OpenMP vector reductions.
+            const int n_psi = static_cast<int>(psi_vec_rad.size());
+            std::vector<std::optional<BEMPostprocessResult>> psi_results(n_psi);
 
-            for (double psi : psi_vec_rad)
+            #pragma omp parallel for schedule(dynamic, 1) default(none) \
+                shared(psi_results, psi_vec_rad, n_psi, \
+                       turbine, sim_config, fc_factory, solver_factory, \
+                       rot_rate, vinf, pitch_rad)
+            for (int psi_idx = 0; psi_idx < n_psi; ++psi_idx)
             {
+                const double psi = psi_vec_rad[static_cast<std::size_t>(psi_idx)];
+
                 auto fc = fc_factory.Build(turbine.get(), rot_rate, vinf,
                                            psi, FlowModifiers{});
                 auto solver = solver_factory.Build(turbine.get(), &sim_config,
@@ -445,7 +459,20 @@ int main(int /*argc*/, char **argv)
             postproc.Process(*solver);
                 if (!postproc.Success()) continue;
 
-            BEMPostprocessResult const &pp = postproc.Result();
+                psi_results[static_cast<std::size_t>(psi_idx)] = postproc.Result();
+            }
+
+            // ── Serial reduction over converged psi results ───────────────────
+            BEMPostprocessResult pp_sum{};
+            int n_converged = 0;
+
+            for (int psi_idx = 0; psi_idx < n_psi; ++psi_idx)
+            {
+                if (!psi_results[static_cast<std::size_t>(psi_idx)].has_value())
+                    continue;
+
+                BEMPostprocessResult const &pp =
+                    *psi_results[static_cast<std::size_t>(psi_idx)];
 
                 // Accumulate scalars.
                 pp_sum.cp      += pp.cp;
@@ -608,27 +635,36 @@ int main(int /*argc*/, char **argv)
                 auto noise_adapter = std::make_shared<BEMSectionNoiseAdapter>();
                 SectionNoiseCalculator noise_calc(noise_cfg, noise_adapter);
 
-                std::vector<BladeNoiseResult> all_noise_results;
-                all_noise_results.reserve(pp_vec.size());
-
+                // Pre-size so each thread writes to its own slot — no mutex needed
+                // on the vector itself.  Console output uses a critical section.
+                //const std::size_t n_pts = pp_vec.size();
                 const std::size_t n_pts = vinf_vec.size();
+                std::vector<BladeNoiseResult> all_noise_results(n_pts);
+
+                #pragma omp parallel for schedule(dynamic, 1) default(none) \
+                    shared(all_noise_results, pp_vec, vinf_vec, \
+                           noise_calc, turbine, sim_config, n_pts, \
+                           std::cout)
                 for (std::size_t j = 0; j < n_pts; ++j)
                 {
                     BEMPostprocessResult const &pp_j = pp_vec[j];
                     const double vinf_j = vinf_vec[j];
 
-                    BladeNoiseResult res = noise_calc.Calculate(
+                    // Each iteration is independent — Calculate() is const
+                    // and reads only its own inputs.
+                    all_noise_results[j] = noise_calc.Calculate(
                         pp_j, turbine.get(), sim_config,
                         vinf_j,
                         pp_j.local_velocity,
                         pp_j.local_mach,
                         pp_j.local_reynolds);
 
-                    all_noise_results.push_back(std::move(res));
-
+                    #pragma omp critical
+                    {
                     std::cout << "  [noise] v_inf = " << std::fixed
                               << std::setprecision(1) << vinf_j << " m/s"
                               << "  (" << (j + 1) << "/" << n_pts << ")\n";
+                }
                 }
 
                 std::unique_ptr<INoiseResultsExporter> noiseExporter =
