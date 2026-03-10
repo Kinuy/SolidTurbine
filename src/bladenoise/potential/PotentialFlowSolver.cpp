@@ -922,7 +922,7 @@ namespace bladenoise
                 lift_coefficient_ += cp * dy1ds * swork_[n_] / 1000.0;
             }
 
-            std::cout << "  CL = " << lift_coefficient_ << std::endl;
+            // TODO: debug output: std::cout << "  CL = " << lift_coefficient_ << std::endl; 
         }
 
         Real PotentialFlowSolver::get_pressure_coefficient(Real s) const
