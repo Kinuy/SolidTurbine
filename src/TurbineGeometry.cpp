@@ -12,7 +12,7 @@ TurbineGeometry::TurbineGeometry(std::unique_ptr<BladeInterpolator> blade)
     num_sections_ = blade_->getBladeSections().size();
 
     radii_.reserve(num_sections_);
-    for (int i = 1; i < num_sections_; ++i)
+    for (int i = 0; i < num_sections_; ++i)
     {
         radii_.push_back(blade_->getBladeSections().at(i)->bladeRadius);
     }
@@ -218,8 +218,8 @@ const AirfoilGeometryData* TurbineGeometry::airfoilGeometry(std::size_t index) c
 {
     // Section 0 of getBladeSections() is the hub stub; BEM section i maps to i+1.
     const auto& sections = blade_->getBladeSections();
-    const std::size_t slot = index + 1;
-    if (slot >= sections.size())
+    //const std::size_t slot = index + 1;
+    if (index > sections.size())
         return nullptr;
-    return sections.at(slot)->airfoilGeometry.get();
+    return sections.at(index)->airfoilGeometry.get();
 }
