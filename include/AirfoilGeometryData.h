@@ -114,6 +114,12 @@ public:
     void setName(const std::string &name);
 
     /**
+     * @brief Extends the airfoil name/identifier
+     * @param n Airfoil name string
+     */
+    void appendToName(const std::string &name);
+
+    /**
      * @brief Sets the relative thickness percentage
      * @param thickness Relative thickness value
      */
