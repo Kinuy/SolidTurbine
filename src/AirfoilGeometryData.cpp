@@ -653,6 +653,7 @@ std::unique_ptr<AirfoilGeometryData> AirfoilGeometryData::interpolateBetweenGeom
     //if (result->coordinates.size() < 10) {
     //    throw std::runtime_error("Not enough airfoil points");
     //}
+    result->name = std::to_string(targetThickness) + "_" + "interp";
 
     return result;
 }
@@ -671,4 +672,4 @@ AirfoilMarker AirfoilGeometryData::getMarkerByType(const std::string& type) cons
     return *it;
 }
 
-
+void AirfoilGeometryData::appendToName(const std::string& n) { name = name + "_" + n; }
