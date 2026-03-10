@@ -114,6 +114,9 @@ std::vector<SectionNoiseInput> BEMSectionNoiseAdapter::Build(
                 auto adata = std::make_shared<bladenoise::io::AirfoilData>();
                 AirfoilDataAdapter::Convert(*ag, *adata);
                 inp.airfoil_data = std::move(adata);
+                if (inp.airfoil_data.get()->x.size() < 10) {
+                    std::cout << "Warning: Airfoil data has less than 10 points. This may cause problems in the noise calculation." << std::endl;
+                }
                 //TODO: Check number of airfoil points!
             }
         }
