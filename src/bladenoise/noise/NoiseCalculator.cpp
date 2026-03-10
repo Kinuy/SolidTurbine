@@ -196,9 +196,8 @@ namespace bladenoise
             // Combine all noise sources
             combine_noise_sources(all_sources, results.total);
 
-            std::cout << "Noise calculation complete.\n";
-            std::cout << "  Total OASPL: " << results.total.overall_spl << " dB\n";
-
+            // TODO: debug output: std::cout << "Noise calculation complete for airfoil: " << airfoil.name << "\n";
+            // TODO: debug output: std::cout << "  Total OASPL: " << results.total.overall_spl << " dB\n";
             return true;
         }
 
