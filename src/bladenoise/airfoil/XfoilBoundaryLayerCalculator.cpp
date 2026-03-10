@@ -577,7 +577,7 @@ bool XfoilBoundaryLayerCalculator::viscous_inviscid_iteration(
                               (std::abs(ue_l[i]) + 1e-10));
 
         if (mc < 0.001 && iter > 0) {
-            std::cout << "  V-I coupling converged in " << iter+1 << " iterations\n";
+            // TODO: debug output: std::cout << "  V-I coupling converged in " << iter+1 << " iterations\n";
             break;
         }
     }
