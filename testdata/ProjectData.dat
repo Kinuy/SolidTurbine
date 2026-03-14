@@ -6,16 +6,19 @@ project_date 250811
 project_engineer TW
 
 ## airfoil ,blade, controller data
-airfoil_geometry_files_file AirfoilGeometry.dat
-airfoil_performance_files_file AirfoilPerformance.dat
-blade_geometry_file BladeGeometry.dat
+# airfoil_geometry_files_file AirfoilGeometry.dat
+airfoil_geometry_files_file TestCase/Input_Turbine/TURBINE_PORT/AirfoilGeometry_E.dat
+# airfoil_performance_files_file AirfoilPerformance.dat
+airfoil_performance_files_file TestCase/Input_Turbine/TURBINE_PORT/AirfoilPerformance_E.dat
+blade_geometry_file TestCase/Input_Turbine/TURBINE_PORT/BladeGeometry_E.dat
+# blade_geometry_file BladeGeometry.dat
 turbine_controller_file TurbineControlSettings.dat
 
 
 ## turbine configuration
 turbine_is_horizontal true
 number_of_blades 3 #[-]
-hub_radius 1.544 #[m]
+# hub_radius 1.544 #[m]
 cone 0.0 #[deg]
 yaw 0.0 #[deg]
 tilt 0.0 #[deg]
