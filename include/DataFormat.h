@@ -18,6 +18,15 @@ struct DataZone
     std::string dataPacking = "POINT";
     std::vector<std::vector<double>> data;
 
+    /**
+     * @brief Per-column decimal precision for output formatting.
+     *
+     * When non-empty, columnPrecisions[i] is used as the precision for column i.
+     * Columns beyond the end of this vector fall back to the formatter default (9).
+     * When empty, all columns use the formatter default.
+     */
+    std::vector<int> columnPrecisions;
+
     DataZone() = default;
     DataZone(const std::string &t, int i, int j = 0, int k = 0)
         : title(t), I(i), J(j), K(k) {}
