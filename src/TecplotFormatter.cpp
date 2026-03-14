@@ -67,13 +67,17 @@ std::string TecplotFormatter::formatZoneHeader(const DataZone &zone) const
 
 std::string TecplotFormatter::formatZoneData(const DataZone &zone) const
 {
+    constexpr int kDefaultPrecision = 9;
     std::ostringstream oss;
 
     for (const auto &row : zone.data)
     {
         for (size_t i = 0; i < row.size(); ++i)
         {
-            oss << std::fixed << std::setprecision(9) << row[i];
+            const int prec = (i < zone.columnPrecisions.size())
+                           ? zone.columnPrecisions[i]
+                           : kDefaultPrecision;
+            oss << std::fixed << std::setprecision(prec) << row[i];
             if (i < row.size() - 1)
             {
                 oss << " ";
