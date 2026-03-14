@@ -159,6 +159,21 @@ void ConfigurationParser::loadDataFiles(Configuration& config, const ParserMaps&
                     // Store structured data with a key derived from parameter name
                     std::string dataKey = extractDataKey(paramName);
                     config.setStructuredData(dataKey, std::move(structuredData));
+
+                    // If this was the blade geometry file, propagate hub radius
+                    // when no explicit hub_radius value was provided in the config.
+                    if (dataKey == "blade_geometry") {
+                        const BladeGeometryData* bladeGeom =
+                            config.getStructuredData<BladeGeometryData>(dataKey);
+                        if (bladeGeom && bladeGeom->getHubRadius() != 0.0
+                                      && !config.hasValue("hub_radius")) {
+                            config.setValue("hub_radius",
+                                            static_cast<double>(bladeGeom->getHubRadius()));
+                            std::cout << "Info: hub_radius not set in configuration — "
+                                      << "using value derived from blade geometry: "
+                                      << bladeGeom->getHubRadius() << " m" << std::endl;
+                        }
+                    }
                 }
             }
 
