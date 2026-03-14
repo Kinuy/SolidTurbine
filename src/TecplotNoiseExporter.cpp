@@ -39,6 +39,18 @@ bool TecplotNoiseExporter::ExportPowerCurveNoise(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SinglePointPrecisions
+// Column order: radius(3), chord(3), v_loc(2), alpha_eff(2), OASPL(2),
+//               SPL[N bands](2)
+// ─────────────────────────────────────────────────────────────────────────────
+static std::vector<int> SinglePointPrecisions(int n_bands)
+{
+    std::vector<int> p = {3, 3, 2, 2, 2};   // fixed columns
+    p.insert(p.end(), n_bands, 2);           // one entry per 1/3-oct band
+    return p;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // BuildSinglePointFormat
 // One zone per noise source, rows = blade sections.
 // Variables: radius, chord, v_loc, alpha, OASPL, SPL[34 bands].
@@ -63,11 +75,14 @@ DataFormat TecplotNoiseExporter::BuildSinglePointFormat(
     if (result.sections.empty()) return fmt;
 
     const int I = static_cast<int>(result.sections.size());
+    const int n_bands = static_cast<int>(result.frequencies.size());
+    const std::vector<int> precisions = SinglePointPrecisions(n_bands);
 
     auto addZone = [&](std::string const &zone_title,
                        SectionNoiseSpectrum SectionNoiseResult::*src)
     {
         DataZone zone(zone_title, I);
+        zone.columnPrecisions = precisions;
         for (auto const &sec : result.sections)
         {
             SectionNoiseSpectrum const &sp = sec.*src;
@@ -91,6 +106,36 @@ DataFormat TecplotNoiseExporter::BuildSinglePointFormat(
     addZone("Total",               &SectionNoiseResult::total);
 
     return fmt;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PowerCurvePrecisions
+// Column order: v_inf(2), radius(3), chord(3), v_loc(2), Re(0), Mach(3),
+//               alpha(2), OASPL_total(2), OASPL_TBL_p(2), OASPL_TBL_s(2),
+//               OASPL_sep(2), OASPL_LBL(2), OASPL_blunt(2), OASPL_TI(2),
+//               LWA_total(2), SPL_total[N bands](2)
+// ─────────────────────────────────────────────────────────────────────────────
+static std::vector<int> PowerCurvePrecisions(int n_bands)
+{
+    std::vector<int> p = {
+        2,  // v_inf
+        3,  // radius
+        3,  // chord
+        2,  // v_loc
+        0,  // Re
+        3,  // Mach
+        2,  // alpha_eff
+        2,  // OASPL_total
+        2,  // OASPL_TBL_pressure
+        2,  // OASPL_TBL_suction
+        2,  // OASPL_separation
+        2,  // OASPL_LBL_VS
+        2,  // OASPL_bluntness
+        2,  // OASPL_turbulent_inflow
+        2,  // LWA_total
+    };
+    p.insert(p.end(), n_bands, 2);   // SPL spectrum columns
+    return p;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -165,6 +210,12 @@ DataZone TecplotNoiseExporter::BuildOperatingPointZone(
     zone_title << std::fixed << std::setprecision(2)
                << "v_inf=" << result.vinf << "m_s";
     DataZone zone(zone_title.str(), n_sec);
+
+    // Per-column precision — derive band count from first section's total SPL
+    const int n_bands = result.sections.empty()
+                      ? 0
+                      : static_cast<int>(result.sections.front().total.spl.size());
+    zone.columnPrecisions = PowerCurvePrecisions(n_bands);
 
     // Pre-compute LWA for the total source at this operating point
     // (same value for every row in the zone — it is an integrated quantity)
