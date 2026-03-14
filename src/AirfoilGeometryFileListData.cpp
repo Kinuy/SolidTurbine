@@ -41,6 +41,9 @@ std::vector<std::string> AirfoilGeometryFileListData::getValidFilePaths() const 
         if (info.exists) {
             validPaths.push_back(info.filePath);
         }
+        else {
+            throw std::runtime_error("No geometry file found for airfoil at path: " + info.filePath);
+        }
     }
     return validPaths;
 }
