@@ -620,7 +620,7 @@ std::unique_ptr<AirfoilGeometryData> AirfoilGeometryData::interpolateBetweenGeom
 
     // Check if target thickness is within bounds
     if (targetThickness < thinThickness || targetThickness > thickThickness) {
-        throw std::invalid_argument("Target thickness is outside the range of input geometries");
+        throw std::invalid_argument("Target thickness is outside the range of input geometries: " + std::to_string(targetThickness) + " not in [" + std::to_string(thinThickness) + ", " + std::to_string(thickThickness) + "]");
     }
 
     // Calculate interpolation factor (0 = thick airfoil, 1 = thin airfoil)
