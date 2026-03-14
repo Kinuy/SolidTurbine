@@ -62,7 +62,75 @@ private:
      */
     std::vector<std::string> headers;
 
+    /**
+     * @brief Format version string (populated from VERSIO header in E-format files)
+     *
+     * Empty string for standard-format files.
+     */
+    std::string version;
+
+    /**
+     * @brief Source file name as recorded in the E-format FILE header
+     *
+     * Empty string for standard-format files.
+     */
+    std::string sourceFileName;
+
+    /**
+     * @brief Radial offset of the first parsed section from the rotor centre [m]
+     *
+     * Zero when the first section already starts at r = 0.  When non-zero,
+     * this value equals the hub radius that was subtracted from every section
+     * radius so that bladeRadius of the first section is 0.
+     */
+    double hubRadius = 0.0;
+
 public:
+
+    /**
+     * @brief Sets the format version string (from VERSIO header in E-format files)
+     * @param v Version string to store
+     */
+    void setVersion(const std::string& v) { version = v; }
+
+    /**
+     * @brief Gets the format version string
+     * @return Version string, empty for standard-format files
+     */
+    const std::string& getVersion() const { return version; }
+
+    /**
+     * @brief Sets the source file name (from FILE header in E-format files)
+     * @param name File name to store
+     */
+    void setSourceFileName(const std::string& name) { sourceFileName = name; }
+
+    /**
+     * @brief Gets the source file name recorded in the E-format FILE header
+     * @return Source file name, empty for standard-format files
+     */
+    const std::string& getSourceFileName() const { return sourceFileName; }
+
+    /**
+     * @brief Gets the hub radius that was subtracted during normalisation [m]
+     *
+     * Returns 0 when the first section was already at r = 0.
+     * Useful when callers need to convert back to absolute radii.
+     *
+     * @return Hub radius offset [m]
+     */
+    double getHubRadius() const { return hubRadius; }
+
+    /**
+     * @brief Shifts all section radii so that the first section starts at r = 0
+     *
+     * If the first parsed section has bladeRadius > 0 it is treated as the hub
+     * radius.  That value is stored in @c hubRadius and subtracted from every
+     * section, making the spanwise coordinate blade-local rather than rotor-local.
+     * Has no effect when the first section is already at r = 0 or when there
+     * are no sections.
+     */
+    void normaliseRadii();
 
     /**
      * @brief Adds a column header to the blade geometry data
