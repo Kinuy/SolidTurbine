@@ -689,7 +689,7 @@ int main(int /*argc*/, char **argv)
         }
         auto t11 = std::chrono::steady_clock::now();
         printTiming(11, "Blade noise (power curve)", t11_start, t11,
-                    std::to_string(pp_vec.size()) + " operating points");
+                    std::to_string(vinf_vec.size()) + " operating points");
 
         // turbine_performance.dat — power curve, one row per wind speed
         if (simExporter->ExportPowerCurve(power_curve, "output/turbine_performance.dat"))
