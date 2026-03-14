@@ -51,3 +51,15 @@ std::vector<double> BladeGeometryData::getRadiusValues() const {
     }
     return radii;
 }
+
+void BladeGeometryData::normaliseRadii() {
+    if (rows.empty()) return;
+
+    const double firstRadius = rows.front().bladeRadius;
+    if (firstRadius == 0.0) return;  // already starts at 0 — nothing to do
+
+    hubRadius = firstRadius;
+    for (auto& row : rows) {
+        row.bladeRadius -= hubRadius;
+    }
+}
