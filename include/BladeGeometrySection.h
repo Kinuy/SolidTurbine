@@ -84,8 +84,35 @@ struct BladeGeometrySection
 
     /**
      * @brief Relative position of twist axis along chord [%]
+     * @note Zero-initialised when loading from BladeGeometry_E format
      */
-    double relativeTwistAxis; // [%]
+    double relativeTwistAxis = 0.0; // [%]
+
+    // -------------------------------------------------------------------------
+    // Extended fields present in BladeGeometry_E format only.
+    // All fields are zero-initialised; standard-format loads leave them at 0.
+    // -------------------------------------------------------------------------
+
+    /** @brief Absolute thickness [mm] (E-format col 4) */
+    double thicknessAbs_mm   = 0.0;
+    /** @brief Trailing-edge thickness [mm] (E-format col 8) */
+    double trailingEdge_mm   = 0.0;
+    /** @brief Pre-bend offset [mm] (E-format col 9) */
+    double prebend_mm        = 0.0;
+    /** @brief Chord including trailing-edge strip [m] (E-format col 10) */
+    double chordWithTES_m    = 0.0;
+    /** @brief Pre-bend angle gamma [deg] (E-format col 11) */
+    double gammaPrebend_deg  = 0.0;
+    /** @brief Pre-bend radius [m] (E-format col 12) */
+    double radiusPrebend_m   = 0.0;
+    /** @brief Relative thickness at 0.01 chord (E-format col 13) */
+    double relThick001       = 0.0;
+    /** @brief Relative thickness at 0.1 chord (E-format col 14) */
+    double relThick01        = 0.0;
+    /** @brief Trailing-edge angle [deg] (E-format col 15) */
+    double teAngle_deg       = 0.0;
+    /** @brief Add-ons flag / value (E-format col 16) */
+    std::string addOns            = "";
 
     /**
      * @brief Name/identifier of the airfoil used for this section
@@ -136,7 +163,14 @@ struct BladeGeometrySection
     BladeGeometrySection() = default;
 
     /**
-     * @brief Constructor from tokenized file line
+     * @brief Constructor from tokenized file line — standard format (10+ tokens)
+     *
+     * Expects tokens produced by BladeGeometryParser for the standard format:
+     * [0]=DEF [1]=bladeRadius [2]=chord [3]=twist° [4]=relThick% [5]=xt4
+     * [6]=yt4 [7]=pcbaX [8]=pcbaY [9]=relativeTwistAxis [10?]=airfoilName
+     *
+     * E-format columns beyond index 9 are left at their zero-initialised defaults.
+     *
      * @param tokens Vector of string tokens from parsed file line
      * @throws std::invalid_argument if fewer than 10 tokens provided
      * @throws std::invalid_argument if numeric conversion fails
@@ -148,17 +182,21 @@ struct BladeGeometrySection
             throw std::invalid_argument("Insufficient columns for blade geometry row");
         }
 
-        type = tokens[0];
-        bladeRadius = std::stod(tokens[1]);
-        chord = std::stod(tokens[2]);
-        twist = std::stod(tokens[3]) * std::numbers::pi / 180.0; // convert to radians;
+        type              = tokens[0];
+        bladeRadius       = std::stod(tokens[1]);
+        chord             = std::stod(tokens[2]);
+        twist             = std::stod(tokens[3]) * std::numbers::pi / 180.0;
         relativeThickness = std::stod(tokens[4]);
-        xt4 = std::stod(tokens[5]);
-        yt4 = std::stod(tokens[6]);
-        pcbaX = std::stod(tokens[7]);
-        pcbaY = std::stod(tokens[8]);
+        xt4               = std::stod(tokens[5]);
+        yt4               = std::stod(tokens[6]);
+        pcbaX             = std::stod(tokens[7]);
+        pcbaY             = std::stod(tokens[8]);
         relativeTwistAxis = std::stod(tokens[9]);
-        airfoilName = "R_" + std::to_string(bladeRadius) + "_m_" + "RelThick_" + std::to_string(relativeThickness);
+
+        if (tokens.size() > 10)
+            airfoilName = tokens[10];
+        else
+            airfoilName = "R_" + std::to_string(bladeRadius) + "_m_RelThick_" + std::to_string(relativeThickness);
     }
 
     /**
@@ -166,7 +204,18 @@ struct BladeGeometrySection
      * @param other The BladeGeometrySection to copy from
      */
     BladeGeometrySection(const BladeGeometrySection &other)
-        : type(other.type), bladeRadius(other.bladeRadius), chord(other.chord), twist(other.twist), relativeThickness(other.relativeThickness), xt4(other.xt4), yt4(other.yt4), pcbaX(other.pcbaX), pcbaY(other.pcbaY), relativeTwistAxis(other.relativeTwistAxis), airfoilName(other.airfoilName), coordinates(other.coordinates), scaledCoordinates(other.scaledCoordinates), transformedCoordinates(other.transformedCoordinates)
+        : type(other.type), bladeRadius(other.bladeRadius), chord(other.chord),
+          twist(other.twist), relativeThickness(other.relativeThickness),
+          xt4(other.xt4), yt4(other.yt4), pcbaX(other.pcbaX), pcbaY(other.pcbaY),
+          relativeTwistAxis(other.relativeTwistAxis),
+          thicknessAbs_mm(other.thicknessAbs_mm), trailingEdge_mm(other.trailingEdge_mm),
+          prebend_mm(other.prebend_mm), chordWithTES_m(other.chordWithTES_m),
+          gammaPrebend_deg(other.gammaPrebend_deg), radiusPrebend_m(other.radiusPrebend_m),
+          relThick001(other.relThick001), relThick01(other.relThick01),
+          teAngle_deg(other.teAngle_deg), addOns(other.addOns),
+          airfoilName(other.airfoilName), coordinates(other.coordinates),
+          scaledCoordinates(other.scaledCoordinates),
+          transformedCoordinates(other.transformedCoordinates)
     {
     }
 };
