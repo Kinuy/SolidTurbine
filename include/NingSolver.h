@@ -17,6 +17,9 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 #include "IBEMSolver.h"
 #include "SolverConfig.h"
 // #include "Angles.h"

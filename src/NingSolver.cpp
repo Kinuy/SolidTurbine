@@ -85,12 +85,27 @@ void NingSolver::Initialise()
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Solve all blade sections
+// Solve all blade sections — parallelised over sections.
+//
+// Thread-safety rationale:
+//  • result_.phi[sec], result_.a_ind_axi[sec], result_.a_ind_rot[sec],
+//    k_cache_[sec], converged_[sec] are all indexed by `sec`.
+//    Different threads write to different elements → no data race.
+//  • cfg_.turbine, cfg_.flow_calculator — read-only per-section geometry;
+//    no mutable state touched.
+//  • cfg_.loss_model, cfg_.induction_model, cfg_.root_finder — called with
+//    stack-local input structs / lambdas; stateless implementations → safe.
+//  • sec_solidity_[sec], beta_[sec] — read-only after Initialise() → safe.
 // ─────────────────────────────────────────────────────────────────────────────
 void NingSolver::SolveAllSections()
 {
-    for (std::size_t sec = 0; sec < num_sections_; ++sec)
+    const int n = static_cast<int>(num_sections_);
+
+    #pragma omp parallel for schedule(dynamic, 1) default(none) \
+        shared(n)
+    for (int sec_i = 0; sec_i < n; ++sec_i)
     {
+        const std::size_t sec = static_cast<std::size_t>(sec_i);
         if (!FindSolutionPositiveRegion(sec))
             FindSolutionNegativeRegion(sec);
     }
