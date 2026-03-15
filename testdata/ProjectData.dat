@@ -5,6 +5,9 @@ project_revision R00
 project_date 250811
 project_engineer TW
 
+switch_calc_rotormap 1   # or 1 to enable
+switch_calc_blade_and_rotor_noise 0   # or 1 to enable
+
 ## airfoil ,blade, controller data
 # airfoil_geometry_files_file AirfoilGeometry.dat
 airfoil_geometry_files_file TestCase/Input_Turbine/TURBINE_PORT/AirfoilGeometry_E.dat
@@ -65,6 +68,10 @@ noise_tbl_noise_calc_method 1 # TBL_Method	1    #Integer describing TBL noise ca
 noise_ti_noise_calc_method 2 # TI_Method	2     #Integer describing TI noise calculation: 0 = none ; 1 = Amiet (flat plate) ; 2 = Guidati ; 3 = Simplified                                                                                
 noise_calc_blunt_te_noise 1 # IBLUNT	1        #FLAG TO COMPUTE BLUNTNESS NOISE:      0 = No ; 1 = Yes                 
 noise_calc_lam_bl_noise 1 # ILAM	1          #FLAG TO COMPUTE LBL NOISE:          0 = No ; 1 = Yes   
+
+noise_ground_distance 10.0 #"Horizontal distance from tower base to observer [m] (IEC)"
+noise_overhang 2.0 #"Rotor overhang from tower centreline [m]"
+
 ##---------------------- Airfoil Properties -----------------------------------------
 # Chord_Length	0.2286                 #(m)
 # Airfoil_Span	0.509                  #(m)
