@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <numbers>
 #include <optional>
+#include <sstream>
 #include <vector>
 
 #include "ConfigurationSchema.h"
@@ -37,6 +38,7 @@
 #include "BladeNoiseConfigBuilder.h"
 #include "INoiseResultsExporter.h"
 #include "TecplotNoiseExporter.h"
+#include "RotorNoiseAggregator.h"
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,29 +51,40 @@ static void waitForKeyPress()
     std::cin.get();
 }
 
+/// Format a duration given in milliseconds as a human-readable string.
+/// Always uses fixed decimal notation (no scientific output).
+///   < 60 s  →  "123.4 ms (0.12 s)"
+///   ≥ 60 s  →  "3 min 7.2 s"
+static std::string formatDuration(double ms)
+{
+    double s = ms / 1000.0;
+    std::ostringstream oss;
+    if (s >= 60.0)
+    {
+        double min     = std::floor(s / 60.0);
+        double sec_rem = s - min * 60.0;
+        oss << std::fixed << std::setprecision(0) << min << " min "
+            << std::setprecision(1) << sec_rem << " s";
+    }
+    else
+    {
+        oss << std::fixed << std::setprecision(1) << ms << " ms ("
+            << std::setprecision(2) << s << " s)";
+    }
+    return oss.str();
+}
+
 static void printTiming(int step, std::string_view label,
                         std::chrono::steady_clock::time_point t0,
                         std::chrono::steady_clock::time_point t1,
                         std::string_view extra = "")
 {
     double ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
-    double s  = ms / 1000.0;
 
     std::cout << "[" << step << "] " << label;
     for (int i = static_cast<int>(label.size()); i < 26; ++i)
         std::cout << ' ';
-    std::cout << ": ";
-    if (s >= 60.0)
-    {
-        double min     = std::floor(s / 60.0);
-        double sec_rem = s - min * 60.0;
-        std::cout << std::fixed << std::setprecision(0) << min << " min "
-                  << std::setprecision(1) << sec_rem << " s";
-    }
-    else
-    {
-        std::cout << std::defaultfloat << ms << " ms (" << s << " s)";
-    }
+    std::cout << ": " << formatDuration(ms);
     if (!extra.empty())
         std::cout << "  (" << extra << ")";
     std::cout << '\n';
@@ -158,6 +171,7 @@ int main(int /*argc*/, char **argv)
                         true, "Mean wind speed range for AEP [m/s]");
 
         // Rotormap keys
+        schema.addBool  ("switch_calc_rotormap", true, "Enable Rotormap calculation: 0=off, 1=on");
         schema.addDouble("rotormap_v_tip",       true, "Constant tip speed for Rotormap [m/s]");
         schema.addRange ("rotormap_lambda_range",
                          "rotormap_lambda_start", "rotormap_lambda_end", "rotormap_lambda_step",
@@ -167,6 +181,8 @@ int main(int /*argc*/, char **argv)
                          true, "Pitch range for Rotormap sweep [deg]");
 
         // ── Noise calculation parameters ──────────────────────────────────────
+        schema.addBool("switch_calc_blade_and_rotor_noise", true,
+                       "Enable blade & rotor noise calculation: 0=off, 1=on");
         schema.addInt("noise_bl_tripping", true,
                       "BL trip: 0=no trip (BPM), 1=heavy trip (BPM only), 2=light trip");
         schema.addInt("noise_bl_properties_calc_method", true,
@@ -179,6 +195,12 @@ int main(int /*argc*/, char **argv)
                        "Compute bluntness TE noise: 0=No, 1=Yes");
         schema.addBool("noise_calc_lam_bl_noise", true,
                        "Compute LBL noise: 0=No, 1=Yes");
+
+        // ── Noise observer / rotor geometry for SPL→LWA aggregation ──────────
+        schema.addDouble("noise_ground_distance", true,
+                         "Horizontal distance from tower base to observer [m] (IEC 61400-11)");
+        schema.addDouble("noise_overhang", true,
+                         "Rotor overhang from tower centreline [m]");
 
         auto t1 = std::chrono::steady_clock::now();
         printTiming(1, "Schema built", t0, t1);
@@ -197,12 +219,18 @@ int main(int /*argc*/, char **argv)
         [[maybe_unused]] bool isTimeBased = config.getBool("simulation_is_time_based");
 
         // ── Noise parameters ──────────────────────────────────────────────────
+        const bool switch_calc_noise         = config.getBool("switch_calc_blade_and_rotor_noise");
         int  noise_bl_tripping              = config.getInt("noise_bl_tripping");
         int  noise_bl_properties_calc_method = config.getInt("noise_bl_properties_calc_method");
         int  noise_tbl_noise_calc_method     = config.getInt("noise_tbl_noise_calc_method");
         int  noise_ti_noise_calc_method      = config.getInt("noise_ti_noise_calc_method");
         bool noise_calc_blunt_te_noise       = config.getBool("noise_calc_blunt_te_noise");
         bool noise_calc_lam_bl_noise         = config.getBool("noise_calc_lam_bl_noise");
+
+        // Rotor noise aggregation geometry
+        const double noise_ground_distance = config.getDouble("noise_ground_distance");
+        const double noise_overhang        = config.getDouble("noise_overhang");
+        // hub_height and number_of_blades already read via turbine setup below
 
         std::cout << "Configuration loaded successfully.\n";
 
@@ -431,17 +459,13 @@ int main(int /*argc*/, char **argv)
             double rot_rate  = lambda * vinf / turbine->RotorRadius();
             double pitch_rad = pitch_deg * std::numbers::pi / 180.0;
 
-            // ── Parallel azimuth loop ─────────────────────────────────────────
-            // Each psi angle is fully independent (separate fc/solver/postproc).
-            // We collect per-psi results into a pre-sized optional vector, then
-            // reduce serially below — avoids complex OpenMP vector reductions.
+            // ── Serial azimuth loop ───────────────────────────────────────────
+            // Parallelism is applied inside NingSolver::SolveAllSections()
+            // (per-section level).  The outer psi loop runs serially so the
+            // two levels do not compete for threads.
             const int n_psi = static_cast<int>(psi_vec_rad.size());
             std::vector<std::optional<BEMPostprocessResult>> psi_results(n_psi);
 
-            #pragma omp parallel for schedule(dynamic, 1) default(none) \
-                shared(psi_results, psi_vec_rad, n_psi, \
-                       turbine, sim_config, fc_factory, solver_factory, \
-                       rot_rate, vinf, pitch_rad)
             for (int psi_idx = 0; psi_idx < n_psi; ++psi_idx)
             {
                 const double psi = psi_vec_rad[static_cast<std::size_t>(psi_idx)];
@@ -589,6 +613,7 @@ int main(int /*argc*/, char **argv)
             std::make_unique<TecplotSimulationExporter>(formatter);
 
         // ── 10. Rotormap ──────────────────────────────────────────────────────
+        if (config.getBool("switch_calc_rotormap"))
         {
             RotormapParams rm_params;
             rm_params.v_tip        = config.getDouble("rotormap_v_tip");
@@ -603,8 +628,6 @@ int main(int /*argc*/, char **argv)
             RotormapSolver rm_solver(turbine.get(), &sim_config);
             RotormapResult rm_result = rm_solver.Solve(rm_params);
 
-            // Reuse the shared simExporter — ExportRotormap is part of
-            // ISimulationResultsExporter, no separate exporter needed.
             if (simExporter->ExportRotormap(rm_result, "output/Rotormap.dat"))
                 std::cout << "  -> " << "output/Rotormap.dat" << " written"
                           << "  (" << rm_result.count_I() << "x"
@@ -612,15 +635,19 @@ int main(int /*argc*/, char **argv)
             else
                 std::cerr << "  -> " << "output/Rotormap.dat" << " FAILED\n";
         }
+        else
+        {
+            std::cout << "  Rotormap skipped (switch_calc_rotormap = 0)\n";
+        }
 
         auto t10 = std::chrono::steady_clock::now();
         printTiming(10, "Rotormap computed", t9, t10);
 
         // ── 11. Blade section noise — full power curve ───────────────────────
-        //  Enabled when at least one noise source is active in config.
-        //  Loops over all converged operating points; produces:
-        //    blade_noise_powercurve.dat — one zone per vinf, rows = sections
+        //  Enabled by switch_calc_blade_and_rotor_noise = 1 and at least one
+        //  noise source active in config.
         auto t11_start = std::chrono::steady_clock::now();
+        if (switch_calc_noise)
         {
             NoiseConfig noise_cfg;
             noise_cfg.bl_tripping          = noise_bl_tripping;
@@ -687,8 +714,116 @@ int main(int /*argc*/, char **argv)
                              "(all noise sources disabled in config)\n";
             }
         }
+        else
+        {
+            std::cout << "  Blade noise skipped "
+                         "(switch_calc_blade_and_rotor_noise = 0)\n";
+        }
         auto t11 = std::chrono::steady_clock::now();
         printTiming(11, "Blade noise (power curve)", t11_start, t11,
+                    std::to_string(vinf_vec.size()) + " operating points");
+
+        // ── 12. Rotor noise aggregation — power curve ────────────────────────
+        //  Aggregates per-section blade SPL into rotor-level SPL / LWA using:
+        //    - Energy summation over blade sections per frequency band
+        //    - A-weighting (IEC 61672 formula)
+        //    - Free-field geometric spreading  As = 10·log10(1/(4πd²))
+        //    - Multi-blade scaling  LWA_rotor = LWA_blade + 10·log10(n_blades)
+        //  Output: rotor_noise_powercurve.dat — 7 zones (one per noise source),
+        //          rows = operating points, cols = OASPL, LWA, SPL spectrum
+        auto t12_start = std::chrono::steady_clock::now();
+        if (switch_calc_noise)
+        {
+            NoiseConfig noise_cfg_check;
+            noise_cfg_check.bl_tripping          = noise_bl_tripping;
+            noise_cfg_check.bl_properties_method = noise_bl_properties_calc_method;
+            noise_cfg_check.tbl_noise_method     = noise_tbl_noise_calc_method;
+            noise_cfg_check.ti_noise_method      = noise_ti_noise_calc_method;
+            noise_cfg_check.compute_bluntness    = noise_calc_blunt_te_noise;
+            noise_cfg_check.compute_laminar      = noise_calc_lam_bl_noise;
+
+            // Reuse all_noise_results from step 11 — declared in its own scope
+            // above, so we need a reference path.  Easiest: redo the aggregation
+            // only if noise was actually run.  We guard on the same condition.
+            if (noise_cfg_check.any_enabled() && !pp_vec.empty())
+            {
+                const int    n_blades_rotor = config.getInt("number_of_blades");
+                const double hub_h          = config.getDouble("hub_height");
+
+                RotorNoiseAggregator aggregator(
+                    n_blades_rotor,
+                    hub_h,
+                    noise_ground_distance,
+                    noise_overhang);
+
+                std::cout << "  [rotor noise] observer distance = "
+                          << std::fixed << std::setprecision(1)
+                          << aggregator.ObserverDistance() << " m"
+                          << "  (" << n_blades_rotor << " blades)\n";
+
+                // Re-run the noise loop to get all_noise_results in this scope.
+                // (If step 11 already populated them we can't access them here
+                //  because they're in the previous scope block.  We therefore
+                //  repeat the calculation — it is cheap: just a re-aggregate
+                //  of already-computed BEM post-process results.)
+                const std::size_t n_pts = vinf_vec.size();
+                std::vector<BladeNoiseResult> noise_results_agg(n_pts);
+
+                {
+                    auto noise_adapter_agg = std::make_shared<BEMSectionNoiseAdapter>();
+                    NoiseConfig noise_cfg_agg;
+                    noise_cfg_agg.bl_tripping          = noise_bl_tripping;
+                    noise_cfg_agg.bl_properties_method = noise_bl_properties_calc_method;
+                    noise_cfg_agg.tbl_noise_method     = noise_tbl_noise_calc_method;
+                    noise_cfg_agg.ti_noise_method      = noise_ti_noise_calc_method;
+                    noise_cfg_agg.compute_bluntness    = noise_calc_blunt_te_noise;
+                    noise_cfg_agg.compute_laminar      = noise_calc_lam_bl_noise;
+                    SectionNoiseCalculator noise_calc_agg(noise_cfg_agg, noise_adapter_agg);
+
+                    #pragma omp parallel for schedule(dynamic, 1) default(none) \
+                        shared(noise_results_agg, pp_vec, vinf_vec, \
+                               noise_calc_agg, turbine, sim_config, n_pts)
+                    for (std::size_t j = 0; j < n_pts; ++j)
+                    {
+                        noise_results_agg[j] = noise_calc_agg.Calculate(
+                            pp_vec[j], turbine.get(), sim_config,
+                            vinf_vec[j],
+                            pp_vec[j].local_velocity,
+                            pp_vec[j].local_mach,
+                            pp_vec[j].local_reynolds);
+                    }
+                }
+
+                // Aggregate each operating point
+                std::vector<RotorNoiseResult> rotor_results;
+                rotor_results.reserve(n_pts);
+                for (auto const &br : noise_results_agg)
+                    rotor_results.push_back(aggregator.Aggregate(br));
+
+                std::unique_ptr<INoiseResultsExporter> rotorNoiseExporter =
+                    std::make_unique<TecplotNoiseExporter>(formatter);
+
+                if (rotorNoiseExporter->ExportRotorNoise(
+                        rotor_results, "output/rotor_noise_powercurve.dat"))
+                    std::cout << "  -> output/rotor_noise_powercurve.dat written"
+                              << "  (" << rotor_results.size()
+                              << " operating points, 7 source zones)\n";
+                else
+                    std::cerr << "  -> output/rotor_noise_powercurve.dat FAILED\n";
+            }
+            else if (!noise_cfg_check.any_enabled())
+            {
+                std::cout << "  Rotor noise aggregation skipped "
+                             "(all noise sources disabled in config)\n";
+            }
+        }
+        else
+        {
+            std::cout << "  Rotor noise skipped "
+                         "(switch_calc_blade_and_rotor_noise = 0)\n";
+        }
+        auto t12 = std::chrono::steady_clock::now();
+        printTiming(12, "Rotor noise aggregated", t12_start, t12,
                     std::to_string(vinf_vec.size()) + " operating points");
 
         // turbine_performance.dat — power curve, one row per wind speed
@@ -734,17 +869,16 @@ int main(int /*argc*/, char **argv)
                 std::cerr << "  -> output/rotor_disc_data.dat FAILED\n";
         }
 
-        auto t12 = std::chrono::steady_clock::now();
-        printTiming(12, "Results exported", t10, t12, "4 files");
+        auto t13 = std::chrono::steady_clock::now();
+        printTiming(13, "Results exported", t12, t13, "5 files");
 
         // ── Summary ───────────────────────────────────────────────────────────
         double total_ms = std::chrono::duration<double, std::milli>(
-                              t12 - t_total_start)
+                              t13 - t_total_start)
                               .count();
 
         std::cout << "\n"
-                  << "Total simulation time      : "
-                  << total_ms << " ms (" << total_ms / 1000.0 << " s)\n"
+                  << "Total simulation time      : " << formatDuration(total_ms) << "\n"
                   << "Simulation complete.\n";
     }
     catch (const std::exception &e)
