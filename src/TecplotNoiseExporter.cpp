@@ -297,3 +297,140 @@ bool TecplotNoiseExporter::Write(DataFormat const &fmt,
     DataWriter writer(data, formatter_, output);
     return writer.write();
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ExportRotorNoise
+// ─────────────────────────────────────────────────────────────────────────────
+bool TecplotNoiseExporter::ExportRotorNoise(
+    std::vector<RotorNoiseResult> const &results,
+    std::string                   const &output_path) const
+{
+    return Write(BuildRotorNoiseFormat(results), output_path);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RotorNoiseVariables
+// Columns: v_inf, observer_dist, OASPL, OASPL_A, LW, LWA,
+//          SPL_<f>Hz, SPLA_<f>Hz   (one pair per 1/3-oct band)
+// ─────────────────────────────────────────────────────────────────────────────
+std::vector<std::string> TecplotNoiseExporter::RotorNoiseVariables(
+    std::vector<double> const &frequencies)
+{
+    std::vector<std::string> vars = {
+        "v_inf_[m/s]",
+        "observer_dist_[m]",
+        "OASPL_[dB]",
+        "OASPL_A_[dB(A)]",
+        "LW_[dB_re_1pW]",
+        "LWA_[dB(A)_re_1pW]",
+    };
+    for (double f : frequencies)
+    {
+        std::ostringstream ss;
+        ss << std::fixed << std::setprecision(0) << "SPL_" << f << "Hz_[dB]";
+        vars.push_back(ss.str());
+    }
+    for (double f : frequencies)
+    {
+        std::ostringstream ss;
+        ss << std::fixed << std::setprecision(0) << "SPLA_" << f << "Hz_[dB(A)]";
+        vars.push_back(ss.str());
+    }
+    return vars;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RotorNoisePrecisions
+// v_inf(2), observer_dist(2), OASPL(2), OASPL_A(2), LW(2), LWA(2),
+// SPL bands(2), SPLA bands(2)
+// ─────────────────────────────────────────────────────────────────────────────
+std::vector<int> TecplotNoiseExporter::RotorNoisePrecisions(int n_bands)
+{
+    std::vector<int> p = {2, 2, 2, 2, 2, 2};       // scalar columns
+    p.insert(p.end(), n_bands, 2);                  // SPL spectrum
+    p.insert(p.end(), n_bands, 2);                  // SPLA spectrum
+    return p;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BuildRotorNoiseSourceZone
+// One zone = one noise source; each row = one operating point.
+// ─────────────────────────────────────────────────────────────────────────────
+DataZone TecplotNoiseExporter::BuildRotorNoiseSourceZone(
+    std::vector<RotorNoiseResult>  const &results,
+    std::string                    const &zone_title,
+    RotorNoiseSourceResult RotorNoiseResult::*src)
+{
+    const int n_pts = static_cast<int>(results.size());
+    DataZone zone(zone_title, n_pts);
+
+    // Derive band count from first non-empty result
+    int n_bands = 0;
+    for (auto const &r : results)
+        if (!(r.*src).spl_spectrum.empty())
+        {
+            n_bands = static_cast<int>((r.*src).spl_spectrum.size());
+            break;
+        }
+
+    zone.columnPrecisions = RotorNoisePrecisions(n_bands);
+
+    for (auto const &r : results)
+    {
+        RotorNoiseSourceResult const &s = r.*src;
+        std::vector<double> row = {
+            r.vinf,
+            r.observer_distance,
+            s.oaspl,
+            s.oasplA,
+            s.lw,
+            s.lwA,
+        };
+        // SPL spectrum
+        for (double v : s.spl_spectrum) row.push_back(v);
+        while (static_cast<int>(row.size()) < 6 + n_bands)
+            row.push_back(-100.0);
+        // SPLA spectrum
+        for (double v : s.splA_spectrum) row.push_back(v);
+        while (static_cast<int>(row.size()) < 6 + 2 * n_bands)
+            row.push_back(-100.0);
+
+        zone.data.push_back(row);
+    }
+    return zone;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BuildRotorNoiseFormat
+// One zone per noise source — 7 zones total (matches single-point format).
+// ─────────────────────────────────────────────────────────────────────────────
+DataFormat TecplotNoiseExporter::BuildRotorNoiseFormat(
+    std::vector<RotorNoiseResult> const &results)
+{
+    DataFormat fmt("RotorNoise");
+
+    // Derive frequency list from first non-empty result
+    std::vector<double> frequencies;
+    for (auto const &r : results)
+        if (!r.frequencies.empty()) { frequencies = r.frequencies; break; }
+
+    fmt.setVariables(RotorNoiseVariables(frequencies));
+
+    if (results.empty()) return fmt;
+
+    auto addZone = [&](std::string const &title,
+                       RotorNoiseSourceResult RotorNoiseResult::*src)
+    {
+        fmt.addZone(BuildRotorNoiseSourceZone(results, title, src));
+    };
+
+    addZone("TBL_pressure_side",   &RotorNoiseResult::tbl_pressure_side);
+    addZone("TBL_suction_side",    &RotorNoiseResult::tbl_suction_side);
+    addZone("Separation",          &RotorNoiseResult::separation);
+    addZone("LBL_vortex_shedding", &RotorNoiseResult::laminar_vortex);
+    addZone("Bluntness",           &RotorNoiseResult::bluntness);
+    addZone("Turbulent_inflow",    &RotorNoiseResult::turbulent_inflow);
+    addZone("Total",               &RotorNoiseResult::total);
+
+    return fmt;
+}

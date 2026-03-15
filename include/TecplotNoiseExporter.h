@@ -23,6 +23,7 @@
 #include "INoiseResultsExporter.h"
 #include "IFormatter.h"
 #include "DataFormat.h"
+#include "RotorNoiseResult.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -39,6 +40,14 @@ public:
 
     bool ExportPowerCurveNoise(
         std::vector<BladeNoiseResult> const &results,
+        std::string                   const &output_path) const override;
+
+    /**
+     * @brief Export aggregated rotor noise: one zone per noise source,
+     *        rows = operating points (v_inf), columns = OASPL/LWA + SPL spectrum.
+     */
+    bool ExportRotorNoise(
+        std::vector<RotorNoiseResult> const &results,
         std::string                   const &output_path) const override;
 
 private:
@@ -61,6 +70,24 @@ private:
     /// LW = 10·log10( Σ_i  10^(OASPL_i / 10) · chord_i · span_i ) + 120
     static double ComputeLWA(BladeNoiseResult const &result,
                              SectionNoiseSpectrum SectionNoiseResult::*src);
+
+    // ── Rotor noise helpers ───────────────────────────────────────────────────
+    /// Variable list for the rotor noise file (OASPL/LWA scalars + SPL spectrum).
+    static std::vector<std::string> RotorNoiseVariables(
+        std::vector<double> const &frequencies);
+
+    /// Column precisions for rotor noise zones.
+    static std::vector<int> RotorNoisePrecisions(int n_bands);
+
+    /// Build one DataZone for one noise source across all operating points.
+    static DataZone BuildRotorNoiseSourceZone(
+        std::vector<RotorNoiseResult> const &results,
+        std::string                   const &zone_title,
+        RotorNoiseSourceResult RotorNoiseResult::*src);
+
+    /// Assemble the complete DataFormat for the rotor noise file.
+    static DataFormat BuildRotorNoiseFormat(
+        std::vector<RotorNoiseResult> const &results);
 
     bool Write(DataFormat const &fmt, std::string const &path) const;
 };
