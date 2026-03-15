@@ -14,6 +14,7 @@
  *                            rows = blade sections.
  */
 #include "SectionNoiseResult.h"
+#include "RotorNoiseResult.h"
 #include <string>
 #include <vector>
 
@@ -33,10 +34,25 @@ public:
      * Output layout: one zone per operating point (named by v_inf),
      * rows = blade sections, columns = per-section noise quantities.
      *
-     * @param results    One BladeNoiseResult per wind speed, ordered by vinf.
+     * @param results      One BladeNoiseResult per wind speed, ordered by vinf.
      * @param output_path  File path to write.
      */
     virtual bool ExportPowerCurveNoise(
         std::vector<BladeNoiseResult> const &results,
+        std::string                   const &output_path) const = 0;
+
+    /**
+     * @brief Export aggregated rotor noise for all power curve operating points.
+     *
+     * Output layout: one zone per noise source; rows = operating points.
+     * Columns: v_inf, observer_distance, OASPL [dB], OASPL_A [dB(A)],
+     *          LW [dB re 1pW], LWA [dB(A) re 1pW],
+     *          SPL spectrum [dB], SPL_A spectrum [dB(A)].
+     *
+     * @param results      One RotorNoiseResult per wind speed (from RotorNoiseAggregator).
+     * @param output_path  File path to write.
+     */
+    virtual bool ExportRotorNoise(
+        std::vector<RotorNoiseResult> const &results,
         std::string                   const &output_path) const = 0;
 };
