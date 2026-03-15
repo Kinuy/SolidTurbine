@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <memory>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 #include "AirfoilGeometryData.h"
 #include "AirfoilPolarData.h"
 #include "BladeGeometryData.h"
@@ -60,11 +63,13 @@ public:
 	void interpolateAllSections();
 
 	/**
-	 * @brief Interpolates blade section data at a specific thickness
-	 * @param targetThickness Thickness at which to interpolate blade properties
-	 * @return Interpolated section at target thickness
+	 * @brief Interpolates blade section data at a specific radius and stores
+	 *        the result at the pre-allocated slot @p index in bladeSections.
+	 *
+	 * @param index        Position in bladeSections to write into.
+	 * @param targetRadius Radial position [m] at which to interpolate.
 	 */
-	void interpolateSection(double targetThickness);
+	void interpolateSection(std::size_t index, double targetRadius);
 
 	const std::vector<std::unique_ptr<BladeGeometrySection>> &getBladeSections() const;
 };

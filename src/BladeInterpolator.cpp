@@ -16,16 +16,29 @@ BladeInterpolator::BladeInterpolator(
 
 void BladeInterpolator::interpolateAllSections()
 {
-	// Get all radius values from the blade geometry
-	std::vector<double>  radiusValues = bladeGeometry->getRadiusValues();
-	// Interpolate each section based on the radius values
-	for (const auto& radius : radiusValues) {
-		interpolateSection(radius);
-	}
-	std::cout << "\nSuccessfully interpolated " << bladeSections.size() << " sections geo and perfo data" << std::endl;
+    const std::vector<double> radiusValues = bladeGeometry->getRadiusValues();
+    const int n = static_cast<int>(radiusValues.size());
+
+    // Pre-allocate so each thread writes to its own slot — no push_back race.
+    bladeSections.resize(static_cast<std::size_t>(n));
+
+    // Thread-safety rationale:
+    //  • bladeSections[i] — each thread owns one slot; no aliasing.
+    //  • bladeGeometry->getRowByRadius() / getRadiusValues() — read-only data.
+    //  • AirfoilPolarInterpolationFactory / AirfoilGeometryInterpolationFactory
+    //    — called with section-local inputs; assumed stateless (factory pattern).
+    //  • All intermediate objects (bladeSection, airfoilPolar, airfoilGeometry)
+    //    are stack-local unique_ptrs; no sharing between threads.
+    #pragma omp parallel for schedule(dynamic, 1) default(none) \
+        shared(radiusValues, n)
+    for (int i = 0; i < n; ++i)
+        interpolateSection(static_cast<std::size_t>(i), radiusValues[static_cast<std::size_t>(i)]);
+
+    std::cout << "\nSuccessfully interpolated " << bladeSections.size()
+              << " sections geo and perfo data" << std::endl;
 }
 
-void BladeInterpolator::interpolateSection(double targetRadius)
+void BladeInterpolator::interpolateSection(std::size_t index, double targetRadius)
 {
 	// Create a section object and fill it with data: blade section geo, airfoil geo , airfoil perfo 
 	BladeGeometryData* mutableBladeGeom = const_cast<BladeGeometryData*>(bladeGeometry);
@@ -63,10 +76,8 @@ void BladeInterpolator::interpolateSection(double targetRadius)
 	bladeSection->airfoilPolar = std::move(airfoilPolar);
 	bladeSection->airfoilGeometry = std::move(airfoilGeometry);
 
-
-    // Create and store the section
-    bladeSections.push_back(std::move(bladeSection));
-
+    // Write directly into the pre-allocated slot — no mutex needed.
+    bladeSections[index] = std::move(bladeSection);
 }
 
 const std::vector<std::unique_ptr<BladeGeometrySection>> &BladeInterpolator::getBladeSections() const
