@@ -18,7 +18,8 @@ const ControlFeature* TurbineControlSettingsData::findFeature(
 std::vector<const ControlEntry*> TurbineControlSettingsData::findEntries(
     const std::string& feature_name,
     const std::string& scope,
-    const std::string& mode) const
+    const std::string& mode,
+    const std::string& variant) const
 {
     const ControlFeature* feat = findFeature(feature_name);
     if (!feat) return {};
@@ -26,8 +27,9 @@ std::vector<const ControlEntry*> TurbineControlSettingsData::findEntries(
     std::vector<const ControlEntry*> result;
     for (auto const& e : feat->entries)
     {
-        if (e.scope != scope)                  continue;
-        if (!mode.empty() && e.mode != mode)   continue;
+        if (e.scope != scope)                    continue;
+        if (!mode.empty()    && e.mode    != mode)    continue;
+        if (!variant.empty() && e.variant != variant) continue;
         result.push_back(&e);
     }
     return result;
@@ -37,13 +39,15 @@ std::vector<const ControlEntry*> TurbineControlSettingsData::findEntries(
 double TurbineControlSettingsData::getScalar(
     const std::string& feature_name,
     const std::string& scope,
-    const std::string& mode) const
+    const std::string& mode,
+    const std::string& variant) const
 {
-    auto entries = findEntries(feature_name, scope, mode);
+    auto entries = findEntries(feature_name, scope, mode, variant);
     if (entries.empty())
         throw std::runtime_error(
             "TurbineControlSettingsData::getScalar: feature='" + feature_name +
-            "' scope='" + scope + "' mode='" + mode + "' not found");
+            "' scope='" + scope + "' mode='" + mode +
+            "' variant='" + variant + "' not found");
 
     if (entries.front()->values.empty())
         throw std::runtime_error(
@@ -57,13 +61,15 @@ double TurbineControlSettingsData::getScalar(
 const std::vector<double>& TurbineControlSettingsData::getVector(
     const std::string& feature_name,
     const std::string& scope,
-    const std::string& mode) const
+    const std::string& mode,
+    const std::string& variant) const
 {
-    auto entries = findEntries(feature_name, scope, mode);
+    auto entries = findEntries(feature_name, scope, mode, variant);
     if (entries.empty())
         throw std::runtime_error(
             "TurbineControlSettingsData::getVector: feature='" + feature_name +
-            "' scope='" + scope + "' mode='" + mode + "' not found");
+            "' scope='" + scope + "' mode='" + mode +
+            "' variant='" + variant + "' not found");
 
     return entries.front()->values;
 }

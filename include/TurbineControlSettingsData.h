@@ -33,6 +33,7 @@ struct ControlEntry
     std::string         turbine_id;   ///< e.g. "TURBINE_NAME"
     std::string         mode;         ///< e.g. "OM-1", empty if absent
     std::string         power_type;   ///< "$A", "$T", or ""
+    std::string         variant;      ///< e.g. "#Variant1", empty if absent
     std::vector<double> values;       ///< parsed value list (size 1 for scalars)
 };
 
@@ -63,27 +64,33 @@ struct TurbineControlSettingsData
     const ControlFeature* findFeature(const std::string& name) const;
 
     /**
-     * @brief Find all entries for a feature filtered by scope and optional mode.
-     * @param mode  Pass "" to return entries for all modes.
+     * @brief Find all entries for a feature filtered by scope, optional mode,
+     *        and optional variant tag (e.g. "#Variant1").
+     * @param mode     Pass "" to match entries for all modes.
+     * @param variant  Pass "" to match entries regardless of variant tag.
+     *                 Pass e.g. "#Variant1" to match only that variant.
      */
     std::vector<const ControlEntry*> findEntries(
         const std::string& feature_name,
         const std::string& scope,
-        const std::string& mode = "") const;
+        const std::string& mode    = "",
+        const std::string& variant = "") const;
 
     /**
-     * @brief Return the first scalar value for a feature/scope/mode.
+     * @brief Return the first scalar value for a feature/scope/mode/variant.
      * @throws std::runtime_error if not found or values are empty.
      */
     double getScalar(const std::string& feature_name,
                      const std::string& scope,
-                     const std::string& mode = "") const;
+                     const std::string& mode    = "",
+                     const std::string& variant = "") const;
 
     /**
-     * @brief Return the value vector for a feature/scope/mode.
+     * @brief Return the value vector for a feature/scope/mode/variant.
      * @throws std::runtime_error if not found.
      */
     const std::vector<double>& getVector(const std::string& feature_name,
                                          const std::string& scope,
-                                         const std::string& mode = "") const;
+                                         const std::string& mode    = "",
+                                         const std::string& variant = "") const;
 };

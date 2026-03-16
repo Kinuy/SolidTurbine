@@ -199,12 +199,19 @@ ControlEntry TurbineControlSettingsParser::parseDataLine(const std::string& line
     entry.turbine_id = tid;
     entry.mode       = mode;
 
-    // Remaining tokens: optional $A/$T, then value / list
+    // Remaining tokens: optional $A/$T, then optional #Variant, then value / list
     std::size_t i = 2;
     if (i < tokens.size() &&
         (tokens[i] == "$A" || tokens[i] == "$T"))
     {
         entry.power_type = tokens[i];
+        ++i;
+    }
+
+    // Variant tag: a token starting with '#' (e.g. "#Variant1")
+    if (i < tokens.size() && !tokens[i].empty() && tokens[i].front() == '#')
+    {
+        entry.variant = tokens[i];
         ++i;
     }
 
